@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: 'springboot-mqtt'
+  data:
+    mongodb:
+      host: '192.168.120.20'
+      port: 27017
+      username: 'nebula'
+      password: '123456'
+      database: 'nebula'
+    elasticsearch:
+      client:
+        reactive:
+          endpoints: '192.168.120.20:9200'
+mqtt:
+  url: 'tcp://192.168.120.20:1883'
+  inner:
+    topics: 'simple_mqtt'
+    qos: 0
+server:
+  port: 8081

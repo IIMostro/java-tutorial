@@ -1,0 +1,37 @@
+spring:
+  cloud:
+    stream:
+      binders:
+        rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: 192.168.120.20
+                port: 5672
+                username: guest
+                password: guest
+                virtual-host: /
+        nats:
+          type: nats
+          environment:
+            nats:
+              spring:
+                cloud:
+                  stream:
+                    binder:
+                      server: nats://192.168.120.20:4222
+      default-binder: rabbit
+      bindings:
+        user-info-message:
+          destination: local.user.message
+          content-type: application/json
+          binder: rabbit
+        log-info:
+          destination: local.log.message
+          content-type: application/json
+          binder: nats
+        log-error:
+          destination: local.log.error
+          content-type: application/json
+          binder: nats

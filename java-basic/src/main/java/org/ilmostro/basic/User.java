@@ -1,0 +1,52 @@
+package org.ilmostro.basic;
+
+import lombok.*;
+import org.apache.commons.lang.RandomStringUtils;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+/**
+ * @author li.bowei
+ * @date 2020/7/22 14:33
+ */
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+public class User {
+
+    private Integer id;
+    private String name;
+    private int sex;
+    private Integer age;
+    private String password;
+    private List<Score> scores;
+
+    public static User supplier() {
+        List<Score> scores = Stream.generate(Score::supplier).limit(10).collect(Collectors.toList());
+        return new User(new Random().nextInt(), RandomStringUtils.random(3)
+                , new Random().nextBoolean() ? 1 : 0,(int) (Math.random() * 100), UUID.randomUUID().toString(), scores);
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class Score{
+
+        public static String[] subjects = new String[]{"语文","数学","英语"};
+        private String subject;
+        private BigDecimal score;
+
+        public static Score supplier(){
+            return new Score(subjects[new Random().nextInt(subjects.length)],
+                    BigDecimal.valueOf(Math.random() * 100));
+        }
+    }
+
+}
