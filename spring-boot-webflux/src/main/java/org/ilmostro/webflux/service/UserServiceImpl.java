@@ -5,13 +5,12 @@ import org.ilmostro.webflux.domain.User;
 import org.ilmostro.webflux.repository.UserRepository;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Optional;
+import java.util.Objects;
 
 /**
  * @author li.bowei
@@ -19,7 +18,7 @@ import java.util.Optional;
  */
 @Service
 @Slf4j
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
 
@@ -38,7 +37,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public Mono<ServerResponse> list(ServerRequest request) {
-        Flux<User> all = repository.findAll();
+        Flux<User> all = repository.findAll().filter(var1 -> Objects.nonNull(var1.getBirthday()));
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(all, User.class);
     }
 }
