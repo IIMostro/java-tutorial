@@ -17,10 +17,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class StartAspect {
 
-//    @Pointcut("execution(* org.ilmostro.start.service.AspectService.*(..))")
-//    public void pointcut(){
-//    }
-
     @Pointcut("@annotation(org.ilmostro.start.annotation.Environment)")
     public void pointcut(){
 

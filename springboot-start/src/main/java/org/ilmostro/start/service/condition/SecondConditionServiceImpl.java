@@ -1,6 +1,7 @@
-package org.ilmostro.start.service;
+package org.ilmostro.start.service.condition;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ilmostro.start.service.condition.ConditionService;
 import org.springframework.stereotype.Service;
 
 /**

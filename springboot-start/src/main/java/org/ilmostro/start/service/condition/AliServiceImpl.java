@@ -1,4 +1,4 @@
-package org.ilmostro.start.service;
+package org.ilmostro.start.service.condition;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

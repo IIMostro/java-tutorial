@@ -1,6 +1,6 @@
 package org.ilmostro.start.controller;
 
-import org.ilmostro.start.service.DownloadService;
+import org.ilmostro.start.service.condition.DownloadService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 

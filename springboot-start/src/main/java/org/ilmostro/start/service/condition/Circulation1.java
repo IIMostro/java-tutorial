@@ -1,4 +1,4 @@
-package org.ilmostro.start.service;
+package org.ilmostro.start.service.condition;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

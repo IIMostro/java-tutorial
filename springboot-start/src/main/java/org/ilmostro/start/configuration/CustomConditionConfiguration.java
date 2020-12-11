@@ -1,8 +1,8 @@
 package org.ilmostro.start.configuration;
 
-import org.ilmostro.start.service.CustomCondition;
-import org.ilmostro.start.service.CustomConditionService;
-import org.ilmostro.start.service.CustomConditionServiceImpl;
+import org.ilmostro.start.service.condition.CustomCondition;
+import org.ilmostro.start.service.condition.CustomConditionService;
+import org.ilmostro.start.service.condition.CustomConditionServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;

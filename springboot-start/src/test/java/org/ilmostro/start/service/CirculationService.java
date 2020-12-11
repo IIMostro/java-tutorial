@@ -1,5 +1,6 @@
 package org.ilmostro.start.service;
 
+import org.ilmostro.start.service.condition.Circulation1;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

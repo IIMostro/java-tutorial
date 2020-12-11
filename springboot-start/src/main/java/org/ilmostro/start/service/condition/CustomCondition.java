@@ -1,4 +1,4 @@
-package org.ilmostro.start.service;
+package org.ilmostro.start.service.condition;
 
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
