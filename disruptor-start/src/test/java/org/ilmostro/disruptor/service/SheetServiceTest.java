@@ -1,29 +1,23 @@
 package org.ilmostro.disruptor.service;
 
-import com.lmax.disruptor.BlockingWaitStrategy;
+import com.lmax.disruptor.EventHandler;
+import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
-import com.lmax.disruptor.dsl.ProducerType;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.ilmostro.disruptor.entity.ElementEventFactory;
-import org.ilmostro.disruptor.entity.SheetElement;
+import org.ilmostro.disruptor.entity.GoodsElement;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.StopWatch;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ThreadFactory;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author li.bowei
@@ -34,26 +28,49 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SheetServiceTest {
 
     @Autowired
-    private Disruptor<SheetElement> disruptor;
+    private Disruptor<GoodsElement> disruptor;
+    private List<String> names;
+
     @Autowired
-    private ProcessService service;
+    private List<EventHandler<GoodsElement>> services;
+
+    @Before
+    public void before(){
+        names = Stream.generate(UUID::randomUUID).limit(1000).map(UUID::toString).collect(Collectors.toList());
+    }
 
     @Test
     public void handler() throws IOException {
-        List<String> data = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k");
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        int key = workbook.hashCode();
-        for(int sheet = 0; sheet < 10; sheet ++){
-            disruptor.publishEvent((element, sequence) -> {
-                element.setKey(key);
-                element.setSheet(workbook.createSheet());
-                element.setData(data);
+        StopWatch watch = new StopWatch();
+        watch.start();
+        for (int index = 0; index < 1000; index++) {
+            int finalIndex = index;
+            String format = names.get(index);
+            disruptor.publishEvent((v1, v2) -> {
+                v1.setId(finalIndex);
+                v1.setName(format);
+                v1.setDescription(format);
             });
         }
-        while (!service.complete(key, 10)){
-            log.info("wait complete!");
+        watch.stop();
+        log.info("end :{}", watch.getTotalTimeSeconds());
+    }
+
+    @Test
+    public void manual() throws Exception {
+        StopWatch watch = new StopWatch();
+        watch.start();
+        for (int index = 0; index < 1000; index++) {
+            String format = names.get(index);
+            for(EventHandler<GoodsElement> var1: services){
+                GoodsElement goods = new GoodsElement();
+                goods.setId(index);
+                goods.setName(format);
+                goods.setDescription(format);
+                var1.onEvent(goods, 0, false);
+            }
         }
-        FileOutputStream fileOutputStream = new FileOutputStream(new File("D:/test.xlsx"));
-        workbook.write(fileOutputStream);
+        watch.stop();
+        log.info("end :{}", watch.getTotalTimeSeconds());
     }
 }

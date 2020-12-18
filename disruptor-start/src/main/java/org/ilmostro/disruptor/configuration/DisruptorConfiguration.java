@@ -1,12 +1,15 @@
 package org.ilmostro.disruptor.configuration;
 
 import com.lmax.disruptor.BlockingWaitStrategy;
+import com.lmax.disruptor.WaitStrategy;
+import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import org.ilmostro.disruptor.entity.ElementEventFactory;
-import org.ilmostro.disruptor.entity.SheetElement;
+import org.ilmostro.disruptor.entity.GoodsElement;
+import org.ilmostro.disruptor.service.CacheGoodsElementService;
 import org.ilmostro.disruptor.service.ProcessService;
-import org.ilmostro.disruptor.service.SheetService;
+import org.ilmostro.disruptor.service.DataSourceGoodsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,14 +28,15 @@ public class DisruptorConfiguration {
     }
 
     @Bean
-    public Disruptor<SheetElement> disruptor(ThreadFactory disruptorThreadFactory,
-                                             SheetService service,
-                                             ProcessService processService){
-        BlockingWaitStrategy strategy = new BlockingWaitStrategy();
-        int bufferSize = 32;
+    public Disruptor<GoodsElement> disruptor(ThreadFactory disruptorThreadFactory,
+                                             DataSourceGoodsService service,
+                                             ProcessService processService,
+                                             CacheGoodsElementService cacheGoodsElementService){
+        WaitStrategy strategy = new YieldingWaitStrategy();
+        int bufferSize = 16;
         ElementEventFactory factory = new ElementEventFactory();
-        Disruptor<SheetElement> disruptor = new Disruptor<>(factory, bufferSize, disruptorThreadFactory, ProducerType.SINGLE, strategy);
-        disruptor.handleEventsWith(service).then(processService);
+        Disruptor<GoodsElement> disruptor = new Disruptor<>(factory, bufferSize, disruptorThreadFactory, ProducerType.SINGLE, strategy);
+        disruptor.handleEventsWith(service, cacheGoodsElementService).then(processService);
         disruptor.start();
         return disruptor;
     }
