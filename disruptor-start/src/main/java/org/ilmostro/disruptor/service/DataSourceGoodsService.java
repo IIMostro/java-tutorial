@@ -21,7 +21,7 @@ public class DataSourceGoodsService implements EventHandler<GoodsElement> {
 
     @Override
     public void onEvent(GoodsElement sheetElement, long sequence, boolean b) throws Exception {
-        log.info("this sequence is :{}", sequence);
+        log.info("this sequence is :{}, current thread:{}", sequence, Thread.currentThread().getName());
         repository.save(sheetElement);
 //        log.info("this is datasource service! and current thread is:{}", Thread.currentThread().getName());
     }

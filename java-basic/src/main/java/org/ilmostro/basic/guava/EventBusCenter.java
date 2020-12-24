@@ -1,14 +1,12 @@
 package org.ilmostro.basic.guava;
 
-import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
-
-import java.util.concurrent.Executors;
 
 public class EventBusCenter {
 
 
-    private final static EventBus EVENT_BUS = new AsyncEventBus(Executors.newFixedThreadPool(2), new BaseSubscriberExceptionHandler());
+    private final static EventBus EVENT_BUS =
+            new EventBus(new BaseSubscriberExceptionHandler());
 
     public static EventBus getInstance() {
         return EVENT_BUS;

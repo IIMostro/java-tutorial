@@ -22,7 +22,7 @@ public class CacheGoodsElementService implements EventHandler<GoodsElement> {
 
     @Override
     public void onEvent(GoodsElement event, long sequence, boolean endOfBatch) throws Exception {
-        log.info("this sequence is :{}", sequence);
+        log.info("this sequence is :{}, current thread:{}", sequence, Thread.currentThread().getName());
         String key = String.format(CACHE_KEY, event.getId());
         template.opsForValue().set(key, objectMapper.writeValueAsString(event));
 //        log.info("this is cache service! and current thread is:{}", Thread.currentThread().getName());

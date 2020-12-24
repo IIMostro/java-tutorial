@@ -19,6 +19,7 @@ public class BaseSubscriberExceptionHandler implements SubscriberExceptionHandle
         Method subscriberMethod = context.getSubscriberMethod();
 
         log.error("catch exception:{}", exception.getMessage());
-        log.error("this event:{}, event-bus:{}, subscriber:{}, subscription-method:{}", event, eventBus, subscriber, subscriberMethod);
+        log.error("this event:{}, event-bus:{}, subscriber:{}, subscription-method:{}",
+                event, eventBus, subscriber, subscriberMethod);
     }
 }
