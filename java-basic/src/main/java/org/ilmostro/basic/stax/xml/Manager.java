@@ -1,4 +1,4 @@
-package org.ilmostro.basic.stax;
+package org.ilmostro.basic.stax.xml;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,10 +23,14 @@ public class Manager {
     private Boolean includeMeasures;
     @XmlAttribute(name = "是否包含其他项目")
     private Boolean includeOtherProject;
+
     @XmlElement(name = "技术措施")
     private TechnicalMeasures technicalMeasures;
     @XmlElement(name = "组织措施")
     private OrganizationMeasure organizationMeasure;
     @XmlElement(name = "其他项目")
     private OtherProject otherProject;
+    @XmlElement(name = "其他费用")
+    private OtherCost otherCost;
+
 }

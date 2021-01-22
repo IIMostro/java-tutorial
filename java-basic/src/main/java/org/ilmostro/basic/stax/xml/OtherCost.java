@@ -1,4 +1,4 @@
-package org.ilmostro.basic.stax;
+package org.ilmostro.basic.stax.xml;
 
 
 import lombok.Getter;
@@ -11,13 +11,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-@XmlRootElement(name = "组措标题")
+@XmlRootElement(name = "其他费用")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Getter
 @Setter
 @ToString
-public class OrganizationMeasureTitle {
+public class OtherCost {
 
-    @XmlElement(name = "组措记录")
-    List<OrganizationMeasureRecord> records;
+    @XmlElement(name = "其他费用记录")
+    private List<OtherCostRecord> records;
 }

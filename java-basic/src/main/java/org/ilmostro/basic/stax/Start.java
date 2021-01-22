@@ -1,6 +1,7 @@
 package org.ilmostro.basic.stax;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ilmostro.basic.stax.xml.Project;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;

@@ -1,4 +1,4 @@
-package org.ilmostro.basic.stax;
+package org.ilmostro.basic.stax.xml;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,8 +1,10 @@
-package org.ilmostro.basic.stax;
+package org.ilmostro.basic.stax.xml;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.ilmostro.basic.stax.adapter.OtherProjectRecordAdapter;
+import org.ilmostro.basic.stax.entity.CustomOtherProjectRecord;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

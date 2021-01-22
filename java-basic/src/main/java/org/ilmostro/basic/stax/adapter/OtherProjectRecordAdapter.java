@@ -1,4 +1,7 @@
-package org.ilmostro.basic.stax;
+package org.ilmostro.basic.stax.adapter;
+
+import org.ilmostro.basic.stax.xml.OtherProjectRecord;
+import org.ilmostro.basic.stax.entity.CustomOtherProjectRecord;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
