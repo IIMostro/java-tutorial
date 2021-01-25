@@ -9,11 +9,9 @@ import org.ilmostro.basic.stax.entity.CustomOtherProjectRecord;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
 
-@XmlRootElement(name = "其他项目")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Getter
 @Setter

@@ -7,7 +7,6 @@ import lombok.ToString;
 import javax.xml.bind.annotation.*;
 import java.math.BigDecimal;
 
-@XmlRootElement(name = "其他项目记录")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Getter
 @Setter

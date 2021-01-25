@@ -4,11 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import java.math.BigDecimal;
 import java.util.List;
 
-@XmlRootElement(name = "其他项目标题")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Getter
 @Setter

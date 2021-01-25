@@ -32,5 +32,8 @@ public class Manager {
     private OtherProject otherProject;
     @XmlElement(name = "其他费用")
     private OtherCost otherCost;
-
+    @XmlElement(name = "招标要求材料")
+    private BiddingMaterial biddingMaterial;
+    @XmlElement(name = "工料机资源")
+    private MaterialMachineResource materialMachineResource;
 }

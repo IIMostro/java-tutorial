@@ -7,10 +7,8 @@ import lombok.ToString;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
 
-@XmlRootElement(name = "其他费用")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Getter
 @Setter
