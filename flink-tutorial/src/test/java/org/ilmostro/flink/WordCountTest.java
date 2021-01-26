@@ -10,7 +10,9 @@ import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
+import org.ilmostro.flink.sink.CustomMongoSink;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -35,10 +37,11 @@ public class WordCountTest {
             collector.collect(new Tuple2<>(orderEntity.getStore(), orderEntity.getMoney()));
 
         })
-                .returns(TypeInformation.of(new TypeHint<Tuple2<String, BigDecimal>>() {}))
+                .returns(TypeInformation.of(new TypeHint<Tuple2<String, BigDecimal>>() {
+                }))
                 .keyBy((KeySelector<Tuple2<String, BigDecimal>, String>) stringBigDecimalTuple2 -> stringBigDecimalTuple2.f0)
                 .reduce((ReduceFunction<Tuple2<String, BigDecimal>>) (t1, t2) -> new Tuple2<>(t1.f0, t1.f1.add(t2.f1)))
-                .print();
+                .addSink(new CustomMongoSink());
 
         env.execute("streaming word count");
     }
