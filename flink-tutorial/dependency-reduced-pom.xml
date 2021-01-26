@@ -44,7 +44,7 @@
               </filters>
               <transformers>
                 <transformer>
-                  <mainClass>org.ilmostro.flink.WordCountTest</mainClass>
+                  <mainClass>org.ilmostro.flink.WordCount</mainClass>
                 </transformer>
               </transformers>
             </configuration>
@@ -61,20 +61,8 @@
       <scope>provided</scope>
       <exclusions>
         <exclusion>
-          <artifactId>flink-core</artifactId>
-          <groupId>org.apache.flink</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>commons-lang3</artifactId>
-          <groupId>org.apache.commons</groupId>
-        </exclusion>
-        <exclusion>
           <artifactId>commons-math3</artifactId>
           <groupId>org.apache.commons</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jsr305</artifactId>
-          <groupId>com.google.code.findbugs</groupId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -85,24 +73,8 @@
       <scope>provided</scope>
       <exclusions>
         <exclusion>
-          <artifactId>flink-runtime_2.11</artifactId>
-          <groupId>org.apache.flink</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>flink-shaded-guava</artifactId>
-          <groupId>org.apache.flink</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>flink-core</artifactId>
-          <groupId>org.apache.flink</groupId>
-        </exclusion>
-        <exclusion>
           <artifactId>commons-math3</artifactId>
           <groupId>org.apache.commons</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jsr305</artifactId>
-          <groupId>com.google.code.findbugs</groupId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -115,22 +87,6 @@
         <exclusion>
           <artifactId>flink-optimizer_2.11</artifactId>
           <groupId>org.apache.flink</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>commons-cli</artifactId>
-          <groupId>commons-cli</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>flink-runtime_2.11</artifactId>
-          <groupId>org.apache.flink</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>flink-core</artifactId>
-          <groupId>org.apache.flink</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jsr305</artifactId>
-          <groupId>com.google.code.findbugs</groupId>
         </exclusion>
       </exclusions>
     </dependency>

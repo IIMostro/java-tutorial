@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.api.common.typeinfo.TypeHint;
+import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
@@ -26,22 +28,15 @@ public class WordCount {
         //连接socket获取输入的数据
         DataStreamSource<String> stream = env.addSource(new FlinkKafkaConsumer<>("flink-stream-in-topic", new SimpleStringSchema(), properties));
 
-        stream.flatMap((FlatMapFunction<String, State>) (value, collector) -> {
+        stream.flatMap((FlatMapFunction<String, Tuple2<String, BigDecimal>>) (value, collector) -> {
             OrderEntity orderEntity = JSONObject.parseObject(value).toJavaObject(OrderEntity.class);
-            collector.collect(new State(orderEntity.getStore(), orderEntity.getMoney()));
+            collector.collect(new Tuple2<>(orderEntity.getStore(), orderEntity.getMoney()));
+
         })
-                .keyBy(new KeySelector<State, String>() {
-                    @Override
-                    public String getKey(State state) throws Exception {
-                        return state.getName();
-                    }
-                })
-                .reduce(new ReduceFunction<State>() {
-                    @Override
-                    public State reduce(State state, State t1) throws Exception {
-                        return new State(state.getName(), state.getMoney().add(t1.getMoney()));
-                    }
-                })
+                .returns(TypeInformation.of(new TypeHint<Tuple2<String, BigDecimal>>() {
+                }))
+                .keyBy((KeySelector<Tuple2<String, BigDecimal>, String>) stringBigDecimalTuple2 -> stringBigDecimalTuple2.f0)
+                .reduce((ReduceFunction<Tuple2<String, BigDecimal>>) (t1, t2) -> new Tuple2<>(t1.f0, t1.f1.add(t2.f1)))
                 .print();
 
         env.execute("streaming word count");
