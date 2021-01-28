@@ -2,21 +2,13 @@ package org.ilmostro.security.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ilmostro.security.domain.UserEntity;
-import org.ilmostro.security.dto.SimpleResponse;
-import org.ilmostro.security.dto.UserLoginResult;
-import org.ilmostro.security.entity.UserLoginParameter;
 import org.ilmostro.security.service.UserAuthenticationService;
-import org.ilmostro.security.utils.JwtTokenUtils;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author li.bowei
@@ -27,14 +19,11 @@ public class SimpleController {
 
     private final UserAuthenticationService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final StringRedisTemplate stringRedisTemplate;
 
     public SimpleController(UserAuthenticationService userService,
-                            BCryptPasswordEncoder bCryptPasswordEncoder,
-                            StringRedisTemplate stringRedisTemplate) {
+                            BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userService = userService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.stringRedisTemplate = stringRedisTemplate;
     }
 
     @GetMapping("/admin/create")
@@ -50,12 +39,6 @@ public class SimpleController {
         log.info("get current user:{}", currentUser);
         return "this url is /api/create";
     }
-
-//    @PostMapping("/login")
-//    public SimpleResponse<UserLoginResult> login(@RequestBody UserLoginParameter parameter) {
-//
-//        return SimpleResponse.success(new UserLoginResult(user, token));
-//    }
 
     @GetMapping("/register")
     public String register(@RequestParam("username") String username,
