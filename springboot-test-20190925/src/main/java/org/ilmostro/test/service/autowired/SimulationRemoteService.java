@@ -1,4 +1,4 @@
-package org.ilmostro.test.service;
+package org.ilmostro.test.service.autowired;
 
 /**
  * @author li.bowei on 2019-10-12.

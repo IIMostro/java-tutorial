@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class StreamAspect {
 
-    @Pointcut("execution(* org.ilmostro.test.service.StreamService.*(..))")
+    @Pointcut("execution(* org.ilmostro.test.service.autowired.StreamService.*(..))")
     public void ponitcut(){
 
     }

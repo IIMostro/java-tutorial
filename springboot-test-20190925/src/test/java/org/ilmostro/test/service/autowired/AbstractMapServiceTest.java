@@ -1,4 +1,4 @@
-package org.ilmostro.test.service;
+package org.ilmostro.test.service.autowired;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import static org.junit.Assert.*;
 
 /**
  * @author li.bowei on 2019-10-08.

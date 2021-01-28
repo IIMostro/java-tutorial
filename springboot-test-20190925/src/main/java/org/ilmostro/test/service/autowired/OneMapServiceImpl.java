@@ -1,4 +1,4 @@
-package org.ilmostro.test.service;
+package org.ilmostro.test.service.autowired;
 
 import org.springframework.stereotype.Service;
 

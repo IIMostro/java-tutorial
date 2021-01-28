@@ -1,6 +1,6 @@
 package org.ilmostro.test.template.thread.sync;
 
-import org.ilmostro.test.service.SimulationRemoteService;
+import org.ilmostro.test.service.autowired.SimulationRemoteService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

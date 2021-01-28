@@ -1,6 +1,6 @@
 package org.ilmostro.test.controller;
 
-import org.ilmostro.test.service.BeanService;
+import org.ilmostro.test.service.autowired.BeanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

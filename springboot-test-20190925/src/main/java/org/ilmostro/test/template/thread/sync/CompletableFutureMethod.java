@@ -1,7 +1,7 @@
 package org.ilmostro.test.template.thread.sync;
 
 import lombok.extern.slf4j.Slf4j;
-import org.ilmostro.test.service.SimulationRemoteService;
+import org.ilmostro.test.service.autowired.SimulationRemoteService;
 
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
