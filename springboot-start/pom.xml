@@ -59,13 +59,6 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
-        <!--报表编辑的依赖-->
-        <dependency>
-            <groupId>com.bstek.ureport</groupId>
-            <artifactId>ureport2-console</artifactId>
-            <version>2.2.9</version>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
