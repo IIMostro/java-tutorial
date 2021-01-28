@@ -20,6 +20,6 @@ public class SimpleResponse<T> {
     private T data;
 
     public static <T> SimpleResponse<T> success(T data){
-        return new SimpleResponse<T>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), data);
+        return new SimpleResponse<>(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), data);
     }
 }
