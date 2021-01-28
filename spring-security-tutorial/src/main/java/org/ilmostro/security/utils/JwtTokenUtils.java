@@ -5,12 +5,15 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.ilmostro.security.configuration.SecurityProperties;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 import javax.xml.bind.DatatypeConverter;
 import java.util.Arrays;
@@ -22,21 +25,11 @@ import java.util.stream.Collectors;
  * @author li.bowei
  */
 @Component
-public class JwtTokenUtils {
+public class JwtTokenUtils implements ApplicationContextAware, InitializingBean {
 
     private static SecurityProperties properties;
     private static SecretKey SECRET_KEY;
-
-    @Autowired
-    public void setProperties(SecurityProperties properties) {
-        JwtTokenUtils.properties = properties;
-    }
-
-    @PostConstruct
-    public void init(){
-        byte[] bytes = DatatypeConverter.parseBase64Binary(properties.getJwt().getSecret());
-        SECRET_KEY = Keys.hmacShaKeyFor(bytes);
-    }
+    private static ApplicationContext applicationContext;
 
     public static String createToken(String username, String id, List<String> roles, boolean isRememberMe) {
         SecurityProperties.JwtProperties jwt = properties.getJwt();
@@ -82,4 +75,15 @@ public class JwtTokenUtils {
                 .getBody();
     }
 
+    @Override
+    public void afterPropertiesSet() {
+        JwtTokenUtils.properties = applicationContext.getBean(SecurityProperties.class);
+        byte[] bytes = DatatypeConverter.parseBase64Binary(properties.getJwt().getSecret());
+        SECRET_KEY = Keys.hmacShaKeyFor(bytes);
+    }
+
+    @Override
+    public void setApplicationContext(@NonNull ApplicationContext context) throws BeansException {
+        applicationContext = context;
+    }
 }

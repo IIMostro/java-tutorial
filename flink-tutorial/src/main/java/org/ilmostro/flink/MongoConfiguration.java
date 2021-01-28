@@ -11,7 +11,7 @@ public class MongoConfiguration {
     }
 
     static {
-        initDBPrompties();
+        initProperties();
     }
 
     public static MongoClient getMongoClient(){
@@ -25,7 +25,7 @@ public class MongoConfiguration {
     /**
      * 初始化连接池
      */
-    private static void initDBPrompties() {
+    private static void initProperties() {
         try {
             MongoClientOptions.Builder mcob = MongoClientOptions.builder();
             mcob.connectionsPerHost(1000);
