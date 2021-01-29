@@ -29,6 +29,11 @@ public class User {
     private String password;
     private List<Score> scores;
 
+    public void setNameAndAge(String name, Integer age){
+        this.name = name;
+        this.age = age;
+    }
+
     public static User supplier() {
         List<Score> scores = Stream.generate(Score::supplier).limit(10).collect(Collectors.toList());
         return new User(new Random().nextInt(), RandomStringUtils.random(3)

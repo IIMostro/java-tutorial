@@ -17,6 +17,7 @@ public class CommonBuilderTest {
     public void builder(){
         User build = CommonBuilder.of(User::new)
                 .with(User::setId, 1)
+                .with(User::setNameAndAge, "ilmostro", 3)
                 .build();
         log.info("build entity is :{}", build);
     }

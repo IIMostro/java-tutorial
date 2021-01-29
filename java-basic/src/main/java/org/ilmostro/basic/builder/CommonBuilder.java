@@ -33,6 +33,12 @@ public class CommonBuilder<T> {
         return this;
     }
 
+    public <P1, P2, P3> CommonBuilder<T> with(Consumer3<T, P1, P2, P3> consumer1, P1 p1, P2 p2, P3 p3){
+        Consumer<T> consumer = instance -> consumer1.accept((T) instance, p1, p2, p3);
+        modifies.add(consumer);
+        return this;
+    }
+
     public T build(){
         T t = instantiation.get();
         modifies.forEach(var1 -> var1.accept(t));
