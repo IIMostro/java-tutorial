@@ -2,6 +2,7 @@ package org.ilmostro.security.handler;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.ilmostro.security.domain.Role;
 import org.ilmostro.security.domain.UserEntity;
 import org.ilmostro.security.dto.SimpleResponse;
 import org.ilmostro.security.dto.UserLoginResult;
@@ -42,7 +43,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         User principal = (User) authentication.getPrincipal();
         UserEntity user = service.findUserByUserName(principal.getUsername());
-        List<String> roles = user.getRoles().stream().map(SimpleGrantedAuthority::getAuthority).collect(Collectors.toList());
+//        List<String> roles = user.getRoles().stream().map(SimpleGrantedAuthority::getAuthority).collect(Collectors.toList());
+        List<String> roles = user.getRoles().stream().map(Role::getName).collect(Collectors.toList());
         String token = JwtTokenUtils.createToken(user.getUserName(), user.getId().toString(), roles, false);
         stringRedisTemplate.opsForValue().set(user.getId().toString(), token);
 

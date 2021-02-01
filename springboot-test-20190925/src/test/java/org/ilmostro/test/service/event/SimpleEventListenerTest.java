@@ -1,5 +1,6 @@
-package org.ilmostro.start.service.event;
+package org.ilmostro.test.service.event;
 
+import org.ilmostro.test.domian.SimpleEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

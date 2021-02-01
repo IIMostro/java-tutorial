@@ -26,6 +26,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
         UserEntity user = Optional.of(s)
                 .map(userService::findUserByUserName)
                 .orElseThrow(() -> new UsernameNotFoundException("user not found"));
-        return new User(user.getUserName(), user.getPassword(), user.getRoles());
+        return new User(user.getUserName(), user.getPassword(), user.getAuthority());
     }
 }

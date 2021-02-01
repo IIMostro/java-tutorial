@@ -27,13 +27,13 @@ public class SimpleController {
     }
 
     @GetMapping("/admin/create")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String admin() {
         return "this url is /admin/create";
     }
 
     @GetMapping("/api/create")
-    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    @PreAuthorize("hasAnyAuthority('USER')")
     public String api() {
         UserEntity currentUser = userService.getCurrentUser();
         log.info("get current user:{}", currentUser);

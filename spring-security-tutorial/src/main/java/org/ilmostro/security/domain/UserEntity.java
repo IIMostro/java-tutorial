@@ -37,9 +37,15 @@ public class UserEntity {
     @Transient
     private List<Role> roles;
 
-    public List<SimpleGrantedAuthority> getRoles() {
+    public List<SimpleGrantedAuthority> getAuthority(){
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        roles.forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName())));
+        roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
         return authorities;
     }
+
+//    public List<SimpleGrantedAuthority> getRoles() {
+//        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+//        roles.forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName())));
+//        return authorities;
+//    }
 }
