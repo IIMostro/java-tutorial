@@ -1,25 +1,32 @@
 package org.ilmostro.kafka.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.TimeUnit;
+
 @Service
 @Slf4j
 public class DefaultService {
 
-    private final KafkaTemplate template;
+    private final KafkaTemplate<String, String> template;
+    private final ObjectMapper objectMapper;
 
-    public DefaultService(KafkaTemplate template) {
+    public DefaultService(KafkaTemplate<String, String> template,
+                          ObjectMapper objectMapper) {
         this.template = template;
+        this.objectMapper = objectMapper;
     }
 
-    public void send() throws InterruptedException {
-        for (; ; ) {
-            template.send("flink-stream-in-topic", OrderEntity.getInstance());
-            Thread.sleep(1000);
+    public void send() throws InterruptedException, JsonProcessingException {
+        while(true) {
+            template.send("flink-stream-in-topic", objectMapper.writeValueAsString(OrderEntity.getInstance()));
+            TimeUnit.SECONDS.sleep(1);
         }
     }
 

@@ -1,5 +1,6 @@
 package org.ilmostro.kafka.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ class DefaultServiceTest {
     private DefaultService service;
 
     @Test
-    public void send() throws InterruptedException {
+    public void send() throws InterruptedException, JsonProcessingException {
         service.send();
     }
 }
