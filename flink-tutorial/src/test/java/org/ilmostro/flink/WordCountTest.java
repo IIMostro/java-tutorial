@@ -14,11 +14,15 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 import org.ilmostro.flink.sink.CustomMongoSink;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.Properties;
 
 public class WordCountTest {
+
+    private static final Logger logger = LoggerFactory.getLogger(WordCountTest.class);
 
     @Test
     public void test() throws Exception {
@@ -33,6 +37,7 @@ public class WordCountTest {
         DataStreamSource<String> stream = env.addSource(new FlinkKafkaConsumer<>("flink-stream-in-topic", new SimpleStringSchema(), properties));
 
         stream.flatMap((FlatMapFunction<String, Tuple2<String, BigDecimal>>) (value, collector) -> {
+            logger.info("value:{}", value);
             OrderEntity orderEntity = JSONObject.parseObject(value).toJavaObject(OrderEntity.class);
             collector.collect(new Tuple2<>(orderEntity.getStore(), orderEntity.getMoney()));
 

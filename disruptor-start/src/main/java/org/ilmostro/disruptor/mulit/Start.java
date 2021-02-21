@@ -17,11 +17,7 @@ public class Start {
         //1 创建RingBuffer
         RingBuffer<GoodsElement> ringBuffer =
                 RingBuffer.create(ProducerType.MULTI,
-                        new EventFactory<GoodsElement>() {
-                            public GoodsElement newInstance() {
-                                return new GoodsElement();
-                            }
-                        },
+                        GoodsElement::new,
                         1024 * 1024,
                         new YieldingWaitStrategy());
 
