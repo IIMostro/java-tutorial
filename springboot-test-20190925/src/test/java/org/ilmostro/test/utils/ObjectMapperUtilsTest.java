@@ -8,6 +8,10 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 /**
@@ -27,5 +31,15 @@ public class ObjectMapperUtilsTest {
 
         UserEntity userEntity = ObjectMapperUtils.toJavaObject(jsonString, UserEntity.class);
         log.info("to java bean: bean:{}", userEntity);
+
+        UserEntity user1 = new UserEntity(2, "ilmostro", 18);
+        UserEntity user2 = new UserEntity(3, "ilmostro", 18);
+        UserEntity user3 = new UserEntity(4, "ilmostro", 18);
+
+        List<UserEntity> users = Arrays.asList(user, user1, user2, user3);
+        String jsons = ObjectMapperUtils.toJSONString(users);
+        log.info("to json: data:{}", jsons);
+        Collection<UserEntity> users1 = ObjectMapperUtils.toJavaArray(jsons, UserEntity.class);
+        log.info("to java list, data:{}", users1);
     }
 }

@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author li.bowei
@@ -39,7 +41,7 @@ public class ObjectMapperUtils implements ApplicationContextAware, InitializingB
 
     public static <T> T toJavaObject(@NonNull String json, @NonNull Class<T> clazz) {
         if (StringUtils.isEmpty(json)) {
-            logger.error("json string to java object parameter is empty!");
+            logger.error("class function, json string to java object parameter is empty!");
             throw new IllegalArgumentException("json string to java object parameter is empty!");
         }
         try {
@@ -52,7 +54,7 @@ public class ObjectMapperUtils implements ApplicationContextAware, InitializingB
 
     public static <T> T toJavaObject(@NonNull String json, @NonNull JavaType javaType) {
         if (StringUtils.isEmpty(json)) {
-            logger.error("json string to java object parameter is empty!");
+            logger.error("java type function, json string to java object parameter is empty!");
             throw new IllegalArgumentException("json string to java object parameter is empty!");
         }
         try {
@@ -61,6 +63,11 @@ public class ObjectMapperUtils implements ApplicationContextAware, InitializingB
             logger.error("json to java object error! json:{}, cause:{}", json, e.getMessage());
             throw new RuntimeException("json to java object error!");
         }
+    }
+
+    public static <T> Collection<T> toJavaArray(@NonNull String json, @NonNull Class<T> clazz) {
+        JavaType javaType = objectMapper.getTypeFactory().constructCollectionType(List.class, clazz);
+        return toJavaObject(json, javaType);
     }
 
     @Override
