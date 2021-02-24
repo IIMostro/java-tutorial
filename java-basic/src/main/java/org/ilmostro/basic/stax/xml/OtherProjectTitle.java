@@ -8,7 +8,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -18,7 +20,10 @@ import java.util.List;
 public class OtherProjectTitle {
     
     @XmlElement(name = "其他项目标题")
-    private List<OtherProjectTitle> titles;
+    @XmlJavaTypeAdapter(OtherProjectTitleAdapter.class)
+    private List<CustomOtherProjectTitle> titles;
+    @XmlElement(name = "其他项目记录")
+    private List<OtherProjectRecord> records;
     @XmlAttribute(name = "其他项目ID")
     private String id;
     @XmlAttribute(name = "编号")

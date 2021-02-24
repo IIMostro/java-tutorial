@@ -19,7 +19,8 @@ import java.util.List;
 public class OtherProject {
 
     @XmlElement(name = "其他项目标题")
-    List<OtherProjectTitle> titles;
+    @XmlJavaTypeAdapter(OtherProjectTitleAdapter.class)
+    List<CustomOtherProjectTitle> titles;
     @XmlElement(name = "其他项目记录")
     @XmlJavaTypeAdapter(OtherProjectRecordAdapter.class)
     CustomOtherProjectRecord record;
