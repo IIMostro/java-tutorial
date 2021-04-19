@@ -13,12 +13,16 @@ import java.time.format.DateTimeFormatter;
 public class TimeStart {
 
     public static void main(String[] args) {
-        Duration expired = Duration.ofHours(2);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-        LocalDateTime now = LocalDateTime.now();
-        String orderStartTime = now.format(formatter);
-        String orderEndTime = now.plusSeconds(expired.getSeconds()).format(formatter);
-
-        log.info("start time:{}, end time:{}", orderStartTime, orderEndTime);
+//        Duration expired = Duration.ofHours(2);
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+//        LocalDateTime now = LocalDateTime.now();
+//        String orderStartTime = now.format(formatter);
+//        String orderEndTime = now.plusSeconds(expired.getSeconds()).format(formatter);
+//
+//        log.info("start time:{}, end time:{}", orderStartTime, orderEndTime);
+        int i = 1;
+        int j = 2;
+        String date = i+String.valueOf(j);
+        log.info("data:{}", date);
     }
 }

@@ -1,5 +1,6 @@
 package org.ilmostro.kafka.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -15,17 +16,14 @@ import java.util.concurrent.TimeUnit;
 public class DefaultService {
 
     private final KafkaTemplate<String, String> template;
-    private final ObjectMapper objectMapper;
 
-    public DefaultService(KafkaTemplate<String, String> template,
-                          ObjectMapper objectMapper) {
+    public DefaultService(KafkaTemplate<String, String> template) {
         this.template = template;
-        this.objectMapper = objectMapper;
     }
 
-    public void send() throws InterruptedException, JsonProcessingException {
+    public void send() throws Exception {
         while(true) {
-            template.send("flink-stream-in-topic", objectMapper.writeValueAsString(OrderEntity.getInstance()));
+            template.send("flink-stream-in-topic", JSONObject.toJSONString(OrderEntity.getInstance()));
             TimeUnit.SECONDS.sleep(1);
         }
     }

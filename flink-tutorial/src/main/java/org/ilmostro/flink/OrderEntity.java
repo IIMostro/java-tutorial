@@ -75,4 +75,15 @@ public class OrderEntity {
     public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
+
+    @Override
+    public String toString() {
+        return "OrderEntity{" +
+                "orderId='" + orderId + '\'' +
+                ", uid=" + uid +
+                ", store='" + store + '\'' +
+                ", money=" + money +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }

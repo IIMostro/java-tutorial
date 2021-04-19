@@ -1,6 +1,7 @@
 package org.ilmostro.flink;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
@@ -30,17 +31,15 @@ public class WordCountTest {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         Properties properties = new Properties();
-        properties.setProperty("bootstrap.servers", "192.168.120.20:9092");
-        properties.setProperty("zookeeper.connect", "192.168.120.20:2181");
+        properties.setProperty("bootstrap.servers", "192.168.205.20:9092");
+        properties.setProperty("zookeeper.connect", "192.168.205.20:2181");
         properties.setProperty("group.id", "custom-consumer-flink");
         //连接socket获取输入的数据
         DataStreamSource<String> stream = env.addSource(new FlinkKafkaConsumer<>("flink-stream-in-topic", new SimpleStringSchema(), properties));
 
         stream.flatMap((FlatMapFunction<String, Tuple2<String, BigDecimal>>) (value, collector) -> {
-            logger.info("value:{}", value);
-            OrderEntity orderEntity = JSONObject.parseObject(value).toJavaObject(OrderEntity.class);
-            collector.collect(new Tuple2<>(orderEntity.getStore(), orderEntity.getMoney()));
-
+            JSONObject jsonObject = JSONObject.parseObject(value);
+            collector.collect(new Tuple2<>(jsonObject.get("store").toString(), new BigDecimal(jsonObject.get("money").toString())));
         })
                 .returns(TypeInformation.of(new TypeHint<Tuple2<String, BigDecimal>>() {
                 }))
