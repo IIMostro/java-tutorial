@@ -38,6 +38,9 @@ public class WordCountTest {
         DataStreamSource<String> stream = env.addSource(new FlinkKafkaConsumer<>("flink-stream-in-topic", new SimpleStringSchema(), properties));
 
         stream.flatMap((FlatMapFunction<String, Tuple2<String, BigDecimal>>) (value, collector) -> {
+            value = StringUtils.replace(value, "\\\"", "\"");
+            value = StringUtils.substringAfter(value, "\"");
+            value = StringUtils.substringBeforeLast(value, "\"");
             JSONObject jsonObject = JSONObject.parseObject(value);
             collector.collect(new Tuple2<>(jsonObject.get("store").toString(), new BigDecimal(jsonObject.get("money").toString())));
         })
@@ -45,7 +48,7 @@ public class WordCountTest {
                 }))
                 .keyBy((KeySelector<Tuple2<String, BigDecimal>, String>) stringBigDecimalTuple2 -> stringBigDecimalTuple2.f0)
                 .reduce((ReduceFunction<Tuple2<String, BigDecimal>>) (t1, t2) -> new Tuple2<>(t1.f0, t1.f1.add(t2.f1)))
-                .addSink(new CustomMongoSink());
+                .print();
 
         env.execute("streaming word count");
     }

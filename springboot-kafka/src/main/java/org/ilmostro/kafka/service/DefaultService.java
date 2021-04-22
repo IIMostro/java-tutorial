@@ -1,15 +1,11 @@
 package org.ilmostro.kafka.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-
-import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -21,11 +17,8 @@ public class DefaultService {
         this.template = template;
     }
 
-    public void send() throws Exception {
-        while(true) {
-            template.send("flink-stream-in-topic", JSONObject.toJSONString(OrderEntity.getInstance()));
-            TimeUnit.SECONDS.sleep(1);
-        }
+    public void send() {
+        template.send("flink-stream-in-topic", JSONObject.toJSONString(OrderEntity.getInstance()));
     }
 
     @KafkaListener(groupId = "custom-consumer", topics = "flink-stream-in-topic")
