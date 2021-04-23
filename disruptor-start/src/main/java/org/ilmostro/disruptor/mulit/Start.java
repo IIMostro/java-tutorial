@@ -41,25 +41,22 @@ public class Start {
         ringBuffer.addGatingSequences(workerPool.getWorkerSequences());
 
         //6 启动workerPool
-        workerPool
-                .start(Executors.newFixedThreadPool(5));
+        workerPool.start(Executors.newFixedThreadPool(5));
 
 //      final CountDownLatch latch = new CountDownLatch(1);
         CyclicBarrier barrier = new CyclicBarrier(100);
 
         for(int i = 0; i < 100; i++) {
             final Producer producer = new Producer(ringBuffer);
-            new Thread(new Runnable() {
-                public void run() {
-                    try {
+            new Thread(() -> {
+                try {
 //                      latch.await();
-                        barrier.await();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    for(int j = 0; j < 100; j++) {
-                        producer.sendData(j);
-                    }
+                    barrier.await();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                for(int j = 0; j < 100; j++) {
+                    producer.sendData(j);
                 }
             }).start();
         }

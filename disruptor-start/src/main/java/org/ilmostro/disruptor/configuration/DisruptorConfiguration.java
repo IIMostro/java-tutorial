@@ -5,6 +5,7 @@ import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.ilmostro.disruptor.entity.ElementEventFactory;
 import org.ilmostro.disruptor.entity.GoodsElement;
 import org.ilmostro.disruptor.service.CacheGoodsElementService;
@@ -24,7 +25,7 @@ public class DisruptorConfiguration {
 
     @Bean
     public ThreadFactory disruptorThreadFactory(){
-        return new DisruptorThreadFactory();
+        return new BasicThreadFactory.Builder().namingPattern("disruptor-task-%d").daemon(false).build();
     }
 
     @Bean
@@ -41,13 +42,13 @@ public class DisruptorConfiguration {
         return disruptor;
     }
 
-    public static class DisruptorThreadFactory implements ThreadFactory{
-        private final LongAdder counter = new LongAdder();
-        @Override
-        public Thread newThread(Runnable runnable) {
-            Thread thread = new Thread(runnable, "disruptor-task-" + counter.intValue());
-            counter.increment();
-            return thread;
-        }
-    }
+//    public static class DisruptorThreadFactory implements ThreadFactory{
+//        private final LongAdder counter = new LongAdder();
+//        @Override
+//        public Thread newThread(Runnable runnable) {
+//            Thread thread = new Thread(runnable, "disruptor-task-" + counter.intValue());
+//            counter.increment();
+//            return thread;
+//        }
+//    }
 }
