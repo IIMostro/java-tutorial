@@ -15,8 +15,8 @@ public class PeriodStart {
     public static void main(String[] args) {
         LocalDateTime first = LocalDateTime.now();
 
-        LocalDateTime second = LocalDateTime.of(2021, 3, 16, 0,0,0);
-        long until = first.until(second, ChronoUnit.WEEKS);
+        LocalDateTime second = LocalDateTime.of(2021, 5, 16, 0,0,0);
+        long until = second.until(first, ChronoUnit.DAYS);
         log.info("until:{}", until);
     }
 }
