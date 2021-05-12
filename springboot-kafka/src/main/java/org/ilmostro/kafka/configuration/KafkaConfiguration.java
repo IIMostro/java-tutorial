@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.kafka.DefaultKafkaProducerFactoryC
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
@@ -22,9 +23,9 @@ public class KafkaConfiguration {
         this.properties = properties;
     }
 
-    @Bean
+//    @Bean
     public NewTopic flinkTopic(){
-        return new NewTopic("flink-stream-in-topic", 5, (short)1);
+        return TopicBuilder.name("flink-stream-in-topic").partitions(1).replicas(1).build();
     }
 
     @Bean

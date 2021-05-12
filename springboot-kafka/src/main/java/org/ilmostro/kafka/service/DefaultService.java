@@ -2,6 +2,8 @@ package org.ilmostro.kafka.service;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.admin.NewTopic;
+import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -34,13 +36,5 @@ public class DefaultService {
     @KafkaListener(id = "custom-consumer-1", topics = "flink-stream-in-topic")
     public void receive1(String order) {
         log.info("receive1:{}", order);
-    }
-
-
-    /**
-     * 如果加上@link{Bean}注解则会新建
-     */
-    public void init() {
-        TopicBuilder.name("topic-1").partitions(1).replicas(1);
     }
 }

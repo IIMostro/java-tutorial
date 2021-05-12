@@ -1,11 +1,12 @@
 package org.ilmostro.start.service.redis;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.connection.RedisZSetCommands;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -35,6 +36,11 @@ public class RedisTest {
         for(int i = 0; i < 10; i++){
             stringRedisTemplate.opsForZSet().add("test-zset", String.valueOf(i), i);
         }
+    }
+
+    @Test
+    @Ignore
+    public void zsetTest1(){
     }
 
     @Test

@@ -31,8 +31,8 @@ public class WordCountTest {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         Properties properties = new Properties();
-        properties.setProperty("bootstrap.servers", "192.168.205.20:9092");
-        properties.setProperty("zookeeper.connect", "192.168.205.20:2181");
+        properties.setProperty("bootstrap.servers", "192.168.3.131:9092");
+        properties.setProperty("zookeeper.connect", "192.168.3.131:2181");
         properties.setProperty("group.id", "custom-consumer-flink");
         //连接socket获取输入的数据
         DataStreamSource<String> stream = env.addSource(new FlinkKafkaConsumer<>("flink-stream-in-topic", new SimpleStringSchema(), properties));
