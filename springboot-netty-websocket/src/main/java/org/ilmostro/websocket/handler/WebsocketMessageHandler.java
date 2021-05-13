@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author li.bowei
  */
@@ -25,8 +27,9 @@ public class WebsocketMessageHandler extends SimpleChannelInboundHandler<WebSock
         if (msg instanceof TextWebSocketFrame) {
             // 业务层处理数据
             logger.info("监听到信息:{}", msg);
+            TimeUnit.SECONDS.sleep(5);
             // 响应客户端
-            ctx.channel().writeAndFlush(new TextWebSocketFrame("我收到了你的消息：" + System.currentTimeMillis()));
+            ctx.channel().writeAndFlush(new TextWebSocketFrame("我收到了你的消息：" + ((TextWebSocketFrame) msg).text() + System.currentTimeMillis()));
         } else {
             // 不接受文本以外的数据帧类型
             ctx.channel().writeAndFlush(WebSocketCloseStatus.INVALID_MESSAGE_TYPE).addListener(ChannelFutureListener.CLOSE);
