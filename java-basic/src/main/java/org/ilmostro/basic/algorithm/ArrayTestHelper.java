@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -29,6 +30,16 @@ public class ArrayTestHelper {
         Random random = new Random();
         return Stream.generate(() -> random.nextInt(rangeR + rangeL) - rangeL).limit(n).mapToInt(Integer::intValue).toArray();
     }
+
+    static int[] createOrderArray(int n, int rangeL){
+        assert n > 0 && rangeL > 0;
+        int [] arr = new int[n];
+        for(int index = 0; index < n; index ++){
+            arr[index] = rangeL++;
+        }
+        return arr;
+    }
+
 
     /**
      * 打印数组

@@ -9,9 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 public class ArraySort extends ArrayTestHelper {
 
     public static void main(String[] args) {
-        int number = 50000;
+        int number = 10000000;
         int[] ints = create(number, 100, number);
-        accept("selection", ArraySort::mergeSort, ints);
+        accept("selection", ArraySort::heapSort, ints);
         printArray(ints, 10);
     }
 
@@ -160,4 +160,15 @@ public class ArraySort extends ArrayTestHelper {
         }
     }
 
+    /**
+     * 堆排序
+     *
+     * @param arr 数组
+     */
+    public static void heapSort(int[] arr){
+        MaxHeap maxHeap = new MaxHeap(arr);
+        for(int index = arr.length - 1; index >= 0; index --){
+            arr[index] = maxHeap.popMax();
+        }
+    }
 }
