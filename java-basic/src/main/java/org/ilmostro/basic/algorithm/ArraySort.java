@@ -9,10 +9,12 @@ import lombok.extern.slf4j.Slf4j;
 public class ArraySort extends ArrayTestHelper {
 
     public static void main(String[] args) {
-        int number = 10000000;
-        int[] ints = create(number, 100, number);
-        accept("selection", ArraySort::heapSort, ints);
-        printArray(ints, 10);
+//        int number = 10000000;
+//        int[] ints = create(number, 100, number);
+//        accept("selection", ArraySort::heapSort, ints);
+//        printArray(ints, 10);
+        int[] ints = create(1000, 0, 1000);
+        accept("merge", ArraySort::mergeSort, ints);
     }
 
     /**

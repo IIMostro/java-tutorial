@@ -3,18 +3,26 @@ package org.ilmostro.basic.algorithm;
 /**
  * @author li.bowei
  */
-public class IndexMaxHeap extends MaxHeap{
+public class IndexMaxHeap extends MaxHeap {
 
     private int[] indexes;
+    private int[] reverse;
 
     public IndexMaxHeap(int capacity) {
         super(capacity);
         this.indexes = new int[capacity + 1];
+        this.reverse = new int[capacity + 1];
     }
 
     public IndexMaxHeap(int[] arr) {
         super(arr);
         this.indexes = new int[arr.length + 1];
+        this.reverse = new int[arr.length + 1];
+        for (int i = 0; i < arr.length + 1; i++) {
+            reverse[i] = 0;
+            indexes[i + 1] = i + 1;
+        }
+
     }
 
     @Override
@@ -27,13 +35,12 @@ public class IndexMaxHeap extends MaxHeap{
 
     @Override
     public void push(int obj) {
-        if(count >= capacity){
+        if (count >= capacity) {
             resize();
         }
-
     }
 
-    public void push(int index, int obj){
+    public void push(int index, int obj) {
 
     }
 

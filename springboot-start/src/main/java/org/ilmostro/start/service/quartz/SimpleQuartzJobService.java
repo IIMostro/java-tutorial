@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
 public class SimpleQuartzJobService extends QuartzJobBean {
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        log.info("start job time:{}", System.currentTimeMillis());
+//        log.info("start job time:{}", System.currentTimeMillis());
     }
 }
