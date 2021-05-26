@@ -1,6 +1,5 @@
 package org.ilmostro.disruptor.configuration;
 
-import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
@@ -9,13 +8,12 @@ import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.ilmostro.disruptor.entity.ElementEventFactory;
 import org.ilmostro.disruptor.entity.GoodsElement;
 import org.ilmostro.disruptor.service.CacheGoodsElementService;
-import org.ilmostro.disruptor.service.ProcessService;
 import org.ilmostro.disruptor.service.DataSourceGoodsService;
+import org.ilmostro.disruptor.service.ProcessService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.LongAdder;
 
 /**
  * @author li.bowei

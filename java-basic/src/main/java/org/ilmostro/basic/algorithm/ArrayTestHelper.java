@@ -6,9 +6,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -107,7 +105,13 @@ public class ArrayTestHelper {
 
 
     public static void main(String[] args) {
-        int[] arr = create(10, 0, 1000);
-        printArray(arr, 3);
+        int[] ints = new int[]{1,2,3,4,5};
+        int mid = ints.length/2;
+        int[] left = new int[mid];
+        int[] right = new int[ints.length - mid];
+        System.arraycopy(ints, 0, left, 0, mid);
+        System.arraycopy(ints, mid, right, 0, ints.length - mid);
+
+        System.out.println();
     }
 }

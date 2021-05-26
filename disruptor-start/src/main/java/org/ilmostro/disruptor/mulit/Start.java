@@ -31,7 +31,7 @@ public class Start {
         }
 
         //4 构建多消费者工作池
-        WorkerPool<GoodsElement> workerPool = new WorkerPool<GoodsElement>(
+        WorkerPool<GoodsElement> workerPool = new WorkerPool<>(
                 ringBuffer,
                 sequenceBarrier,
                 new EventExceptionHandler(),
@@ -40,8 +40,8 @@ public class Start {
         //5 设置多个消费者的sequence序号 用于单独统计消费进度, 并且设置到ringbuffer中
         ringBuffer.addGatingSequences(workerPool.getWorkerSequences());
 
-        //6 启动workerPool
-        workerPool.start(Executors.newFixedThreadPool(5));
+        //6 启动workerPool, 这里设置的线程数如果比consumers小则只有线程数多的消费者
+        workerPool.start(Executors.newFixedThreadPool(10));
 
 //      final CountDownLatch latch = new CountDownLatch(1);
         CyclicBarrier barrier = new CyclicBarrier(100);
@@ -63,10 +63,8 @@ public class Start {
 
         System.err.println("----------线程创建完毕，开始生产数据----------");
 //      latch.countDown();
-
         Thread.sleep(10000);
-
-        System.err.println("任务总数:" + consumers[2].getCount());
+//        System.err.println("任务总数:" + consumers[2].getCount());
     }
 
     static class EventExceptionHandler implements ExceptionHandler<GoodsElement> {
