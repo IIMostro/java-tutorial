@@ -7,8 +7,11 @@ import java.util.Objects;
  */
 public class MaxHeap {
 
+    //数据，数组开始从1开始，但是对用户屏蔽
     protected int[] data;
+    //总数
     protected int count;
+    //初始化大小
     protected int capacity;
 
     public MaxHeap(int capacity) {
