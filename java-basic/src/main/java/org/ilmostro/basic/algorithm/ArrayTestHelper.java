@@ -56,6 +56,10 @@ public class ArrayTestHelper {
         log.info("arr:{}", collect);
     }
 
+    static void printArray(int[] arr){
+        printArray(arr, arr.length);
+    }
+
     /**
      * 数组交换
      *
