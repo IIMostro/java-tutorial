@@ -8,7 +8,7 @@ import java.util.Objects;
 public class MoveZero {
 
     public static void main(String[] args) {
-        int[] arr = new int[]{0, 1,1,1,3,0,12};
+        int[] arr = new int[]{4,0, 1,1,1,3,0,12};
         moveZeroesV1(arr);
         ArrayTestHelper.printArray(arr, arr.length);
     }

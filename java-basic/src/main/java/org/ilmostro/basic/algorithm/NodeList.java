@@ -1,7 +1,6 @@
 package org.ilmostro.basic.algorithm;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author li.bowei
@@ -20,26 +19,41 @@ public class NodeList {
         return child;
     }
 
-    public Collection<NodeList> traverse(Integer hierarchy) {
-        if(hierarchy <= 0){
-            return Collections.singletonList(this);
-        }
-        return recursion(child, hierarchy);
-    }
+    private static class Hierarchy{
+        private final List<NodeList> child;
+        private final int hierarchy;
 
-    private Collection<NodeList> recursion(Collection<NodeList> child, int time){
-        if(time <= 1 || (Objects.isNull(child) || child.isEmpty())){
+        public Hierarchy(List<NodeList> child, int hierarchy) {
+            this.child = child;
+            this.hierarchy = hierarchy;
+        }
+
+        public List<NodeList> getChild() {
             return child;
         }
-        List<NodeList> list = child.stream()
-                .map(NodeList::getChild)
-                .filter(var1 -> Objects.nonNull(var1) && !var1.isEmpty())
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
-        if(list.isEmpty()){
-            return Collections.emptyList();
+
+        public int getHierarchy() {
+            return hierarchy;
         }
-        return recursion(list, --time);
+    }
+
+    public Collection<NodeList> traverse(Integer hierarchy) {
+        Queue<Hierarchy> queue = new LinkedList<>();
+        queue.offer(new Hierarchy(child, 0));
+        Collection<NodeList> result = new LinkedList<>();
+        while(!queue.isEmpty()){
+            Hierarchy var1 = queue.poll();
+            List<NodeList> child = var1.getChild();
+            int hierarchy1 = var1.getHierarchy();
+            if(hierarchy1 == hierarchy){
+                result.addAll(child);
+                continue;
+            }
+            for (NodeList nodeList : child) {
+                queue.offer(new Hierarchy(nodeList.child, hierarchy1 + 1));
+            }
+        }
+        return result;
     }
 
     @Override
@@ -52,7 +66,7 @@ public class NodeList {
 
     public static void main(String[] args) {
         NodeList nodeList = new NodeList(1, Collections.singletonList(new NodeList(2, Collections.singletonList(new NodeList(3, null)))));
-        Collection<NodeList> traverse = nodeList.traverse(1);
+        Collection<NodeList> traverse = nodeList.traverse(3);
         System.out.println(traverse);
     }
 }
