@@ -73,33 +73,40 @@ public class RedisConfiguration {
                         .builder()
                         // 一次最多拉取5条消息
                         .batchSize(5)
-                        .errorHandler(ex -> {
-                            log.error("redis listener error, message:{}, cause:{}", ex.getMessage(), ex.getCause());
-                        })
+                        .errorHandler(ex -> log.error("redis listener error, message:{}, cause:{}", ex.getMessage(), ex.getCause()))
                         // 拉取消息的超时时间
                         .pollTimeout(Duration.ZERO)
                         .build();
         // 流消息订阅者容器
         StreamMessageListenerContainer<String, MapRecord<String, String, String>> streamMessageListenerContainer =
                 StreamMessageListenerContainer.create(connectionFactory, containerOptions);
-        StreamInfo.XInfoGroups groups = redisTemplate.opsForStream().groups(REDIS_STREAM_NAME);
-        boolean already = false;
-        while(groups.iterator().hasNext()){
-            String s = groups.iterator().next().groupName();
-            if(s.equals(REDIS_STREAM_GROUP)){
-                already = true;
-                break;
-            }
-        }
-        if(!already){
-            redisTemplate.opsForStream().createGroup(REDIS_STREAM_NAME, REDIS_STREAM_GROUP);
-        }
-        streamMessageListenerContainer
-                .receive(Consumer.from(REDIS_STREAM_GROUP, "consumer_01"),
+        initConsumer(redisTemplate);
+        streamMessageListenerContainer.receive(Consumer.from(REDIS_STREAM_GROUP, "consumer_01"),
+                        //从最后开始消费
                         StreamOffset.create(REDIS_STREAM_NAME, ReadOffset.lastConsumed()),
                         new ProductUpdateStreamListener(redisTemplate));
         streamMessageListenerContainer.start();
         return streamMessageListenerContainer;
+    }
+
+    /**
+     * 初始化stream和消费组
+     *
+     * @param redisTemplate redisTemplate
+     */
+    private void initConsumer(RedisTemplate<String, Object> redisTemplate) {
+        StreamInfo.XInfoGroups groups = redisTemplate.opsForStream().groups(REDIS_STREAM_NAME);
+        boolean already = false;
+        while (groups.iterator().hasNext()) {
+            String s = groups.iterator().next().groupName();
+            if (s.equals(REDIS_STREAM_GROUP)) {
+                already = true;
+                break;
+            }
+        }
+        if (!already) {
+            redisTemplate.opsForStream().createGroup(REDIS_STREAM_NAME, REDIS_STREAM_GROUP);
+        }
     }
 
 }
