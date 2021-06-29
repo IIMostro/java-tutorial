@@ -16,6 +16,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.data.redis.stream.StreamMessageListenerContainer;
 
 import java.time.Duration;
+import java.util.UUID;
 
 /**
  * @author li.bowei
@@ -33,7 +34,6 @@ public class RedisConfiguration {
     }
 
     static class CustomMessageListenerAdapter {
-
         public void handleMessage(String message) {
             log.info("get redis message:{}", message);
         }
@@ -44,7 +44,7 @@ public class RedisConfiguration {
                                                    MessageListenerAdapter listenerAdapter) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.addMessageListener(listenerAdapter, new PatternTopic("test-topic"));
+        container.addMessageListener(listenerAdapter, new PatternTopic("task-topic"));
         return container;
     }
 
@@ -67,7 +67,8 @@ public class RedisConfiguration {
 
 
     @Bean
-    public StreamMessageListenerContainer<String, MapRecord<String, String, String>> streamMessageListenerContainer(RedisConnectionFactory connectionFactory, RedisTemplate<String, Object> redisTemplate) {
+    public StreamMessageListenerContainer<String, MapRecord<String, String, String>> streamMessageListenerContainer(RedisConnectionFactory connectionFactory,
+                                                                                                                    RedisTemplate<String, Object> redisTemplate) {
         StreamMessageListenerContainer.StreamMessageListenerContainerOptions<String, MapRecord<String, String, String>> containerOptions =
                 StreamMessageListenerContainer.StreamMessageListenerContainerOptions
                         .builder()
@@ -81,7 +82,7 @@ public class RedisConfiguration {
         StreamMessageListenerContainer<String, MapRecord<String, String, String>> streamMessageListenerContainer =
                 StreamMessageListenerContainer.create(connectionFactory, containerOptions);
         initConsumer(redisTemplate);
-        streamMessageListenerContainer.receive(Consumer.from(REDIS_STREAM_GROUP, "consumer_01"),
+        streamMessageListenerContainer.receive(Consumer.from(REDIS_STREAM_GROUP, UUID.randomUUID().toString()),
                         //从最后开始消费
                         StreamOffset.create(REDIS_STREAM_NAME, ReadOffset.lastConsumed()),
                         new ProductUpdateStreamListener(redisTemplate));

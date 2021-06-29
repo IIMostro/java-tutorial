@@ -25,7 +25,7 @@ public class ProductUpdateStreamListener implements StreamListener<String, MapRe
         RecordId recordId = message.getId();
         String stream = message.getStream();
         Map<String, String> record = message.getValue();
-        log.info("recordId:{}, stream:{}, record:{}", recordId, stream, record);
+        log.info("recordId:[{}], stream:[{}], record:[{}]",recordId, stream, record);
         template.opsForStream().acknowledge(RedisConfiguration.REDIS_STREAM_GROUP, message);
     }
 }
