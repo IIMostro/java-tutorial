@@ -1,15 +1,11 @@
 package org.ilmostro.disruptor.controller;
 
-import com.lmax.disruptor.dsl.Disruptor;
 import lombok.extern.slf4j.Slf4j;
-import org.ilmostro.disruptor.entity.GoodsElement;
-import org.ilmostro.disruptor.service.ProcessService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.concurrent.atomic.LongAdder;
 
 /**
  * @author li.bowei
@@ -18,16 +14,6 @@ import java.util.concurrent.atomic.LongAdder;
 @RequestMapping("/")
 @Slf4j
 public class WorkbookController {
-
-    private final Disruptor<GoodsElement> disruptor;
-    private final ProcessService service;
-
-    private final LongAdder index = new LongAdder();
-
-    public WorkbookController(Disruptor<GoodsElement> disruptor, ProcessService service) {
-        this.disruptor = disruptor;
-        this.service = service;
-    }
 
     @GetMapping("/sheet")
     public void create() throws IOException {

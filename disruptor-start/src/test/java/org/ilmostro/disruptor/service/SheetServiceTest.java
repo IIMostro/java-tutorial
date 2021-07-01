@@ -1,7 +1,5 @@
 package org.ilmostro.disruptor.service;
 
-import com.lmax.disruptor.EventHandler;
-import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import lombok.extern.slf4j.Slf4j;
 import org.ilmostro.disruptor.entity.GoodsElement;
@@ -13,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.StopWatch;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -31,16 +28,13 @@ public class SheetServiceTest {
     private Disruptor<GoodsElement> disruptor;
     private List<String> names;
 
-    @Autowired
-    private List<EventHandler<GoodsElement>> services;
-
     @Before
     public void before(){
         names = Stream.generate(UUID::randomUUID).limit(1000).map(UUID::toString).collect(Collectors.toList());
     }
 
     @Test
-    public void handler() throws IOException {
+    public void handler() {
         StopWatch watch = new StopWatch();
         watch.start();
         for (int index = 0; index < 1000; index++) {
@@ -62,13 +56,13 @@ public class SheetServiceTest {
         watch.start();
         for (int index = 0; index < 1000; index++) {
             String format = names.get(index);
-            for(EventHandler<GoodsElement> var1: services){
-                GoodsElement goods = new GoodsElement();
-                goods.setId(index);
-                goods.setName(format);
-                goods.setDescription(format);
-                var1.onEvent(goods, 0, false);
-            }
+//            for(EventHandler<GoodsElement> var1: services){
+//                GoodsElement goods = new GoodsElement();
+//                goods.setId(index);
+//                goods.setName(format);
+//                goods.setDescription(format);
+//                var1.onEvent(goods, 0, false);
+//            }
         }
         watch.stop();
         log.info("end :{}", watch.getTotalTimeSeconds());
