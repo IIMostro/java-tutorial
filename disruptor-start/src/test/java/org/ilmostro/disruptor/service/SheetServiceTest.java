@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.StopWatch;
@@ -25,7 +26,9 @@ import java.util.stream.Stream;
 public class SheetServiceTest {
 
     @Autowired
+    @Qualifier("serialWorkPool")
     private Disruptor<GoodsElement> disruptor;
+
     private List<String> names;
 
     @Before
@@ -45,24 +48,6 @@ public class SheetServiceTest {
                 v1.setName(format);
                 v1.setDescription(format);
             });
-        }
-        watch.stop();
-        log.info("end :{}", watch.getTotalTimeSeconds());
-    }
-
-    @Test
-    public void manual() throws Exception {
-        StopWatch watch = new StopWatch();
-        watch.start();
-        for (int index = 0; index < 1000; index++) {
-            String format = names.get(index);
-//            for(EventHandler<GoodsElement> var1: services){
-//                GoodsElement goods = new GoodsElement();
-//                goods.setId(index);
-//                goods.setName(format);
-//                goods.setDescription(format);
-//                var1.onEvent(goods, 0, false);
-//            }
         }
         watch.stop();
         log.info("end :{}", watch.getTotalTimeSeconds());
