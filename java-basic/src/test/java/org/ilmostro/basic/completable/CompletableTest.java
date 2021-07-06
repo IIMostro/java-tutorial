@@ -1,12 +1,17 @@
 package org.ilmostro.basic.completable;
 
+import ch.qos.logback.core.util.TimeUtil;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.ilmostro.basic.User;
 import org.ilmostro.basic.executor.ThreadPoolExecutorFactory;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author li.bowei
@@ -53,5 +58,39 @@ public class CompletableTest {
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(User::supplier, executor)
                 .thenCompose(user -> CompletableFuture.supplyAsync(user::getName)).thenAccept(log::info);
         CompletableFuture.allOf(future).join();
+    }
+
+
+    @Test
+    public void destroy() throws InterruptedException {
+        Thread thread = new Thread(() -> CompletableFuture.runAsync(() -> new OnceThread("one"), executor).join());
+//        Thread thread1 = new Thread(() -> CompletableFuture.runAsync(() -> new OnceThread("two"), executor).join());
+//        thread.start();
+//        thread1.start();
+//        TimeUnit.SECONDS.sleep(10);
+//        thread.interrupt();
+
+//        Thread one = new Thread(() -> new OnceThread("one"));
+//        one.start();
+//        System.out.println("Hello world!");
+
+        thread.start();
+        thread.join();
+    }
+
+    private static class OnceThread implements Runnable{
+
+        private final String name;
+
+        private OnceThread(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public void run() {
+            for (int i = 0; i < 100; i++) {
+                System.out.println(name + ": " + i);
+            }
+        }
     }
 }

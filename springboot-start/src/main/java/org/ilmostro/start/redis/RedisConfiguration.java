@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.stream.*;
+import org.springframework.data.redis.core.BoundStreamOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
@@ -16,6 +17,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.data.redis.stream.StreamMessageListenerContainer;
 
 import java.time.Duration;
+import java.util.Iterator;
 import java.util.UUID;
 
 /**
@@ -69,6 +71,7 @@ public class RedisConfiguration {
     @Bean
     public StreamMessageListenerContainer<String, MapRecord<String, String, String>> streamMessageListenerContainer(RedisConnectionFactory connectionFactory,
                                                                                                                     RedisTemplate<String, Object> redisTemplate) {
+        initConsumer(redisTemplate);
         StreamMessageListenerContainer.StreamMessageListenerContainerOptions<String, MapRecord<String, String, String>> containerOptions =
                 StreamMessageListenerContainer.StreamMessageListenerContainerOptions
                         .builder()
@@ -81,7 +84,6 @@ public class RedisConfiguration {
         // 流消息订阅者容器
         StreamMessageListenerContainer<String, MapRecord<String, String, String>> streamMessageListenerContainer =
                 StreamMessageListenerContainer.create(connectionFactory, containerOptions);
-        initConsumer(redisTemplate);
         streamMessageListenerContainer.receive(Consumer.from(REDIS_STREAM_GROUP, UUID.randomUUID().toString()),
                         //从最后开始消费
                         StreamOffset.create(REDIS_STREAM_NAME, ReadOffset.lastConsumed()),
@@ -96,18 +98,16 @@ public class RedisConfiguration {
      * @param redisTemplate redisTemplate
      */
     private void initConsumer(RedisTemplate<String, Object> redisTemplate) {
+        redisTemplate.boundStreamOps(REDIS_STREAM_NAME);
         StreamInfo.XInfoGroups groups = redisTemplate.opsForStream().groups(REDIS_STREAM_NAME);
-        boolean already = false;
-        while (groups.iterator().hasNext()) {
-            String s = groups.iterator().next().groupName();
-            if (s.equals(REDIS_STREAM_GROUP)) {
-                already = true;
-                break;
+        Iterator<StreamInfo.XInfoGroup> iterator = groups.iterator();
+        if(iterator.hasNext()){
+            StreamInfo.XInfoGroup next = iterator.next();
+            if(next.groupName().equals(REDIS_STREAM_GROUP)){
+                return;
             }
         }
-        if (!already) {
-            redisTemplate.opsForStream().createGroup(REDIS_STREAM_NAME, REDIS_STREAM_GROUP);
-        }
+        redisTemplate.opsForStream().createGroup(REDIS_STREAM_NAME, REDIS_STREAM_GROUP);
     }
 
 }

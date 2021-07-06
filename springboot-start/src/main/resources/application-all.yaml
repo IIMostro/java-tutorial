@@ -46,6 +46,3 @@ spring:
             threadCount: 4
             threadPriority: 5
             threadsInheritContextClassLoaderOfInitializingThread: true
-
-  redis:
-    host: '192.168.3.131'

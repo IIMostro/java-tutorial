@@ -1,11 +1,13 @@
 package org.ilmostro.start.service.transaction;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 
 @Service
+@Profile(value = {"mysql", "all"})
 public class TransactionServiceImpl {
 
     private final PlatformTransactionManager platformTransactionManager;
