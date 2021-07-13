@@ -9,9 +9,11 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Time;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author li.bowei
@@ -63,34 +65,51 @@ public class CompletableTest {
 
     @Test
     public void destroy() throws InterruptedException {
-        Thread thread = new Thread(() -> CompletableFuture.runAsync(() -> new OnceThread("one"), executor).join());
-//        Thread thread1 = new Thread(() -> CompletableFuture.runAsync(() -> new OnceThread("two"), executor).join());
-//        thread.start();
-//        thread1.start();
-//        TimeUnit.SECONDS.sleep(10);
-//        thread.interrupt();
+        DaemonThread one = new DaemonThread(() -> CompletableFuture.runAsync(new OnceThread("one"), executor).join());
+        DaemonThread two = new DaemonThread(() -> CompletableFuture.runAsync(new OnceThread("two"), executor).join());
+        one.start();
+        two.start();
+        TimeUnit.SECONDS.sleep(10);
+        one.setInterrupted(true);
+        log.info("thread is interrupt :{}", one.isAlive());
+        log.info("thread is interrupt :{}", one.isInterrupted());
+        TimeUnit.SECONDS.sleep(10);
+    }
 
-//        Thread one = new Thread(() -> new OnceThread("one"));
-//        one.start();
-//        System.out.println("Hello world!");
+    private static class DaemonThread extends Thread{
 
-        thread.start();
-        thread.join();
+        public DaemonThread(Runnable target) {
+            super(target);
+        }
+
+        private volatile boolean interrupted = false;
+
+        @Override
+        public void run() {
+            while(!interrupted){
+                super.run();
+            }
+        }
+
+        public void setInterrupted(boolean interrupted) {
+            this.interrupted = interrupted;
+        }
     }
 
     private static class OnceThread implements Runnable{
 
         private final String name;
+        private static final AtomicInteger atomic = new AtomicInteger();
 
         private OnceThread(String name) {
             this.name = name;
         }
 
+        @SneakyThrows
         @Override
         public void run() {
-            for (int i = 0; i < 100; i++) {
-                System.out.println(name + ": " + i);
-            }
+            log.info("{} :{}", name, atomic.getAndIncrement());
+            TimeUnit.SECONDS.sleep(1);
         }
     }
 }

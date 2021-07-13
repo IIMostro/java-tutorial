@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 public class SheetServiceTest {
 
     @Autowired
-    @Qualifier("serialWorkPool")
+    @Qualifier("factory")
     private Disruptor<GoodsElement> disruptor;
 
     private List<String> names;

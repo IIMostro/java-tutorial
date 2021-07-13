@@ -7,6 +7,7 @@ import com.lmax.disruptor.dsl.ProducerType;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.ilmostro.disruptor.entity.ElementEventFactory;
 import org.ilmostro.disruptor.entity.GoodsElement;
+import org.ilmostro.disruptor.mulit.ConsumerEventFactory;
 import org.ilmostro.disruptor.mulit.ConsumerEventHandler;
 import org.ilmostro.disruptor.mulit.SecondConsumerEventHandler;
 import org.ilmostro.disruptor.service.ProcessService;
@@ -79,7 +80,6 @@ public class DisruptorConfiguration {
         for (int i = 0; i < seconds.length; i++) {
             seconds[i] = new SecondConsumerEventHandler("S" + i);
         }
-
         //设置了两个工作组，每一个工作组中对于一个event只会消费一次
         EventHandlerGroup<GoodsElement> group = disruptor.handleEventsWithWorkerPool(handlers);
         group.handleEventsWithWorkerPool(seconds);
@@ -108,6 +108,14 @@ public class DisruptorConfiguration {
         BatchEventProcessor<GoodsElement> processor = new BatchEventProcessor<>(ringBuffer, barrier, new ConsumerEventHandler("C1"));
         ringBuffer.addGatingSequences(processor.getSequence());
         TASK_EXECUTOR.execute(processor);
+        disruptor.start();
+        return disruptor;
+    }
+
+    @Bean
+    public Disruptor<GoodsElement> factory(){
+        Disruptor<GoodsElement> disruptor = getInstance();
+        disruptor.handleEventsWith(new ConsumerEventFactory());
         disruptor.start();
         return disruptor;
     }
