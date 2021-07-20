@@ -1,19 +1,14 @@
 package org.ilmostro.basic.completable;
 
-import ch.qos.logback.core.util.TimeUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.ilmostro.basic.User;
 import org.ilmostro.basic.executor.ThreadPoolExecutorFactory;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.sql.Time;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author li.bowei
@@ -65,41 +60,20 @@ public class CompletableTest {
 
     @Test
     public void destroy() throws InterruptedException {
-        DaemonThread one = new DaemonThread(() -> CompletableFuture.runAsync(new OnceThread("one"), executor).join());
-        DaemonThread two = new DaemonThread(() -> CompletableFuture.runAsync(new OnceThread("two"), executor).join());
+        Thread one = new Thread(() -> executor.execute(new OnceThread("one")));
+        Thread two = new Thread(() -> executor.execute(new OnceThread("two")));
         one.start();
         two.start();
         TimeUnit.SECONDS.sleep(10);
-        one.setInterrupted(true);
+        one.stop();
         log.info("thread is interrupt :{}", one.isAlive());
         log.info("thread is interrupt :{}", one.isInterrupted());
         TimeUnit.SECONDS.sleep(10);
     }
 
-    private static class DaemonThread extends Thread{
-
-        public DaemonThread(Runnable target) {
-            super(target);
-        }
-
-        private volatile boolean interrupted = false;
-
-        @Override
-        public void run() {
-            while(!interrupted){
-                super.run();
-            }
-        }
-
-        public void setInterrupted(boolean interrupted) {
-            this.interrupted = interrupted;
-        }
-    }
-
     private static class OnceThread implements Runnable{
 
         private final String name;
-        private static final AtomicInteger atomic = new AtomicInteger();
 
         private OnceThread(String name) {
             this.name = name;
@@ -108,8 +82,10 @@ public class CompletableTest {
         @SneakyThrows
         @Override
         public void run() {
-            log.info("{} :{}", name, atomic.getAndIncrement());
-            TimeUnit.SECONDS.sleep(1);
+            for(int i =0; i < 100; i++){
+                TimeUnit.SECONDS.sleep(1);
+                log.info("{} :{}", name, i);
+            }
         }
     }
 }
