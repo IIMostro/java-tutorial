@@ -16,13 +16,13 @@ import java.util.concurrent.TimeUnit;
 public class ThreadPoolExecutorFactory {
 
 
-    public static ThreadPoolExecutor get() {
+    public static ThreadPoolExecutor get(boolean daemon) {
         return ExecutorBuilder.create()
                 .setCorePoolSize(5)
                 .setMaxPoolSize(10)
                 .setKeepAliveTime(30, TimeUnit.SECONDS)
                 .setWorkQueue(new LinkedBlockingQueue<>(1000))
-                .setThreadFactory(ThreadFactoryBuilder.create().setDaemon(false)
+                .setThreadFactory(ThreadFactoryBuilder.create().setDaemon(daemon)
                         .setNamePrefix("customize-").build())
                 .setHandler((r, executor) -> {
 

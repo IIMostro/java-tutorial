@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class CompletableTest {
 
-    private final Executor executor = ThreadPoolExecutorFactory.get();
+    private final Executor executor = ThreadPoolExecutorFactory.get(false);
 
     @Test
     public void run() {

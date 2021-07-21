@@ -1,10 +1,16 @@
 package org.ilmostro.basic.reactor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ilmostro.basic.executor.ThreadPoolExecutorFactory;
 import org.junit.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
+import java.util.Objects;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -29,6 +35,30 @@ public class MonoTest {
                 })
                 .doOnError(var1 -> log.error(var1.getMessage()))
                 .subscribe(log::info);
+    }
+
+    @Test
+    public void monoError1(){
+        Mono.just("hello")
+                .map(var1 -> {
+                    if(var1.length() >0){
+                        throw new RuntimeException();
+                    }
+                    return "error";
+                })
+                .subscribe(log::info, ex -> log.info("error!{}", ex.getMessage()));
+    }
+
+    @Test
+    public void monoThread() {
+        ThreadPoolExecutor threadPoolExecutor = ThreadPoolExecutorFactory.get(true);
+        Scheduler scheduler = Schedulers.fromExecutor(threadPoolExecutor);
+        Flux.range(1,10)
+                .subscribeOn(scheduler)
+                .map(Math::abs)
+                .map(Objects::toString)
+                .log()
+                .subscribe(log::info, ex -> log.info(ex.getMessage()), () -> log.info("complete"));
     }
 
     @Test
