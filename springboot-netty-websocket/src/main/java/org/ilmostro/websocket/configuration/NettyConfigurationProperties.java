@@ -13,6 +13,5 @@ public class NettyConfigurationProperties {
     private Integer port;
     private String ip;
     private Integer maxFrameSize;
-    private String path;
 }
 

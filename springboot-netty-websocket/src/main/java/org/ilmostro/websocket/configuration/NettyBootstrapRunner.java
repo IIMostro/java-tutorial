@@ -5,7 +5,9 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
@@ -63,7 +65,6 @@ public class NettyBootstrapRunner implements ApplicationRunner, ApplicationListe
             pipeline.addLast(new HttpObjectAggregator(65536));
             pipeline.addLast(new CustomChannelInboundHandlerAdapter());
             pipeline.addLast(new WebSocketServerCompressionHandler());
-            pipeline.addLast(new WebSocketServerProtocolHandler(properties.getPath(), null, true, properties.getMaxFrameSize()));
             pipeline.addLast(handler);
         }
     }
@@ -74,12 +75,14 @@ public class NettyBootstrapRunner implements ApplicationRunner, ApplicationListe
             if (msg instanceof FullHttpRequest) {
                 FullHttpRequest fullHttpRequest = (FullHttpRequest) msg;
                 String uri = fullHttpRequest.uri();
-                if (!uri.equals(properties.getPath())) {
-                    // 访问的路径不是 websocket的端点地址，响应404
-                    ctx.channel().writeAndFlush(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.NOT_FOUND))
-                            .addListener(ChannelFutureListener.CLOSE);
-                    return;
-                }
+//                if (!uri.equals(properties.getPath())) {
+//                    // 访问的路径不是 websocket的端点地址，响应404
+//                    ctx.channel().writeAndFlush(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.NOT_FOUND))
+//                            .addListener(ChannelFutureListener.CLOSE);
+//                    return;
+//                }
+//                ctx.pipeline().addLast()
+                ctx.pipeline().addLast(new WebSocketServerProtocolHandler(uri, null, true, properties.getMaxFrameSize()));
             }
             super.channelRead(ctx, msg);
         }
