@@ -10,15 +10,15 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketCloseStatus;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import org.ilmostro.websocket.annotation.NettyHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 /**
  * @author li.bowei
  */
 @ChannelHandler.Sharable
-@Component
+@NettyHandler(path = "/test")
 public class WebsocketMessageHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
 
     private static final Logger logger = LoggerFactory.getLogger(WebsocketMessageHandler.class);
@@ -34,7 +34,7 @@ public class WebsocketMessageHandler extends SimpleChannelInboundHandler<WebSock
         }
         // 业务层处理数据
         logger.info("监听到信息:{}", msg.toString());
-        // 响应客户端x
+        // 响应客户端
         channels.writeAndFlush(new TextWebSocketFrame("我收到了你的消息：" + ((TextWebSocketFrame) msg).text() + System.currentTimeMillis()));
     }
 
@@ -49,6 +49,13 @@ public class WebsocketMessageHandler extends SimpleChannelInboundHandler<WebSock
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
         logger.info("建立连接:{}", ctx.channel().remoteAddress());
+        channels.add(ctx.channel());
+    }
+
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+        super.handlerAdded(ctx);
+        logger.info("添加handler:{}", ctx.channel().remoteAddress());
         channels.add(ctx.channel());
     }
 }

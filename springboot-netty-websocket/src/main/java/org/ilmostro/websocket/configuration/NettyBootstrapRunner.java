@@ -1,18 +1,20 @@
 package org.ilmostro.websocket.configuration;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
-import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
-import org.ilmostro.websocket.handler.WebsocketMessageHandler;
+import org.ilmostro.websocket.annotation.NettyHandlerSupport;
+import org.ilmostro.websocket.handler.CustomChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -45,7 +47,7 @@ public class NettyBootstrapRunner implements ApplicationRunner, ApplicationListe
 
     private static final Logger logger = LoggerFactory.getLogger(NettyBootstrapRunner.class);
     private static NettyConfigurationProperties properties;
-    private static WebsocketMessageHandler handler;
+    private static NettyHandlerSupport support;
 
     private ApplicationContext applicationContext;
     private Channel serverChannel;
@@ -53,38 +55,22 @@ public class NettyBootstrapRunner implements ApplicationRunner, ApplicationListe
     @Override
     public void afterPropertiesSet() {
         properties = applicationContext.getBean(NettyConfigurationProperties.class);
-        handler = applicationContext.getBean(WebsocketMessageHandler.class);
+        support = applicationContext.getBean(NettyHandlerSupport.class);
     }
 
     private static class CustomChannelInitializer extends ChannelInitializer<SocketChannel> {
         @Override
         protected void initChannel(SocketChannel ch) {
             ChannelPipeline pipeline = ch.pipeline();
+            // 服务端，对请求解码。属于ChannelIntboundHandler，按照顺序执行
             pipeline.addLast(new HttpServerCodec());
+            //写入Header
             pipeline.addLast(new ChunkedWriteHandler());
+            //即通过它可以把 HttpMessage 和 HttpContent 聚合成一个 FullHttpRequest,并定义可以接受的数据大小，在文件上传时，可以支持params+multipart
             pipeline.addLast(new HttpObjectAggregator(65536));
-            pipeline.addLast(new CustomChannelInboundHandlerAdapter());
+            pipeline.addLast(new CustomChannelInboundHandlerAdapter(support, properties));
+            //webSocket 数据压缩扩展
             pipeline.addLast(new WebSocketServerCompressionHandler());
-            pipeline.addLast(handler);
-        }
-    }
-
-    private static class CustomChannelInboundHandlerAdapter extends ChannelInboundHandlerAdapter {
-        @Override
-        public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-            if (msg instanceof FullHttpRequest) {
-                FullHttpRequest fullHttpRequest = (FullHttpRequest) msg;
-                String uri = fullHttpRequest.uri();
-//                if (!uri.equals(properties.getPath())) {
-//                    // 访问的路径不是 websocket的端点地址，响应404
-//                    ctx.channel().writeAndFlush(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.NOT_FOUND))
-//                            .addListener(ChannelFutureListener.CLOSE);
-//                    return;
-//                }
-//                ctx.pipeline().addLast()
-                ctx.pipeline().addLast(new WebSocketServerProtocolHandler(uri, null, true, properties.getMaxFrameSize()));
-            }
-            super.channelRead(ctx, msg);
         }
     }
 
