@@ -50,7 +50,7 @@ public class MonoTest {
     }
 
     @Test
-    public void monoThread() {
+    public void monoThread() throws InterruptedException {
         ThreadPoolExecutor threadPoolExecutor = ThreadPoolExecutorFactory.get(true);
         Scheduler scheduler = Schedulers.fromExecutor(threadPoolExecutor);
         Flux.range(1,10)
@@ -59,6 +59,7 @@ public class MonoTest {
                 .map(Objects::toString)
                 .log()
                 .subscribe(log::info, ex -> log.info(ex.getMessage()), () -> log.info("complete"));
+        TimeUnit.SECONDS.sleep(1);
     }
 
     @Test
