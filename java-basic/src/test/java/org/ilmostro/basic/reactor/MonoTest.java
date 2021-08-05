@@ -12,6 +12,7 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author li.bowei
@@ -87,5 +88,18 @@ public class MonoTest {
         executor.stop();
         log.info("executor stop");
         TimeUnit.SECONDS.sleep(3);
+    }
+
+    @Test
+    public void test() {
+        ThreadPoolExecutor threadPoolExecutor = ThreadPoolExecutorFactory.get(true);
+        Scheduler scheduler = Schedulers.fromExecutor(threadPoolExecutor);
+        AtomicInteger atomic = new AtomicInteger();
+        Mono.fromRunnable(() ->{
+            for (int i = 0; i < 1000000; i++) {
+                atomic.getAndIncrement();
+            }
+        }).subscribeOn(scheduler).subscribe();
+        System.out.println(atomic);
     }
 }

@@ -35,6 +35,7 @@ public class StreamTest {
     public void generator(){
         Stream<User> limit = Stream.generate(User::supplier).limit(10000);
         List<User> collect = limit.collect(Collectors.toList());
+        Map<Integer, List<String>> nameMapByAge = collect.stream().collect(Collectors.groupingBy(User::getAge, Collectors.mapping(User::getName, Collectors.toList())));
         List<Integer> collect1 = limit.map(User::getAge).collect(Collectors.toList());
     }
 

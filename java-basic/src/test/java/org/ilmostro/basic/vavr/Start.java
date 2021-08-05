@@ -46,4 +46,15 @@ public class Start {
             log.info("data:{}", integers);
         }
     }
+
+    @Test
+    public void test3(){
+        List<String> word = List.of("a", "b", "c");
+        List<Integer> number = List.of(1, 2, 3, 4, 5, 6);
+        number.zip(word).forEach(v1 -> log.info("f0:{}, f1:{}", v1._1, v1._2));
+        word.zip(number).forEach(v1 -> log.info("f0:{}, f1:{}", v1._1, v1._2));
+
+        List<List<String>> combinations = word.combinations();
+        System.out.println(combinations);
+    }
 }
