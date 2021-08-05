@@ -8,6 +8,7 @@ public class MongoConfiguration {
     private static MongoClient mongoClient = null;
 
     private MongoConfiguration() {
+
     }
 
     static {
@@ -34,10 +35,9 @@ public class MongoConfiguration {
             mcob.threadsAllowedToBlockForConnectionMultiplier(10);
             MongoClientOptions mco = mcob.build();
 
-            ServerAddress serverAddress = new ServerAddress("192.168.120.20", 27017);
+            ServerAddress serverAddress = new ServerAddress("192.168.205.20", 27017);
 
-            MongoCredential credential = MongoCredential.createCredential("flink", "flink", "123456".toCharArray());
-
+            MongoCredential credential = MongoCredential.createCredential("nebula", "nebula", "123456".toCharArray());
             mongoClient = new MongoClient(serverAddress, credential, mco);
         } catch (MongoException e) {
             e.printStackTrace();
