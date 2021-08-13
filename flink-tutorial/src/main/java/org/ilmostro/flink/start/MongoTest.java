@@ -1,4 +1,4 @@
-package org.ilmostro.flink;
+package org.ilmostro.flink.start;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;

@@ -1,4 +1,4 @@
-package org.ilmostro.flink;
+package org.ilmostro.flink.start;
 
 import com.alibaba.fastjson.JSONObject;
 import org.apache.flink.api.common.functions.FlatMapFunction;
@@ -11,7 +11,7 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
-import org.ilmostro.flink.sink.CustomMongoSink;
+import org.ilmostro.flink.start.sink.CustomMongoSink;
 
 import java.math.BigDecimal;
 import java.util.Properties;

@@ -1,4 +1,4 @@
-package org.ilmostro.flink.source;
+package org.ilmostro.flink.start.source;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.flink.configuration.Configuration;

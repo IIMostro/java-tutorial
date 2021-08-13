@@ -2,6 +2,7 @@ package org.ilmostro.flink;
 
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
+import org.ilmostro.flink.start.OrderEntity;
 import org.junit.Test;
 
 /**

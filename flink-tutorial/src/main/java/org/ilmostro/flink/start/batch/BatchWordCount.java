@@ -1,4 +1,4 @@
-package org.ilmostro.flink.batch;
+package org.ilmostro.flink.start.batch;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.flink.api.common.functions.FlatMapFunction;

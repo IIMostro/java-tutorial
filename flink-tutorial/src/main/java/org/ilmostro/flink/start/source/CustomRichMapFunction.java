@@ -1,4 +1,4 @@
-package org.ilmostro.flink.source;
+package org.ilmostro.flink.start.source;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -7,7 +7,7 @@ import com.mongodb.client.model.Filters;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.configuration.Configuration;
 import org.bson.Document;
-import org.ilmostro.flink.MongoConfiguration;
+import org.ilmostro.flink.start.MongoConfiguration;
 
 import java.util.Objects;
 

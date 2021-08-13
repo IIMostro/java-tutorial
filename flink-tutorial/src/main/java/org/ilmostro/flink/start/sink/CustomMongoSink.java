@@ -1,4 +1,4 @@
-package org.ilmostro.flink.sink;
+package org.ilmostro.flink.start.sink;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -7,7 +7,7 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
 import org.bson.Document;
-import org.ilmostro.flink.MongoConfiguration;
+import org.ilmostro.flink.start.MongoConfiguration;
 
 import java.math.BigDecimal;
 

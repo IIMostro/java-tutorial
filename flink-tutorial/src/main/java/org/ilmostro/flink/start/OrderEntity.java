@@ -1,4 +1,4 @@
-package org.ilmostro.flink;
+package org.ilmostro.flink.start;
 
 import java.math.BigDecimal;
 import java.util.Random;
