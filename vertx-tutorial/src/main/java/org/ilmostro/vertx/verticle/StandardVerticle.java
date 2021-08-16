@@ -16,7 +16,7 @@ public class StandardVerticle extends AbstractVerticle {
 //      TimeUnit.MILLISECONDS.sleep(10);
 //      vertx.eventBus().publish("org.ilmostro.message", i);
 //    }
-    vertx.executeBlocking((Handler<Promise<String>>) event -> {
+    vertx.executeBlocking(event -> {
       for (int i = 0; i < 100000; i++) {
         vertx.eventBus().publish("org.ilmostro.message", i);
       }
