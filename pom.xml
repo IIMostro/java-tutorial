@@ -39,6 +39,7 @@
         <module>springboot-stream-start</module>
         <module>springboot-test-20190925</module>
         <module>user-service</module>
+        <module>spring-boot-vertx-cluster</module>
     </modules>
     <dependencyManagement>
         <dependencies>
