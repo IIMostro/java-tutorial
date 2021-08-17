@@ -10,12 +10,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.print.attribute.standard.CopiesSupported;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Configuration
 public class VertxConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(VertxConfiguration.class);
+    private static final AtomicBoolean circle = new AtomicBoolean(false);
 
     @Bean
     public Vertx vertx(HazelcastInstance hazelcastInstance) {
@@ -27,10 +28,15 @@ public class VertxConfiguration {
         } else {
             logger.info("hazelcast status:{}", hazelcastInstance.getLifecycleService().isRunning());
         }
-        //noinspection StatementWithEmptyBody
-        while (!future.isComplete()) {
+        long clusterStartTime = System.currentTimeMillis();
+        logger.info("vertx cluster initing....");
+        logger.info("vertx claster init time :{}", clusterStartTime);
+        //自旋, 等待future完成
+        while (circle.compareAndSet(false, future.isComplete())) {
 
         }
+        logger.info("vertx cluster inited....");
+        logger.info("vertx claster init finshed time :{}", System.currentTimeMillis());
         return future.result();
     }
 }
