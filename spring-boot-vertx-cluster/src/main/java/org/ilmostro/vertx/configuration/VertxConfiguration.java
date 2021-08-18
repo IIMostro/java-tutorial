@@ -7,19 +7,22 @@ import io.vertx.core.VertxOptions;
 import io.vertx.spi.cluster.hazelcast.HazelcastClusterManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Configuration
+@EnableConfigurationProperties(WebSocketProperties.class)
 public class VertxConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(VertxConfiguration.class);
     private static final AtomicBoolean circle = new AtomicBoolean(false);
 
     @Bean
-    public Vertx vertx(HazelcastInstance hazelcastInstance) {
+    public Vertx vertx(HazelcastInstance hazelcastInstance,
+                       VertxSpringFactory factory) {
         HazelcastClusterManager clusterManager = new HazelcastClusterManager(hazelcastInstance);
         VertxOptions options = new VertxOptions().setClusterManager(clusterManager);
         Future<Vertx> future = Vertx.clusteredVertx(options);
@@ -37,6 +40,8 @@ public class VertxConfiguration {
         }
         logger.info("vertx cluster inited....");
         logger.info("vertx claster init finshed time :{}", System.currentTimeMillis());
-        return future.result();
+        Vertx result = future.result();
+        result.registerVerticleFactory(factory);
+        return result;
     }
 }
