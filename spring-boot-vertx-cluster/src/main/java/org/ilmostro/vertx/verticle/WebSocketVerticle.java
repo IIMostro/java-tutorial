@@ -4,12 +4,15 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.ServerWebSocket;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.ilmostro.vertx.configuration.VertxProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
@@ -25,10 +28,16 @@ public class WebSocketVerticle extends AbstractVerticle {
 
     @Override
     public void start(Promise<Void> promise) {
+        Integer port = Optional.of("websocket.port")
+                .map(System::getProperty)
+                .filter(StringUtils::isNotBlank)
+                .filter(NumberUtils::isDigits)
+                .map(Integer::parseInt)
+                .orElseGet(properties.getWebsocket()::getPort);
         vertx.createHttpServer().webSocketHandler(this::wsHandler)
-                .listen(properties.getWebsocket().getPort(), handler -> {
+                .listen(port, handler -> {
                     if (handler.succeeded()) {
-                        logger.info("socket server listing in {}", properties.getWebsocket().getPort());
+                        logger.info("socket server listing in {}", port);
                         promise.complete();
                     } else {
                         promise.fail(handler.cause());

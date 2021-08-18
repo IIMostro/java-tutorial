@@ -39,6 +39,7 @@ public class VertxConfiguration {
         Future<Vertx> future = Vertx.clusteredVertx(options);
         logger.info("vertx cluster initing....");
         //自旋, 等待future完成
+        //noinspection StatementWithEmptyBody
         while (circle.compareAndSet(false, future.isComplete())) {
 
         }
@@ -68,6 +69,7 @@ public class VertxConfiguration {
         logger.info("vertx cluster inited....");
         logger.info("vertx claster init finshed time :{}", System.currentTimeMillis());
         //自旋, 等待future完成
+        //noinspection StatementWithEmptyBody
         while (circle.compareAndSet(false, future.isComplete())) {
 
         }

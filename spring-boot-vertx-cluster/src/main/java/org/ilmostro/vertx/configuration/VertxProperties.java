@@ -37,4 +37,10 @@ public class VertxProperties {
         private long maxTimes;
         private long intervalTimes;
     }
+
+    @Getter
+    @Setter
+    public static class WebSocketProperties{
+        private int port;
+    }
 }

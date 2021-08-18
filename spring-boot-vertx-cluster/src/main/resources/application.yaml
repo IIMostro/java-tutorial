@@ -1,13 +1,15 @@
 vertx:
-  type: hazelcast
+  type: zookeeper
   zookeeper:
     host: '192.168.205.20'
-    session-timeout: 50000
-    connect-timeout: 5000
+    session-timeout: 300000
+    connect-timeout: 20000
     root-path: 'io.vertx'
     retry:
       initial-sleep-time: 100
       max-times: 5
       interval-times: 10000
   websocket:
-    port: 8082
+    port: 8081
+server:
+  port: 8080
