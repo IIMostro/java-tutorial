@@ -4,7 +4,7 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.ServerWebSocket;
-import org.ilmostro.vertx.configuration.WebSocketProperties;
+import org.ilmostro.vertx.configuration.VertxProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -17,18 +17,18 @@ public class WebSocketVerticle extends AbstractVerticle {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketVerticle.class);
     private final Map<String, ServerWebSocket> instanceSocket = new ConcurrentHashMap<>();
-    private final WebSocketProperties properties;
+    private final VertxProperties properties;
 
-    public WebSocketVerticle(WebSocketProperties properties) {
+    public WebSocketVerticle(VertxProperties properties) {
         this.properties = properties;
     }
 
     @Override
     public void start(Promise<Void> promise) {
         vertx.createHttpServer().webSocketHandler(this::wsHandler)
-                .listen(properties.getPort(), handler -> {
+                .listen(properties.getWebsocket().getPort(), handler -> {
                     if (handler.succeeded()) {
-                        logger.info("socket server listing in 8081");
+                        logger.info("socket server listing in {}", properties.getWebsocket().getPort());
                         promise.complete();
                     } else {
                         promise.fail(handler.cause());

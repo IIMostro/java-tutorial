@@ -1,3 +1,13 @@
-spring:
-  hazelcast:
-    config: classpath:cluster.xml
+vertx:
+  type: hazelcast
+  zookeeper:
+    host: '192.168.205.20'
+    session-timeout: 50000
+    connect-timeout: 5000
+    root-path: 'io.vertx'
+    retry:
+      initial-sleep-time: 100
+      max-times: 5
+      interval-times: 10000
+  websocket:
+    port: 8082

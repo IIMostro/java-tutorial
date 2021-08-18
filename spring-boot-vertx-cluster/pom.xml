@@ -39,8 +39,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.hazelcast</groupId>
-            <artifactId>hazelcast-spring</artifactId>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-zookeeper</artifactId>
         </dependency>
 
         <dependency>
