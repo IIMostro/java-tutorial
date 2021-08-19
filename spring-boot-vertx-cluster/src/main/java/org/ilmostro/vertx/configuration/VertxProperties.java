@@ -11,6 +11,7 @@ public class VertxProperties {
 
     private VertxClusterType type;
     private ZookeeperProperties zookeeper = new ZookeeperProperties();
+    private HazelcastProperties hazelcast = new HazelcastProperties();
     private WebSocketProperties websocket;
 
 
@@ -27,6 +28,13 @@ public class VertxProperties {
         private long sessionTimeout = 20000;
         private long connectTimeout = 3000;
         private ZookeeperRetryProperties retry = new ZookeeperRetryProperties();
+    }
+
+    @Getter
+    @Setter
+    public static class HazelcastProperties{
+        private String configFilePath;
+
     }
 
     //重试策略

@@ -1,5 +1,5 @@
 vertx:
-  type: zookeeper
+  type: hazelcast
   zookeeper:
     host: '192.168.205.20'
     session-timeout: 300000
@@ -9,6 +9,8 @@ vertx:
       initial-sleep-time: 100
       max-times: 5
       interval-times: 10000
+  hazelcast:
+    config-file-path: 'classpath:cluster.xml'
   websocket:
     port: 8081
 server:

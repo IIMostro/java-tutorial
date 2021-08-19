@@ -15,6 +15,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
@@ -31,8 +32,9 @@ public class VertxConfiguration {
 
     @Bean
     @ConditionalOnProperty(prefix = "vertx", name = "type", havingValue = "hazelcast", matchIfMissing = true)
-    public Vertx hazelcast(VertxSpringFactory factory) throws FileNotFoundException {
-        File file = ResourceUtils.getFile("classpath:cluster.xml");
+    @Primary
+    public Vertx hazelcast(VertxSpringFactory factory, VertxProperties properties) throws FileNotFoundException {
+        File file = ResourceUtils.getFile(properties.getHazelcast().getConfigFilePath());
         Config config = new XmlConfigBuilder(new FileInputStream(file)).build();
         HazelcastClusterManager clusterManager = new HazelcastClusterManager(config);
         VertxOptions options = new VertxOptions().setClusterManager(clusterManager);
