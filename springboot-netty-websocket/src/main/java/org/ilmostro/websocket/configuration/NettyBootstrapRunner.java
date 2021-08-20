@@ -14,6 +14,7 @@ import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketSe
 import io.netty.handler.stream.ChunkedWriteHandler;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.ilmostro.websocket.annotation.NettyHandlerSupport;
+import org.ilmostro.websocket.handler.AuthenticateHandler;
 import org.ilmostro.websocket.handler.CustomChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,6 +69,7 @@ public class NettyBootstrapRunner implements ApplicationRunner, ApplicationListe
             pipeline.addLast(new ChunkedWriteHandler());
             //即通过它可以把 HttpMessage 和 HttpContent 聚合成一个 FullHttpRequest,并定义可以接受的数据大小，在文件上传时，可以支持params+multipart
             pipeline.addLast(new HttpObjectAggregator(65536));
+            pipeline.addLast(new AuthenticateHandler());
             pipeline.addLast(new CustomChannelInboundHandlerAdapter(support, properties));
             //webSocket 数据压缩扩展
             pipeline.addLast(new WebSocketServerCompressionHandler());

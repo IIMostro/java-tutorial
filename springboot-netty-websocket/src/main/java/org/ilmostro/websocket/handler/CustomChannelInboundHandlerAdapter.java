@@ -17,6 +17,7 @@ import java.util.List;
 /**
  * @author li.bowei
  */
+@ChannelHandler.Sharable
 public class CustomChannelInboundHandlerAdapter extends ChannelInboundHandlerAdapter {
 
     private final NettyHandlerSupport support;
@@ -43,10 +44,8 @@ public class CustomChannelInboundHandlerAdapter extends ChannelInboundHandlerAda
 
             for (String path : paths) {
                 ctx.pipeline().addLast(new WebSocketServerProtocolHandler(uri, null, true, properties.getMaxFrameSize()));
-                List<ChannelHandler> handlers = support.getHandlers(path);
-                for (ChannelHandler handler : handlers) {
-                    ctx.pipeline().addLast(handler);
-                }
+                ChannelHandler handler = support.getHandler(path);
+                ctx.pipeline().addLast(handler);
             }
         }
         super.channelRead(ctx, msg);
