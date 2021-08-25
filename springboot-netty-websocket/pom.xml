@@ -12,6 +12,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>springboot-netty-websocket</name>
     <description>Demo project for Spring Boot</description>
+    <packaging>jar</packaging>
 
     <dependencies>
 
@@ -49,6 +50,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <mainClass>org.ilmostro.websocket.SpringbootNettyWebsocketApplication</mainClass>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
@@ -56,6 +58,13 @@
                         </exclude>
                     </excludes>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

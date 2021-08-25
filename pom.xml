@@ -32,13 +32,8 @@
         <module>shiro-tutorial</module>
         <module>spring-boot-webflux</module>
         <module>spring-security-tutorial</module>
-        <module>springboot-kafka</module>
-        <module>springboot-mqtt</module>
         <module>springboot-netty-websocket</module>
         <module>springboot-start</module>
-        <module>springboot-stream-start</module>
-        <module>springboot-test-20190925</module>
-        <module>user-service</module>
         <module>spring-boot-vertx-cluster</module>
     </modules>
 
