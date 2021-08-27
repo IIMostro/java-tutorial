@@ -21,6 +21,11 @@
 
     <main.verticle>org.ilmostro.vertx.MainVerticle</main.verticle>
     <launcher.class>io.vertx.core.Launcher</launcher.class>
+
+    <jetty.alpnAgent.version>2.0.7</jetty.alpnAgent.version>
+    <jetty.alpnAgent.path>
+      ${settings.localRepository}/org/mortbay/jetty/alpn/jetty-alpn-agent/${jetty.alpnAgent.version}/jetty-alpn-agent-${jetty.alpnAgent.version}.jar
+    </jetty.alpnAgent.path>
   </properties>
 
   <dependencyManagement>
@@ -44,6 +49,24 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-rx-java3</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-grpc</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java-util</artifactId>
+      <version>3.5.1</version>
+      <exclusions>
+        <exclusion>
+          <!-- 19.0 ??? 20.0 is required -->
+          <groupId>com.google.guava</groupId>
+          <artifactId>guava</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -84,6 +107,34 @@
   </dependencies>
 
   <build>
+
+    <extensions>
+      <extension>
+        <groupId>kr.motd.maven</groupId>
+        <artifactId>os-maven-plugin</artifactId>
+        <version>1.4.1.Final</version>
+      </extension>
+    </extensions>
+    <pluginManagement>
+      <plugins>
+        <!-- We specify the Maven compiler plugin as we need to set it to Java 1.8 -->
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.1</version>
+          <configuration>
+            <source>1.8</source>
+            <target>1.8</target>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <configuration>
+            <argLine>-javaagent:${jetty.alpnAgent.path}</argLine>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -134,6 +185,42 @@
           </arguments>
         </configuration>
       </plugin>
+
+
+      <plugin>
+        <groupId>org.xolstice.maven.plugins</groupId>
+        <artifactId>protobuf-maven-plugin</artifactId>
+        <version>0.6.1</version>
+        <configuration>
+          <!--
+            The version of protoc must match protobuf-java. If you don't depend on
+            protobuf-java directly, you will be transitively depending on the
+            protobuf-java version that grpc depends on.
+          -->
+          <protocArtifact>com.google.protobuf:protoc:3.2.0:exe:${os.detected.classifier}</protocArtifact>
+          <pluginId>grpc-java</pluginId>
+          <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.25.0:exe:${os.detected.classifier}</pluginArtifact>
+          <protocPlugins>
+            <protocPlugin>
+              <id>vertx-grpc-protoc-plugin</id>
+              <groupId>io.vertx</groupId>
+              <artifactId>vertx-grpc-protoc-plugin</artifactId>
+              <version>${vertx.version}</version>
+              <mainClass>io.vertx.grpc.protoc.plugin.VertxGrpcGenerator</mainClass>
+            </protocPlugin>
+          </protocPlugins>
+        </configuration>
+        <executions>
+          <execution>
+            <id>compile</id>
+            <goals>
+              <goal>compile</goal>
+              <goal>compile-custom</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
     </plugins>
   </build>
 

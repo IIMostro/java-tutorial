@@ -16,10 +16,6 @@ public class LogAgent {
 
     public static void premain(String agentArgs, Instrumentation instrumentation)  {
 
-        AgentBuilder.Transformer transformer = (builder, typeDescription, classLoader, javaModule) -> builder
-                .method(ElementMatchers.any()) // 拦截任意方法
-                .intercept(MethodDelegation.to(TimeInterceptor.class));
-
         AgentBuilder.Listener listener = new AgentBuilder.Listener() {
 
             @Override
@@ -51,9 +47,9 @@ public class LogAgent {
         new AgentBuilder
                 .Default()
                 .type(ElementMatchers.nameStartsWith("org.ilmostro.websocket.handler"))// 指定需要拦截的类
-                .and(ElementMatchers.not(ElementMatchers.isInterface()))
-                .and(ElementMatchers.not(ElementMatchers.isStatic()))
-                .transform(transformer)
+                .transform((builder, typeDescription, classLoader, javaModule) -> builder
+                        .method(ElementMatchers.any()) // 拦截任意方法
+                        .intercept(MethodDelegation.to(TimeInterceptor.class)))
                 .with(listener)
                 .installOn(instrumentation);
 
