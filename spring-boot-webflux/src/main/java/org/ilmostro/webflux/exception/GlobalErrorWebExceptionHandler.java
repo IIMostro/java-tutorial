@@ -1,10 +1,8 @@
 package org.ilmostro.webflux.exception;
 
-import org.ilmostro.webflux.result.BasicConst;
 import org.ilmostro.webflux.result.BasicResult;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ResourceProperties;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
@@ -21,8 +19,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * @author li.bowei
@@ -32,10 +28,11 @@ import java.util.Optional;
 @Order(-2)
 public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHandler {
 
+
     public GlobalErrorWebExceptionHandler(ErrorAttributes errorAttributes,
-                                          ResourceProperties resourceProperties,
+                                          WebProperties.Resources resources,
                                           ApplicationContext applicationContext) {
-        super(errorAttributes, resourceProperties, applicationContext);
+        super(errorAttributes, resources, applicationContext);
     }
 
     @Override

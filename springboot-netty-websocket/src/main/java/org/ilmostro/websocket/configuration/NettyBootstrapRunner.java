@@ -94,7 +94,7 @@ public class NettyBootstrapRunner implements ApplicationRunner, ApplicationListe
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        EventLoopGroup bossGroup = new NioEventLoopGroup(2, nettyExecutor());
+        EventLoopGroup bossGroup = new NioEventLoopGroup(1, nettyExecutor());
         EventLoopGroup workerGroup = new NioEventLoopGroup(8, nettyExecutor());
         try {
             ServerBootstrap serverBootstrap = new ServerBootstrap();
