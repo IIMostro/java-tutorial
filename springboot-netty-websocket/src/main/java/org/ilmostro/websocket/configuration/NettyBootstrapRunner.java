@@ -12,10 +12,10 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
-import org.apache.commons.lang3.concurrent.BasicThreadFactory;
-import org.ilmostro.websocket.annotation.NettyHandlerSupport;
-import org.ilmostro.websocket.handler.AuthenticateHandler;
+import org.ilmostro.websocket.handler.AuthenticateChannelHandler;
+import org.ilmostro.websocket.handler.ChannelHandlerHeaderUtils;
 import org.ilmostro.websocket.handler.CustomChannelInboundHandlerAdapter;
+import org.ilmostro.websocket.handler.UrlResolverChannelChandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -42,13 +42,11 @@ import java.util.concurrent.TimeUnit;
  */
 @Configuration
 @EnableConfigurationProperties(NettyConfigurationProperties.class)
-public class NettyBootstrapRunner implements ApplicationRunner, ApplicationListener<ContextClosedEvent>,
-        ApplicationContextAware,
-        InitializingBean {
+public class NettyBootstrapRunner implements ApplicationRunner, ApplicationListener<ContextClosedEvent>, ApplicationContextAware, InitializingBean {
 
     private static final Logger logger = LoggerFactory.getLogger(NettyBootstrapRunner.class);
     private static NettyConfigurationProperties properties;
-    private static NettyHandlerSupport support;
+    private static CustomChannelInboundHandlerAdapter channelHandler;
 
     private ApplicationContext applicationContext;
     private Channel serverChannel;
@@ -56,7 +54,7 @@ public class NettyBootstrapRunner implements ApplicationRunner, ApplicationListe
     @Override
     public void afterPropertiesSet() {
         properties = applicationContext.getBean(NettyConfigurationProperties.class);
-        support = applicationContext.getBean(NettyHandlerSupport.class);
+        channelHandler = applicationContext.getBean(CustomChannelInboundHandlerAdapter.class);
     }
 
     private static class CustomChannelInitializer extends ChannelInitializer<SocketChannel> {
@@ -65,29 +63,21 @@ public class NettyBootstrapRunner implements ApplicationRunner, ApplicationListe
             ChannelPipeline pipeline = ch.pipeline();
             // 服务端，对请求解码。属于ChannelIntboundHandler，按照顺序执行
             pipeline.addLast(new HttpServerCodec());
-            //写入Header
             pipeline.addLast(new ChunkedWriteHandler());
             //即通过它可以把 HttpMessage 和 HttpContent 聚合成一个 FullHttpRequest,并定义可以接受的数据大小，在文件上传时，可以支持params+multipart
             pipeline.addLast(new HttpObjectAggregator(65536));
-            pipeline.addLast(new AuthenticateHandler());
-            pipeline.addLast(new CustomChannelInboundHandlerAdapter(support, properties));
             //webSocket 数据压缩扩展
             pipeline.addLast(new WebSocketServerCompressionHandler());
+            pipeline.addLast(UrlResolverChannelChandler.getInstance());
+            pipeline.addLast(AuthenticateChannelHandler.getInstance());
+            pipeline.addLast(channelHandler);
         }
     }
 
     @Bean
     public Executor nettyExecutor() {
-        return new ThreadPoolExecutor(
-                10,
-                20,
-                60,
-                TimeUnit.SECONDS,
-                new LinkedBlockingQueue<>(1000),
-                new BasicThreadFactory.Builder()
-                        .daemon(false)
-                        .namingPattern("netty-loop-executor-%d")
-                        .build()
+        return new ThreadPoolExecutor(10, 20,
+                60, TimeUnit.SECONDS, new LinkedBlockingQueue<>(1000)
         );
     }
 
@@ -122,6 +112,7 @@ public class NettyBootstrapRunner implements ApplicationRunner, ApplicationListe
         if (this.serverChannel != null) {
             this.serverChannel.close();
         }
+        ChannelHandlerHeaderUtils.cleanAll();
         logger.info("websocket 服务停止");
     }
 }

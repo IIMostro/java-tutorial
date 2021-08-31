@@ -9,12 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public abstract class DistributedChannelInboundHandlerAdapter extends ChannelInboundHandlerAdapter {
+public abstract class DistributedChannelInboundHandlerAdapter extends ChannelInboundHandlerAdapter implements DistributedMessageHandler{
 
     private static final Logger logger = LoggerFactory.getLogger(DistributedChannelInboundHandlerAdapter.class);
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    private final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+    protected final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {

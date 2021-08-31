@@ -12,6 +12,8 @@ import org.ilmostro.websocket.annotation.NettyHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Map;
+
 /**
  * @author li.bowei
  */
@@ -27,6 +29,8 @@ public class WebsocketMessageHandler extends SimpleChannelInboundHandler<TextWeb
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) {
         // 业务层处理数据
         logger.info("监听到信息:{}", msg.toString());
+        Map<String, String> headers = ChannelHandlerHeaderUtils.getChannelHeaders(ctx.channel().id().asLongText());
+        logger.info("headers:{}", headers);
         // 响应客户端
         channels.writeAndFlush(new TextWebSocketFrame("我收到了你的消息：" + msg.text() + System.currentTimeMillis()),
                 ChannelMatchers.isNot(ctx.channel()));
@@ -40,16 +44,8 @@ public class WebsocketMessageHandler extends SimpleChannelInboundHandler<TextWeb
     }
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        super.channelActive(ctx);
-        logger.info("建立连接:{}", ctx.channel().remoteAddress());
-        channels.add(ctx.channel());
-    }
-
-    @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        super.handlerAdded(ctx);
-        logger.info("添加handler:{}", ctx.channel().remoteAddress());
+        logger.info("建立连接:{}", ctx.channel().remoteAddress());
         channels.add(ctx.channel());
     }
 }
