@@ -29,7 +29,7 @@ public class WebsocketMessageHandler extends SimpleChannelInboundHandler<TextWeb
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) {
         // 业务层处理数据
         logger.info("监听到信息:{}", msg.toString());
-        Map<String, String> headers = ChannelHandlerHeaderUtils.getChannelHeaders(ctx.channel().id().asLongText());
+        Map<String, String> headers = ChannelHandlerHeaderCache.getChannelHeaders.apply(ctx);
         logger.info("headers:{}", headers);
         // 响应客户端
         channels.writeAndFlush(new TextWebSocketFrame("我收到了你的消息：" + msg.text() + System.currentTimeMillis()),

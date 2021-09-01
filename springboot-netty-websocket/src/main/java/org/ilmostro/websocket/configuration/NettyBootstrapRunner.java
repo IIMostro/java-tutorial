@@ -13,7 +13,7 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import org.ilmostro.websocket.handler.AuthenticateChannelHandler;
-import org.ilmostro.websocket.handler.ChannelHandlerHeaderUtils;
+import org.ilmostro.websocket.handler.ChannelHandlerHeaderCache;
 import org.ilmostro.websocket.handler.CustomChannelInboundHandlerAdapter;
 import org.ilmostro.websocket.handler.UrlResolverChannelChandler;
 import org.slf4j.Logger;
@@ -112,7 +112,7 @@ public class NettyBootstrapRunner implements ApplicationRunner, ApplicationListe
         if (this.serverChannel != null) {
             this.serverChannel.close();
         }
-        ChannelHandlerHeaderUtils.cleanAll();
+        ChannelHandlerHeaderCache.cleanAll();
         logger.info("websocket 服务停止");
     }
 }

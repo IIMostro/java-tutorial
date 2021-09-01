@@ -66,6 +66,7 @@ public class CustomChannelInboundHandlerAdapter extends ChannelInboundHandlerAda
             ctx.pipeline().addLast(handler);
             ctx.pipeline().addLast(ResourceReleaseHandler.getInstance());
             ctx.pipeline().remove(this);
+            logger.info("custom channel handler remove! channel id:{}", ctx.channel().id().asLongText());
         }
 
         super.channelRead(ctx, msg);

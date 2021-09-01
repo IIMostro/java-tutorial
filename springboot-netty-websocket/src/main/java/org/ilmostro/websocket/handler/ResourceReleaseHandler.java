@@ -21,6 +21,6 @@ public class ResourceReleaseHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
-        ChannelHandlerHeaderUtils.clean(ctx.channel().id().asLongText());
+        ChannelHandlerHeaderCache.clean.accept(ctx.channel());
     }
 }

@@ -41,7 +41,7 @@ public class UrlResolverChannelChandler extends ChannelInboundHandlerAdapter {
             params.forEach((v1, v2) -> request.headers().add(v1, v2));
             String uri = StringUtils.substringBefore(request.uri(), "?");
             request.setUri(uri);
-            ChannelHandlerHeaderUtils.setChannelHeader(ctx.channel().id().asLongText(), params.toSingleValueMap());
+            ChannelHandlerHeaderCache.setChannelHeader(ctx.channel(), params.toSingleValueMap());
             ctx.pipeline().remove(this);
         }
         super.channelRead(ctx, msg);

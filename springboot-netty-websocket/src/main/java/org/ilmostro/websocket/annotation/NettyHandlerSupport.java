@@ -26,14 +26,22 @@ public class NettyHandlerSupport implements BeanPostProcessor {
 
     @Override
     public Object postProcessAfterInitialization(Object bean, @NonNull String beanName) throws BeansException {
+        if(!(bean instanceof ChannelHandler)){
+            return bean;
+        }
         NettyHandler annotation = AnnotationUtils.findAnnotation(bean.getClass(), NettyHandler.class);
-        if(Objects.isNull(annotation) || !(bean instanceof ChannelHandler)){
+        if(Objects.isNull(annotation)){
             return bean;
         }
         register.put(annotation, (ChannelHandler) bean);
         return bean;
     }
 
+    /**
+     * 获取所有自定义的socket路径
+     *
+     * @return 所有路径
+     */
     public List<String> getCustomPipelinePath(){
         if(register.isEmpty()){
             return Collections.emptyList();
@@ -41,6 +49,12 @@ public class NettyHandlerSupport implements BeanPostProcessor {
         return register.keySet().stream().map(NettyHandler::path).collect(Collectors.toList());
     }
 
+    /**
+     * 根据路径获取一个处理器
+     *
+     * @param key 路径
+     * @return 处理器
+     */
     public ChannelHandler getHandler(String key){
         if(register.isEmpty()){
             return new PathNotFoundHandler();
