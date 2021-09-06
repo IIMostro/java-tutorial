@@ -19,6 +19,7 @@ public class AuthenticateChannelHandler extends ChannelInboundHandlerAdapter {
     private static final Logger logger = LoggerFactory.getLogger(AuthenticateChannelHandler.class);
 
     private AuthenticateChannelHandler() {
+
     }
 
     private static class LazyHolder{

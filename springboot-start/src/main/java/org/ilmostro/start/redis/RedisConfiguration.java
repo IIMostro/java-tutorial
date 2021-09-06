@@ -17,6 +17,7 @@ import org.springframework.data.redis.stream.StreamMessageListenerContainer;
 
 import java.time.Duration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -42,10 +43,14 @@ public class RedisConfiguration {
 
     @Bean
     public RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory,
-                                                   MessageListenerAdapter listenerAdapter) {
+                                                   MessageListenerAdapter listenerAdapter,
+                                                   List<MessageListenerAdapterWrapper> wrappers) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.addMessageListener(listenerAdapter, new PatternTopic("task-topic"));
+        for (MessageListenerAdapterWrapper wrapper : wrappers) {
+            container.addMessageListener(wrapper, new PatternTopic(wrapper.getTopic()));
+        }
         return container;
     }
 

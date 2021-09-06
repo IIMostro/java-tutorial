@@ -26,7 +26,7 @@ public class WebsocketMessageHandler extends SimpleChannelInboundHandler<TextWeb
     private final ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) {
+    protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws InterruptedException {
         // 业务层处理数据
         logger.info("监听到信息:{}", msg.toString());
         Map<String, String> headers = ChannelHandlerHeaderCache.getChannelHeaders.apply(ctx);
@@ -34,6 +34,7 @@ public class WebsocketMessageHandler extends SimpleChannelInboundHandler<TextWeb
         // 响应客户端
         channels.writeAndFlush(new TextWebSocketFrame("我收到了你的消息：" + msg.text() + System.currentTimeMillis()),
                 ChannelMatchers.isNot(ctx.channel()));
+//        TimeUnit.SECONDS.sleep(300);
     }
 
     @Override
