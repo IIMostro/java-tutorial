@@ -10,6 +10,8 @@ import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -101,5 +103,12 @@ public class MonoTest {
             }
         }).subscribeOn(scheduler).subscribe();
         System.out.println(atomic);
+    }
+
+    @Test
+    public void test1() throws InterruptedException {
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(2);
+        Schedulers.fromExecutor(scheduledExecutorService).schedulePeriodically(() -> log.info("current:{}", System.currentTimeMillis()), 1,1, TimeUnit.SECONDS);
+        TimeUnit.SECONDS.sleep(10);
     }
 }

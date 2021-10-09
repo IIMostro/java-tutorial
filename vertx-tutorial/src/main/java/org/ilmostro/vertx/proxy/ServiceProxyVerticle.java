@@ -27,7 +27,9 @@ public class ServiceProxyVerticle extends AbstractVerticle {
   public void start() throws Exception {
     SimpleService service = SimpleService.createProxy(vertx, "org.ilmostro.vertx.proxy.SimpleService");
     service.save("context", handler ->{
+      if (handler.succeeded()) {
 
+      }
     });
 
   }
