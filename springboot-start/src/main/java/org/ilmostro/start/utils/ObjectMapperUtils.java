@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author li.bowei
@@ -24,12 +25,22 @@ public class ObjectMapperUtils implements ApplicationContextAware, InitializingB
 
     private static final Logger logger = LoggerFactory.getLogger(ObjectMapperUtils.class);
 
-    private static ObjectMapper objectMapper;
+    private volatile static ObjectMapper objectMapper;
     private ApplicationContext applicationContext;
 
+    private static void initialize(){
+        if(Objects.isNull(objectMapper)){
+            synchronized (ObjectMapperUtils.class){
+                if(Objects.isNull(objectMapper)){
+                    objectMapper = new ObjectMapper();
+                }
+            }
+        }
+    }
 
     public static String toJSONString(@NonNull Object obj){
         try {
+            initialize();
             return objectMapper.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
             logger.error("object to json string error! parameter:{}, cause:{}", obj, e.getMessage());
@@ -43,6 +54,7 @@ public class ObjectMapperUtils implements ApplicationContextAware, InitializingB
             throw new IllegalArgumentException("json string to java object parameter is empty!");
         }
         try {
+            initialize();
             return objectMapper.readValue(json, clazz);
         } catch (JsonProcessingException e) {
             logger.error("json to java object error! json:{}, cause:{}", json, e.getMessage());
@@ -56,6 +68,7 @@ public class ObjectMapperUtils implements ApplicationContextAware, InitializingB
             throw new IllegalArgumentException("json string to java object parameter is empty!");
         }
         try {
+            initialize();
             return objectMapper.readValue(json, javaType);
         } catch (JsonProcessingException e) {
             logger.error("json to java object error! json:{}, cause:{}", json, e.getMessage());
@@ -64,11 +77,13 @@ public class ObjectMapperUtils implements ApplicationContextAware, InitializingB
     }
 
     public static <T> Collection<T> toJavaArray(@NonNull String json, @NonNull Class<T> clazz) {
+        initialize();
         JavaType javaType = objectMapper.getTypeFactory().constructCollectionType(List.class, clazz);
         return toJavaObject(json, javaType);
     }
 
     public static ObjectMapper getObjectMapper() {
+        initialize();
         return objectMapper;
     }
 
