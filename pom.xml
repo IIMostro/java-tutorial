@@ -35,6 +35,8 @@
         <module>springboot-netty-websocket</module>
         <module>springboot-start</module>
         <module>spring-boot-vertx-cluster</module>
+        <module>spring-boot-mysql</module>
+        <module>spring-boot-redis</module>
     </modules>
 
     <dependencyManagement>
