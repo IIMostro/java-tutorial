@@ -1,4 +1,4 @@
-package org.ilmostro.basic;
+package org.ilmostro.redis.domain;
 
 import lombok.*;
 import org.apache.commons.lang3.RandomStringUtils;
