@@ -66,4 +66,13 @@ public class BitTest {
         logger.info("n:[{}], n binary:[{}], n-1 binary:[{}], n & (n-1):[{}]",
                 n, Integer.toBinaryString(n), Integer.toBinaryString(n - 1), n & (n-1));
     }
+
+    @Test
+    public void test6(){
+        int x = 30;
+        int y = 31;
+        int z = x ^ y;
+        logger.info("x ^ y = {}", z);
+        logger.info("z ^ x = {}", z ^ x);
+    }
 }
