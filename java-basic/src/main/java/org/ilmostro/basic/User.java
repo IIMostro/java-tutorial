@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User implements Comparable<User>{
 
     private Integer id;
     private String name;
@@ -41,6 +41,11 @@ public class User {
                 (int) (Math.random() * 100),
                 UUID.randomUUID().toString(),
                 scores);
+    }
+
+    @Override
+    public int compareTo(User o) {
+        return this.id - o.id;
     }
 
     @Data

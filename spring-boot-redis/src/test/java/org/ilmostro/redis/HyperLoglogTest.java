@@ -34,9 +34,7 @@ public class HyperLoglogTest {
         List<User> users = Stream.generate(User::supplier).limit(1000).collect(Collectors.toList());
         Set<Integer> collect = users.stream().map(User::getName).map(MurmurHash::hash32).collect(Collectors.toSet());
         hello.addAll(collect);
-        User first = users.get(0);
-        world.add(MurmurHash.hash32(first.getName()));
-
+        world.add(MurmurHash.hash32("a"));
         long count = hello.countWith("world");
         log.info("count:{}", count);
     }
