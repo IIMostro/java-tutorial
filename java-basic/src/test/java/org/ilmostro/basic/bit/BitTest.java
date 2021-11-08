@@ -75,4 +75,21 @@ public class BitTest {
         logger.info("x ^ y = {}", z);
         logger.info("z ^ x = {}", z ^ x);
     }
+
+    @Test
+    public void test7(){
+
+        int x = 0b1011;
+        int y = 0b100;
+
+        logger.info("{} | {} = {}", x, y, Long.toBinaryString(x | y));
+        logger.info("{} & {} = {}", x, y, Long.toBinaryString(x & y));
+        logger.info("{} ^ {} = {}", x, y, Long.toBinaryString(x ^ y));
+
+        logger.info("{}", Integer.toBinaryString((x | y)^y));
+
+        logger.info("{}", Integer.toBinaryString(x ^ 1<<3));
+
+        logger.info("{}", Long.toBinaryString(Long.MAX_VALUE));
+    }
 }

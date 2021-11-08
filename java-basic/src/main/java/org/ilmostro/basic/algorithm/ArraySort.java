@@ -127,7 +127,6 @@ public class ArraySort extends ArrayTestHelper {
         int i = start;
         int j = mid + 1;
         for (int k = start; k <= end; k++) {
-
             if (i > mid) {
                 //处理边界问题。并且附带处理了奇数的问题。
                 arr[k] = aux[j - start];
