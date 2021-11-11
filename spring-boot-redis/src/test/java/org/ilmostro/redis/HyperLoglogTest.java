@@ -3,6 +3,7 @@ package org.ilmostro.redis;
 import cn.hutool.core.lang.MurmurHash;
 import lombok.extern.slf4j.Slf4j;
 import org.ilmostro.redis.domain.User;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.redisson.api.RHyperLogLog;
@@ -27,6 +28,14 @@ public class HyperLoglogTest {
     @Autowired
     private RedissonClient redissonClient;
 
+    @Before
+    public void before(){
+        RHyperLogLog<Integer> hello = redissonClient.getHyperLogLog("hello");
+        RHyperLogLog<Integer> world = redissonClient.getHyperLogLog("world");
+        hello.delete();
+        world.delete();
+    }
+
     @Test
     public void test(){
         RHyperLogLog<Integer> hello = redissonClient.getHyperLogLog("hello");
@@ -34,7 +43,9 @@ public class HyperLoglogTest {
         List<User> users = Stream.generate(User::supplier).limit(1000).collect(Collectors.toList());
         Set<Integer> collect = users.stream().map(User::getName).map(MurmurHash::hash32).collect(Collectors.toSet());
         hello.addAll(collect);
+
         world.add(MurmurHash.hash32("a"));
+
         long count = hello.countWith("world");
         log.info("count:{}", count);
     }
