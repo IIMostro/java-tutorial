@@ -6,6 +6,7 @@ import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.ilmostro.basic.User;
 import org.junit.Test;
+import org.slf4j.helpers.MessageFormatter;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -53,6 +54,14 @@ public class StringUtilsTest {
     }
 
     @Test
+    public void logFormat(){
+        String[] message = new String[]{"{}"};
+        String message1 = MessageFormatter.arrayFormat(message[0], ArrayUtils.subarray(message, 1, message.length)).getMessage();
+        log.info(message1);
+    }
+
+
+    @Test
     public void sort(){
 
         User supplier = User.supplier();
@@ -62,6 +71,10 @@ public class StringUtilsTest {
 
         List<User> collect = Stream.of(supplier, supplier1).sorted().collect(Collectors.toList());
         log.info("{}",collect);
+
+        log.info("{}", 1L << 43);
+
+        log.info("");
     }
 
 }

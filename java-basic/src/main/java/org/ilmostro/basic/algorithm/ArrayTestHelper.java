@@ -29,6 +29,13 @@ public class ArrayTestHelper {
         return Stream.generate(() -> random.nextInt(rangeR + rangeL) - rangeL).limit(n).mapToInt(Integer::intValue).toArray();
     }
 
+    /**
+     * 创建一个有序的数组
+     *
+     * @param n 多少个数值
+     * @param rangeL 多少开始
+     * @return 有序数组
+     */
     static int[] createOrderArray(int n, int rangeL){
         assert n > 0 && rangeL > 0;
         int [] arr = new int[n];
