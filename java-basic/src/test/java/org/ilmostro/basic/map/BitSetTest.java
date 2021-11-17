@@ -1,5 +1,6 @@
 package org.ilmostro.basic.map;
 
+import com.googlecode.javaewah.EWAHCompressedBitmap;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
@@ -14,14 +15,13 @@ public class BitSetTest {
     @Test
     public void test() {
         BitSet bitSet = new BitSet();
-
         BitSet bitSet1 = new BitSet();
         for (int i = 0; i < 200; i++) {
             bitSet.set(i);
         }
 
         for (int i = 0; i < 20; i++) {
-            if(i % 2 == 0){
+            if (i % 2 == 0) {
                 bitSet1.set(i);
             }
             bitSet.set(i);
@@ -31,5 +31,11 @@ public class BitSetTest {
         log.info("{}", bitSet);
 
         log.info("{}", bitSet.get(19));
+    }
+
+    @Test
+    public void test1() {
+        //稀疏位图
+        EWAHCompressedBitmap bitmap = new EWAHCompressedBitmap();
     }
 }

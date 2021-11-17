@@ -3,6 +3,7 @@ package org.ilmostro.redis.domain;
 import lombok.*;
 import org.apache.commons.lang3.RandomStringUtils;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Random;
@@ -19,7 +20,7 @@ import java.util.stream.Stream;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User implements Serializable {
 
     private Integer id;
     private String name;
@@ -45,7 +46,7 @@ public class User {
 
     @Data
     @AllArgsConstructor
-    public static class Score{
+    public static class Score implements Serializable{
 
         public static String[] subjects = new String[]{"语文","数学","英语"};
         private String subject;

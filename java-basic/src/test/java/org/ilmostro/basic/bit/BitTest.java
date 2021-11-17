@@ -92,4 +92,14 @@ public class BitTest {
 
         logger.info("{}", Long.toBinaryString(Long.MAX_VALUE));
     }
+
+    @Test
+    public void swap(){
+        int x = 1, y = 2;
+        logger.info("x:[{}], y:[{}]", x, y);
+        int temp = x ^ y;
+        x = y;
+        y = x ^ temp;
+        logger.info("x:[{}], y:[{}]", x, y);
+    }
 }
