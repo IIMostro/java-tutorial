@@ -102,4 +102,14 @@ public class BitTest {
         y = x ^ temp;
         logger.info("x:[{}], y:[{}]", x, y);
     }
+
+
+    @Test
+    public void test8(){
+        long x = 1;
+        for (int i = 0; i < 10; i++) {
+            x |= 1 << i;
+            logger.info("x:[{}], i:[{}]", Long.toBinaryString(x >> 1), i);
+        }
+    }
 }
