@@ -53,40 +53,12 @@ public class ReverseList {
      */
     public ListNode reverseListV1(ListNode head) {
         if (head == null || head.next == null) {
-            //head: 3 -> NULL
-            log.info("return head:[{}]", head);
             return head;
         }
-        log.info("head:[{}], head.next:[{}]", head, head.next);
-        //递归到最后一个元素
-        // head: 2-> 3-> NULL
-        // head.next: 3 -> NULL
-        // first ret: 3 -> NULL
         ListNode ret = reverseListV1(head.next);
-        log.info("ret:[{}], head.next.next:[{}], head:[{}]", ret, head.next.next, head);
-        //ret = 2 -> 3 -> NULL
-        //head = 2-> 3 -> NULL
-        //这个地方赋值就是将3的下一个指向2 -> 3- > NULL after 3 -> 2 -> 3
+        log.info("head:{}, ret:{}", head, ret);
         head.next.next = head;
-        //这个地方赋值就是将 2-> 3
         head.next = null;
-        log.info("after ret:[{}], head:[{}]", ret, head);
         return ret;
-    }
-
-    /**
-     * 递归实现
-     *
-     * @param current 翻转之前的listNode
-     * @param prev    前一个节点
-     * @return 翻转之后的listNode
-     */
-    private ListNode recursion(ListNode current, ListNode prev) {
-        if (current == null) {
-            return prev;
-        }
-        ListNode next = current.next;
-        current.next = prev;
-        return recursion(next, current);
     }
 }

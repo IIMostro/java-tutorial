@@ -61,14 +61,14 @@ public class BitTest {
     }
 
     @Test
-    public void test5(){
+    public void test5() {
         int n = 31;
         logger.info("n:[{}], n binary:[{}], n-1 binary:[{}], n & (n-1):[{}]",
-                n, Integer.toBinaryString(n), Integer.toBinaryString(n - 1), n & (n-1));
+                n, Integer.toBinaryString(n), Integer.toBinaryString(n - 1), n & (n - 1));
     }
 
     @Test
-    public void test6(){
+    public void test6() {
         int x = 30;
         int y = 31;
         int z = x ^ y;
@@ -77,7 +77,7 @@ public class BitTest {
     }
 
     @Test
-    public void test7(){
+    public void test7() {
 
         int x = 0b1011;
         int y = 0b100;
@@ -86,15 +86,15 @@ public class BitTest {
         logger.info("{} & {} = {}", x, y, Long.toBinaryString(x & y));
         logger.info("{} ^ {} = {}", x, y, Long.toBinaryString(x ^ y));
 
-        logger.info("{}", Integer.toBinaryString((x | y)^y));
+        logger.info("{}", Integer.toBinaryString((x | y) ^ y));
 
-        logger.info("{}", Integer.toBinaryString(x ^ 1<<3));
+        logger.info("{}", Integer.toBinaryString(x ^ 1 << 3));
 
         logger.info("{}", Long.toBinaryString(Long.MAX_VALUE));
     }
 
     @Test
-    public void swap(){
+    public void swap() {
         int x = 1, y = 2;
         logger.info("x:[{}], y:[{}]", x, y);
         int temp = x ^ y;
@@ -105,11 +105,24 @@ public class BitTest {
 
 
     @Test
-    public void test8(){
+    public void test8() {
         long x = 1;
         for (int i = 0; i < 10; i++) {
             x |= 1 << i;
             logger.info("x:[{}], i:[{}]", Long.toBinaryString(x >> 1), i);
         }
     }
+
+    @Test
+    public void test9() {
+        int a = 3, b = 4;
+        logger.info("a:{}, b:{}", a, b);
+        a = a ^ b;
+        logger.info("a:{}, b:{}", a, b);
+        b = a ^ b;
+        logger.info("a:{}, b:{}", a, b);
+        a = a ^ b;
+        logger.info("a:{}, b:{}", a, b);
+    }
+
 }
