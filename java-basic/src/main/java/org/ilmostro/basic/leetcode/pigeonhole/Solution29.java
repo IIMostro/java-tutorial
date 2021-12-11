@@ -15,7 +15,7 @@ public class Solution29 {
 
     public static void main(String[] args) {
         int[] ints = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
-        int rob = new Solution29().rob(ints);
+        int rob = new Solution29().robV1(ints);
         System.out.println(rob);
     }
 
@@ -33,6 +33,26 @@ public class Solution29 {
         for (int i = 2; i < nums.length; i++) {
             dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1]);
         }
+        for (int i : dp) {
+            System.out.println(i);
+        }
         return dp[nums.length - 1];
+    }
+
+    public int robV1(int[] nums) {
+        if (nums == null || nums.length <= 0) {
+            return 0;
+        }
+        if (nums.length == 1) {
+            return nums[0];
+        }
+
+        int p = nums[0],r = Math.max(p, nums[1]);
+        for (int i = 2; i < nums.length; i++) {
+            int temp = r;
+            r = Math.max(p + nums[i], r);
+            p = temp;
+        }
+        return r;
     }
 }

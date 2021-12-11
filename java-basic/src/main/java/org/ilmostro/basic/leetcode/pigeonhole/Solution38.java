@@ -15,6 +15,12 @@ package org.ilmostro.basic.leetcode.pigeonhole;
  */
 public class Solution38 {
 
+    public static void main(String[] args) {
+        int[] nums = {1, 2, 3, 4, 5, 6, 7};
+        int rob = new Solution38().rob(nums);
+        System.out.println(rob);
+    }
+
     public int rob(int[] nums) {
         if (nums.length == 1) {
             return nums[0];
@@ -30,6 +36,7 @@ public class Solution38 {
             int temp = second;
             second = Math.max(first + nums[i], second);
             first = temp;
+            System.out.println(second);
         }
         return second;
     }
