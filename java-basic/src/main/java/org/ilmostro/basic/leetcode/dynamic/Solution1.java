@@ -17,6 +17,11 @@ package org.ilmostro.basic.leetcode.dynamic;
  */
 public class Solution1 {
 
+    public static void main(String[] args) {
+        int i = new Solution1().fib(45);
+        System.out.println(i);
+    }
+
     public int fib(int n) {
         if (n <= 0) {
             return 0;
