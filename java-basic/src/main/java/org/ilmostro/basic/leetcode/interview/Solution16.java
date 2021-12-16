@@ -1,34 +1,40 @@
 package org.ilmostro.basic.leetcode.interview;
 
-import org.ilmostro.basic.algorithm.ListNode;
+import org.ilmostro.basic.algorithm.TreeNode;
+
+import java.util.Stack;
 
 /**
  *
- * 给定单向链表的头指针和一个要删除的节点的值，定义一个函数删除该节点。
+ * 设计一个算法，找出二叉搜索树中指定节点的“下一个”节点（也即中序后继）。
  *
- * 返回删除后的链表的头节点。
- *
- * 注意：此题对比原题有改动
+ * 如果指定节点没有对应的“下一个”节点，则返回null。
  *
  * 示例 1:
  *
- * 输入: head = [4,5,1,9], val = 5
- * 输出: [4,1,9]
- * 解释: 给定你链表中值为 5 的第二个节点，那么在调用了你的函数之后，该链表应变为 4 -> 1 -> 9.
+ * 输入: root = [2,1,3], p = 1
+ *
+ *   2
+ *  / \
+ * 1   3
+ *
+ * 输出: 2
  * 示例 2:
  *
- * 输入: head = [4,5,1,9], val = 1
- * 输出: [4,5,9]
- * 解释: 给定你链表中值为 1 的第三个节点，那么在调用了你的函数之后，该链表应变为 4 -> 5 -> 9.
- *  
+ * 输入: root = [5,3,6,2,4,null,null,1], p = 6
  *
- * 说明：
+ *       5
+ *      / \
+ *     3   6
+ *    / \
+ *   2   4
+ *  /
+ * 1
  *
- * 题目保证链表中节点的值互不相同
- * 若使用 C 或 C++ 语言，你不需要 free 或 delete 被删除的节点
+ * 输出: null
  *
  * 来源：力扣（LeetCode）
- * 链接：https://leetcode-cn.com/problems/shan-chu-lian-biao-de-jie-dian-lcof
+ * 链接：https://leetcode-cn.com/problems/successor-lcci
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  *
  * @author li.bowei
@@ -36,39 +42,35 @@ import org.ilmostro.basic.algorithm.ListNode;
 public class Solution16 {
 
     public static void main(String[] args) {
-        int[] nums = new int[]{-3, 5, -99};
-        ListNode root = new ListNode(nums);
-        ListNode listNode = new Solution16().deleteNode(root, -99);
-        System.out.println(listNode);
+
+        TreeNode root = new TreeNode(2);
+        root.left = new TreeNode(1);
+        root.right = new TreeNode(3);
+
+        TreeNode treeNode = new Solution16().inorderSuccessor(root, root.left);
+        System.out.println(treeNode.val);
     }
 
-    public ListNode deleteNode(ListNode head, int val) {
-        return recursive(head, val);
-    }
-
-    public ListNode normal(ListNode head, int val){
-        ListNode dummy = new ListNode(0, head);
-        ListNode curr = dummy;
-        while(curr != null && curr.next != null){
-            if(curr.next.val == val){
-                curr.next = curr.next.next;
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode curr = root;
+        boolean next = false;
+        while(curr != null || !stack.isEmpty()){
+            while(curr != null){
+                stack.push(curr);
+                curr = curr.left;
             }
-            curr = curr.next;
+            if(!stack.isEmpty()){
+                curr = stack.pop();
+                if(next){
+                    return curr;
+                }
+                if(curr == p){
+                    next = true;
+                }
+                curr = curr.right;
+            }
         }
-        return dummy.next;
-    }
-
-    public ListNode recursive(ListNode head, int val){
-        if(head == null){
-            return null;
-        }
-        ListNode res = deleteNode(head.next, val);
-        if(head.val == val){
-            System.out.println(head);
-            return res;
-        }else{
-            head.next = res;
-            return head;
-        }
+        return null;
     }
 }

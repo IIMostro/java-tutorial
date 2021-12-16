@@ -2,50 +2,74 @@ package org.ilmostro.basic.leetcode.dynamic;
 
 /**
  *
- * 给你一个正整数数组 values，其中 values[i] 表示第 i 个观光景点的评分，并且两个景点 i 和 j 之间的 距离 为 j - i。
+ * 给你一个整数数组 nums ，请你求出乘积为正数的最长子数组的长度。
  *
- * 一对景点（i < j）组成的观光组合的得分为 values[i] + values[j] + i - j ，也就是景点的评分之和 减去 它们两者之间的距离。
+ * 一个数组的子数组是由原数组中零个或者更多个连续数字组成的数组。
  *
- * 返回一对观光景点能取得的最高分。
+ * 请你返回乘积为正数的最长子数组长度。
  *
  *  
  *
- * 示例 1：
+ * 示例  1：
  *
- * 输入：values = [8,1,5,2,6]
- * 输出：11
- * 解释：i = 0, j = 2, values[i] + values[j] + i - j = 8 + 5 + 0 - 2 = 11
+ * 输入：nums = [1,-2,-3,4]
+ * 输出：4
+ * 解释：数组本身乘积就是正数，值为 24 。
  * 示例 2：
  *
- * 输入：values = [1,2]
+ * 输入：nums = [0,1,-2,-3,-4]
+ * 输出：3
+ * 解释：最长乘积为正数的子数组为 [1,-2,-3] ，乘积为 6 。
+ * 注意，我们不能把 0 也包括到子数组中，因为这样乘积为 0 ，不是正数。
+ * 示例 3：
+ *
+ * 输入：nums = [-1,-2,-3,0,1]
  * 输出：2
+ * 解释：乘积为正数的最长子数组是 [-1,-2] 或者 [-2,-3] 。
+ * 示例 4：
+ *
+ * 输入：nums = [-1,2]
+ * 输出：1
+ * 示例 5：
+ *
+ * 输入：nums = [1,2,3,5,-6,4,0,10]
+ * 输出：4
  *  
  *
  * 提示：
  *
- * 2 <= values.length <= 5 * 104
- * 1 <= values[i] <= 1000
+ * 1 <= nums.length <= 10^5
+ * -10^9 <= nums[i] <= 10^9
  *
  * 来源：力扣（LeetCode）
- * 链接：https://leetcode-cn.com/problems/best-sightseeing-pair
+ * 链接：https://leetcode-cn.com/problems/maximum-length-of-subarray-with-positive-product
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  *
  * @author li.bowei
  */
 public class Solution13 {
 
-    public static void main(String[] args) {
-        int[] nums = {8,1,5,2,6};
-        int i = new Solution13().maxScoreSightseeingPair(nums);
-        System.out.println(i);
-    }
-
-    public int maxScoreSightseeingPair(int[] values) {
-        int p = 0, r = values[0];
-        for (int i = 1; i < values.length; i++) {
-            p = Math.max(p, r + values[i] - i);
-            r = Math.max(r, values[i] + i);
+    public int getMaxLen(int[] nums) {
+        int length = nums.length;
+        int positive = nums[0] > 0 ? 1 : 0;
+        int negative = nums[0] < 0 ? 1 : 0;
+        int maxLength = positive;
+        for (int i = 1; i < length; i++) {
+            if (nums[i] > 0) {
+                positive++;
+                negative = negative > 0 ? negative + 1 : 0;
+            } else if (nums[i] < 0) {
+                // 为负数的时候需要转换一下positive和negative的位置
+                int newPositive = negative > 0 ? negative + 1 : 0;
+                int newNegative = positive + 1;
+                positive = newPositive;
+                negative = newNegative;
+            } else {
+                positive = 0;
+                negative = 0;
+            }
+            maxLength = Math.max(maxLength, positive);
         }
-        return p;
+        return maxLength;
     }
 }

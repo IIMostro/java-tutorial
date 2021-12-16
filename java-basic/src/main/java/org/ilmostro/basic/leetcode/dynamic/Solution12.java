@@ -33,10 +33,12 @@ public class Solution12 {
     }
 
     public int maxProduct(int[] nums) {
-        if (nums == null || nums.length <= 0) return 0;
-        int p = 1, r = 1;
-        for (int num : nums) {
-            p = Math.max(p, p * num);
+        int p = nums[0], q = nums[0], r = nums[0];
+        int length = nums.length;
+        for (int i = 1; i < length; ++i) {
+            int mx = p, mn = q;
+            p = Math.max(mx * nums[i], Math.max(nums[i], mn * nums[i]));
+            q = Math.min(mn * nums[i], Math.min(nums[i], mx * nums[i]));
             r = Math.max(p, r);
         }
         return r;
