@@ -41,7 +41,7 @@ public class Solution14 {
     }
 
     public int maxProfit(int[] prices) {
-        return greed(prices);
+        return dynamicV1(prices);
     }
 
     public int dynamic(int[] prices){
@@ -53,6 +53,17 @@ public class Solution14 {
             max = Math.max((prices[i] - minimum[i]), max);
         }
         return max;
+    }
+
+
+    public int dynamicV1(int[] prices) {
+        int n = prices.length;
+        int sell = 0, buy = -prices[0];
+        for (int i = 1; i < n; ++i) {
+            sell = Math.max(sell, buy + prices[i]);
+            buy = Math.max(buy, sell - prices[i]);
+        }
+        return sell;
     }
 
     public int greed(int[] prices){
