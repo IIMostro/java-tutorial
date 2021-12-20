@@ -40,6 +40,13 @@ import org.ilmostro.basic.annotation.Attention;
 @Attention("这是个关于回溯和剪枝的重点算法！")
 public class Solution27 {
 
+    public static void main(String[] args) {
+        char[][] board = {{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}};
+        String word = "ABCCED";
+        boolean exist = new Solution27().exist(board, word);
+        System.out.println(exist);
+    }
+
     public boolean exist(char[][] board, String word) {
         char[] words = word.toCharArray();
         for (int i = 0; i < board.length; i++) {
@@ -52,6 +59,7 @@ public class Solution27 {
 
     boolean dfs(char[][] board, char[] word, int i, int j, int k) {
         if (i >= board.length || i < 0 || j >= board[0].length || j < 0 || board[i][j] != word[k]) return false;
+        //只有 board[i][j] == word[k]才会往下走
         if (k == word.length - 1) return true;
         board[i][j] = '\0';
         boolean res = dfs(board, word, i + 1, j, k + 1) || dfs(board, word, i - 1, j, k + 1) ||
