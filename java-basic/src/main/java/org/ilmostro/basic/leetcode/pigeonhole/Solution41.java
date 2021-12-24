@@ -1,4 +1,4 @@
-package org.ilmostro.basic.leetcode;
+package org.ilmostro.basic.leetcode.pigeonhole;
 
 /**
  *

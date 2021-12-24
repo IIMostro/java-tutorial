@@ -42,28 +42,30 @@ import java.util.Queue;
  */
 public class MedianFinder {
 
-    Queue<Integer> min;
-    Queue<Integer> max;
+    //数字比较大的一边，这里用最小堆
+    Queue<Integer> high;
+    //数字比较小的一边，这里用最大堆
+    Queue<Integer> low;
 
     /**
      * initialize your data structure here.
      */
     public MedianFinder() {
-        min = new PriorityQueue<>();
-        max = new PriorityQueue<>((v1, v2) -> v2 - v1);
+        high = new PriorityQueue<>();
+        low = new PriorityQueue<>((v1, v2) -> v2 - v1);
     }
 
     public void addNum(int num) {
-        if (min.size() != max.size()) {
-            min.offer(num);
-            max.offer(min.poll());
+        if (high.size() != low.size()) {
+            high.offer(num);
+            low.offer(high.poll());
         } else {
-            max.offer(num);
-            min.offer(max.poll());
+            low.offer(num);
+            high.offer(low.poll());
         }
     }
 
     public double findMedian() {
-        return max.size() != min.size() ? min.peek() : (max.peek() + min.peek()) / 2.0;
+        return low.size() != high.size() ? high.peek() : (low.peek() + high.peek()) / 2.0;
     }
 }
