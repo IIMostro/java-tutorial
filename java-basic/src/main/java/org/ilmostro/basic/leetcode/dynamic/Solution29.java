@@ -40,9 +40,7 @@ public class Solution29 {
     }
 
     public List<List<Integer>> normal(int numRows) {
-        if(numRows <=0){
-            return null;
-        }
+        if(numRows <=0) return null;
         List<List<Integer>> result = new ArrayList<>();
         for (int i = 0; i < numRows; ++i) {
             List<Integer> list = new ArrayList<>();

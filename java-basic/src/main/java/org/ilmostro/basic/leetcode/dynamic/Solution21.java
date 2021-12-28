@@ -36,15 +36,15 @@ public class Solution21 {
         int max = 0;
         int reverse = 0;
         int current = 0;
-        for(int i=0;i<32;i++){
-            if((num&1)==1){
+        for (int i = 0; i < 32; i++) {
+            if ((num & 1) == 1) {
                 current++;
                 reverse++;
-            }else{
-                reverse = current+1;
+            } else {
+                reverse = current + 1;
                 current = 0;
             }
-            if(reverse>max) max = reverse;
+            if (reverse > max) max = reverse;
             num >>= 1;
         }
         return max;

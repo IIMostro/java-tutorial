@@ -37,6 +37,7 @@ public class Solution8 {
         if (nums == null || nums.length <= 0) return 0;
         int p = 0, r = nums[0];
         for (int num : nums) {
+            //f(i)=max{f(i−1)+nums[i],nums[i]} 这就是这个题目的转移方程
             p = Math.max(p + num, num);
             r = Math.max(p, r);
         }

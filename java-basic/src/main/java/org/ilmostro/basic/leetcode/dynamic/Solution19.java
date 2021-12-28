@@ -23,7 +23,7 @@ public class Solution19 {
 
     public static void main(String[] args) {
         int[] nums = {1, 2, 3, 0, 2};
-        int i = new Solution19().maxProfit(nums);
+        int i = new Solution19().dynamic(nums);
         System.out.println(i);
     }
 
@@ -41,8 +41,11 @@ public class Solution19 {
         dp[0][1] = -prices[0];
         dp[0][2] = 0;
         for (int i = 1; i < prices.length; i++) {//从[1]...[n-1]
+            // 持有股票： 1.昨天持有股票 2.本日买入（条件：昨天不持有，且不是卖出）
             dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][2]);
+            //本日卖出 : (条件:昨天持有)
             dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
+            // 不持有，但也不是卖出 : 1.昨天卖出，不持有  2.昨天没卖出，但也不持有
             dp[i][2] = dp[i - 1][1] + prices[i];
 
         }
@@ -51,24 +54,19 @@ public class Solution19 {
 
     public int dynamic(int[] prices) {
         int n = prices.length;
-        //买入
-        int p = -prices[0];
-
-        //卖出
-        int q = 0;
-        int r = 0;
+        int buy = -prices[0];
+        int sell = 0;
+        int freeze = 0;
         for (int i = 1; i < n; ++i) {
-            int newf0 = Math.max(p, r - prices[i]);
+            //这个代表是冷冻期有收益 freeze - prices[i]
+            int tempBuy = Math.max(buy, freeze - prices[i]);
+            int tempSell = buy + prices[i];
+            int tempFreeze = Math.max(sell, freeze);
 
-            //卖出，看是第一次卖出高还是第二次卖出高
-            int newf1 = p + prices[i];
-            int newf2 = Math.max(q, r);
-
-            p = newf0;
-            q = newf1;
-            r = newf2;
+            buy = tempBuy;
+            sell = tempSell;
+            freeze = tempFreeze;
         }
-
-        return Math.max(q, r);
+        return Math.max(sell, freeze);
     }
 }

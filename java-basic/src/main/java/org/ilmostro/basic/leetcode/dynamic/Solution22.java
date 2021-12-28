@@ -36,7 +36,7 @@ package org.ilmostro.basic.leetcode.dynamic;
 public class Solution22 {
 
     public static void main(String[] args) {
-        int i = new Solution22().waysToChange(30);
+        int i = new Solution22().waysToChange(10);
         System.out.println(i);
     }
 
@@ -44,9 +44,9 @@ public class Solution22 {
         int[] coins = {25, 10, 5, 1};
         int[] f = new int[n + 1];
         f[0] = 1;
-        for (int c = 0; c < 4; ++c) {
+        for (int c = 0; c < 4; c++) {
             int coin = coins[c];
-            for (int i = coin; i <= n; ++i) {
+            for (int i = coin; i <= n; i++) {
                 f[i] = (f[i] + f[i - coin]) % 1000000007;
             }
         }

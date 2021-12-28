@@ -80,4 +80,22 @@ public class Solution23 {
         return dp[s.length()];
     }
 
+    public boolean optimize(String s, List<String> wordDict){
+        int length = s.length();
+        boolean[] dp = new boolean[length + 1];
+        dp[0] = true;
+        for (int i = 0; i < length; i++) {
+            if (!dp[i]) {
+                continue;
+            }
+            for (String word : wordDict) {
+                if (word.length() + i <= s.length() && s.startsWith(word, i)) {
+                    dp[i + word.length()] = true;
+                }
+            }
+        }
+        return dp[length];
+    }
+
+
 }

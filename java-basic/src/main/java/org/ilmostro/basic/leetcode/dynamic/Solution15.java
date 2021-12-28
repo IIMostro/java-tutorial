@@ -80,6 +80,15 @@ public class Solution15 {
         return r;
     }
 
+    public int dynamicV1(int[] prices){
+        int sell = 0, buy = -prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            sell = Math.max(buy + prices[i], sell);
+            buy = Math.max(buy, sell - prices[i]);
+        }
+        return sell;
+    }
+
     public int greed(int[] prices) {
         int max = 0;
         for (int i = 1; i < prices.length; i++) {

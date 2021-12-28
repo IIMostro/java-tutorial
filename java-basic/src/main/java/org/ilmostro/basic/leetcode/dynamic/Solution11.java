@@ -32,17 +32,17 @@ public class Solution11 {
 
     public int translateNum(int num) {
         String value = String.valueOf(num);
-        int p = 0, q = 0, r = 1;
+        int p, q = 0, r = 1;
         for (int i = 0; i < value.length(); i++) {
             p = q;
             q = r;
             r = q;
-            if(i == 0){
+            if (i == 0) {
                 continue;
             }
             int curr = (value.charAt(i - 1) - '0') * 10 + (value.charAt(i) - '0');
-            if(curr >= 10 && curr <= 25){
-                r+=p;
+            if (curr >= 10 && curr <= 25) {
+                r += p;
             }
         }
         return r;
