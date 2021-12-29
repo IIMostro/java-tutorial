@@ -6,4 +6,10 @@ package org.ilmostro.basic.annotation;
 public @interface Attention {
 
     String value() default "重点关注";
+
+    Solution solution();
+
+    enum Solution{
+        DYNAMIC, BACKTRACK
+    }
 }
