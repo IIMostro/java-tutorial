@@ -45,6 +45,11 @@ package org.ilmostro.basic.leetcode.dynamic;
  */
 public class Solution46 {
 
+    public static void main(String[] args) {
+        int[] arr = {1,2,3};
+        int i = new Solution46().combinationSum4(arr, 4);
+    }
+
     public int combinationSum4(int[] nums, int target) {
         if (nums == null || nums.length <= 0) return 0;
         int[] dp = new int[target + 1];
