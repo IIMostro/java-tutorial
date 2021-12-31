@@ -37,7 +37,7 @@ import java.util.Arrays;
  *
  * @author li.bowei
  */
-public class Solution2 {
+public class SquaresOfASortedArray {
 
     public int[] sortedSquares(int[] nums) {
 

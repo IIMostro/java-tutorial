@@ -21,11 +21,11 @@ package org.ilmostro.basic.leetcode.primary;
  *
  * @author li.bowei
  */
-public class Solution7 {
+public class ReverseWordsInAString_III {
 
     public static void main(String[] args) {
         String message = "Let's take LeetCode contest";
-        String s = new Solution7().reverseWords(message);
+        String s = new ReverseWordsInAString_III().reverseWords(message);
         System.out.println(s);
     }
 

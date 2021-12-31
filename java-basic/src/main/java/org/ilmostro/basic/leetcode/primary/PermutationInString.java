@@ -31,10 +31,10 @@ import java.util.Arrays;
  *
  * @author li.bowei
  */
-public class Solution10 {
+public class PermutationInString {
 
     public static void main(String[] args) {
-        boolean b = new Solution10().checkInclusion("ab", "eidboaoo");
+        boolean b = new PermutationInString().checkInclusion("ab", "eidboaoo");
         System.out.println(b);
     }
 

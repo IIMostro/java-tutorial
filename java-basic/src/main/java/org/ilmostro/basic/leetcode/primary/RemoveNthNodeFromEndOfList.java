@@ -39,7 +39,7 @@ import org.ilmostro.basic.algorithm.ListNode;
  *
  * @author li.bowei
  */
-public class Solution9 {
+public class RemoveNthNodeFromEndOfList {
 
     public ListNode removeNthFromEnd(ListNode head, int n) {
         ListNode last = head;

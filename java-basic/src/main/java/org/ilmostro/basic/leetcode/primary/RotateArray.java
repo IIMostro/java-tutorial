@@ -40,7 +40,7 @@ package org.ilmostro.basic.leetcode.primary;
  *
  * @author li.bowei
  */
-public class Solution3 {
+public class RotateArray {
 
     public void rotate(int[] nums, int k) {
         if (nums == null || nums.length <= 0) return;

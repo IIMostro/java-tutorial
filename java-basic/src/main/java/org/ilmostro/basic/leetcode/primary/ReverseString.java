@@ -28,12 +28,12 @@ package org.ilmostro.basic.leetcode.primary;
  *
  * @author li.bowei
  */
-public class Solution6 {
+public class ReverseString {
 
     public static void main(String[] args) {
         String message = "hello";
         char[] chars = message.toCharArray();
-        new Solution6().normal(chars);
+        new ReverseString().normal(chars);
         for (char aChar : chars) {
             System.out.println(aChar);
         }

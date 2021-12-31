@@ -40,11 +40,11 @@ import java.util.Map;
  *
  * @author li.bowei
  */
-public class Solution5 {
+public class TwoSum_II_InputArrayIsSorted {
 
     public static void main(String[] args) {
         int[] arr = {2,7, 11, 15};
-        int[] ints = new Solution5().twoSum(arr, 9);
+        int[] ints = new TwoSum_II_InputArrayIsSorted().twoSum(arr, 9);
         System.out.println(ints);
     }
 

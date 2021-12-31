@@ -18,11 +18,11 @@ package org.ilmostro.basic.leetcode.primary;
  *
  * @author li.bowei
  */
-public class Solution4 {
+public class MoveZeroes {
 
     public static void main(String[] args) {
         int[] arr = {0, 1, 0, 3, 12};
-        new Solution4().moveZeroes(arr);
+        new MoveZeroes().moveZeroes(arr);
         for (int i : arr) {
             System.out.println(i);
         }

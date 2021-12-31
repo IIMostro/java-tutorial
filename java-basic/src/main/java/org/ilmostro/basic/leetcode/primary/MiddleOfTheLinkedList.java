@@ -34,7 +34,7 @@ import org.ilmostro.basic.algorithm.ListNode;
  *
  * @author li.bowei
  */
-public class Solution8 {
+public class MiddleOfTheLinkedList {
 
     public ListNode middleNode(ListNode head) {
         int length = 0;

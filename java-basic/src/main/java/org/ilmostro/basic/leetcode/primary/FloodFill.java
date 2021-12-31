@@ -32,7 +32,7 @@ package org.ilmostro.basic.leetcode.primary;
  *
  * @author li.bowei
  */
-public class Solution11 {
+public class FloodFill {
 
     public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
         dfs(image, sr, sc, newColor, image[sr][sc]);
