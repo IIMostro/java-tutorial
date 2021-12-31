@@ -27,7 +27,7 @@ import java.util.List;
  *
  * @author li.bowei
  */
-public class Solution13 {
+public class BinaryTreePostorderTraversal {
 
     public List<Integer> postorderTraversal(TreeNode root) {
         return result;

@@ -36,11 +36,11 @@ package org.ilmostro.basic.leetcode.dfs;
  *
  * @author li.bowei
  */
-public class Solution19 {
+public class MaxAreaOfIsland {
 
     public static void main(String[] args) {
         int[][] grid = {{1}};
-        int i = new Solution19().maxAreaOfIsland(grid);
+        int i = new MaxAreaOfIsland().maxAreaOfIsland(grid);
         System.out.println(i);
     }
 

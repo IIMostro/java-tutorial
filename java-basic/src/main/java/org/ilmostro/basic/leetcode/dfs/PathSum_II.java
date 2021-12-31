@@ -42,7 +42,7 @@ import java.util.Stack;
  *
  * @author li.bowei
  */
-public class Solution8 {
+public class PathSum_II {
 
     public static void main(String[] args) {
         TreeNode root = new TreeNode(5);
@@ -56,7 +56,7 @@ public class Solution8 {
         root.right.right.left = new TreeNode(5);
         root.right.right.right = new TreeNode(1);
 
-        List<List<Integer>> lists = new Solution8().pathSum(root, 22);
+        List<List<Integer>> lists = new PathSum_II().pathSum(root, 22);
     }
 
     public List<List<Integer>> pathSum(TreeNode root, int targetSum) {

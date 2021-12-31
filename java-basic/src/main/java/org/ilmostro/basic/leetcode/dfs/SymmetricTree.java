@@ -35,7 +35,7 @@ import org.ilmostro.basic.algorithm.TreeNode;
  *
  * @author li.bowei
  */
-public class Solution3 {
+public class SymmetricTree {
 
     public boolean isSymmetric(TreeNode root) {
         if (root == null) return true;

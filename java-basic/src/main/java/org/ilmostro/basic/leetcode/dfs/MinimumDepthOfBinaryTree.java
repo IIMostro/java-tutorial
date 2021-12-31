@@ -33,7 +33,7 @@ import org.ilmostro.basic.algorithm.TreeNode;
  *
  * @author li.bowei
  */
-public class Solution6 {
+public class MinimumDepthOfBinaryTree {
 
     public int minDepth(TreeNode root) {
         if (root == null) return 0;

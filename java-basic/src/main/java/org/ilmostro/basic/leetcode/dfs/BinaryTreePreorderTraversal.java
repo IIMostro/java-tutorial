@@ -52,7 +52,7 @@ import java.util.Stack;
  *
  * @author li.bowei
  */
-public class Solution12 {
+public class BinaryTreePreorderTraversal {
 
     List<Integer> result = new ArrayList<>();
     public List<Integer> preorderTraversal(TreeNode root) {

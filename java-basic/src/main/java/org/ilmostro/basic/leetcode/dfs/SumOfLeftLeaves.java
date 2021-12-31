@@ -21,7 +21,7 @@ import org.ilmostro.basic.algorithm.TreeNode;
  *
  * @author li.bowei
  */
-public class Solution17 {
+public class SumOfLeftLeaves {
 
     public static void main(String[] args) {
         TreeNode root = new TreeNode(3);
@@ -29,7 +29,7 @@ public class Solution17 {
         root.right = new TreeNode(20);
         root.right.left = new TreeNode(15);
         root.right.right = new TreeNode(7);
-        int i = new Solution17().sumOfLeftLeaves(root);
+        int i = new SumOfLeftLeaves().sumOfLeftLeaves(root);
         System.out.println(i);
     }
 

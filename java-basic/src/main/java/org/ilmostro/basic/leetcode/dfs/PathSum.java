@@ -43,14 +43,14 @@ import org.ilmostro.basic.algorithm.TreeNode;
  *
  * @author li.bowei
  */
-public class Solution7 {
+public class PathSum {
 
     public static void main(String[] args) {
         TreeNode root = new TreeNode(1);
         root.left = new TreeNode(-2);
         root.left.left = new TreeNode(-3);
 
-        boolean b = new Solution7().hasPathSum(root, 3);
+        boolean b = new PathSum().hasPathSum(root, 3);
         System.out.println(b);
     }
 

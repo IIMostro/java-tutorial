@@ -42,7 +42,7 @@ package org.ilmostro.basic.leetcode.dfs;
  *
  * @author li.bowei
  */
-public class Solution15 {
+public class NumberOfIslands {
 
     public int numIslands(char[][] grid) {
         if (grid == null || grid.length <= 0) return 0;

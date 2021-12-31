@@ -26,7 +26,7 @@ import org.ilmostro.basic.algorithm.TreeNode;
  *
  * @author li.bowei
  */
-public class Solution4 {
+public class MaximumDepthOfBinaryTree {
 
     public int maxDepth(TreeNode root) {
         if(root == null) return 0;

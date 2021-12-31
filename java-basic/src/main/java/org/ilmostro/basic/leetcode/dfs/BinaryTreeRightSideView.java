@@ -36,7 +36,7 @@ import java.util.*;
  *
  * @author li.bowei
  */
-public class Solution14 {
+public class BinaryTreeRightSideView {
 
     public static void main(String[] args) {
         TreeNode root = new TreeNode(1);
@@ -44,7 +44,7 @@ public class Solution14 {
         root.left.right = new TreeNode(5);
         root.right = new TreeNode(3);
         root.right.right = new TreeNode(4);
-        List<Integer> integers = new Solution14().rightSideView(root);
+        List<Integer> integers = new BinaryTreeRightSideView().rightSideView(root);
         System.out.println(integers);
     }
 

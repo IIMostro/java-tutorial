@@ -42,7 +42,7 @@ import java.util.List;
  *
  * @author li.bowei
  */
-public class Solution9 {
+public class FlattenBinaryTreeToLinkedList {
 
     public void flatten(TreeNode root) {
         List<TreeNode> list = new ArrayList<>();

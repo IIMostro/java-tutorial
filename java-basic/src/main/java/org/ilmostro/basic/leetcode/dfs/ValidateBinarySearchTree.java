@@ -30,10 +30,10 @@ import org.ilmostro.basic.algorithm.TreeNode;
  *
  * @author li.bowei
  */
-public class Solution2 {
+public class ValidateBinarySearchTree {
 
     public static void main(String[] args) {
-        boolean validBST = new Solution2().isValidBST(new TreeNode(Integer.MAX_VALUE));
+        boolean validBST = new ValidateBinarySearchTree().isValidBST(new TreeNode(Integer.MAX_VALUE));
         System.out.println(validBST);
     }
 

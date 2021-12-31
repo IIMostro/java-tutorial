@@ -37,7 +37,7 @@ import org.ilmostro.basic.algorithm.TreeNode;
  *
  * @author li.bowei
  */
-public class Solution11 {
+public class BinaryTreeMaximumPathSum {
 
     public int maxPathSum(TreeNode root) {
         dfs(root);

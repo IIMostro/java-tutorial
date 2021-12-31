@@ -45,7 +45,7 @@ import java.util.Queue;
  *
  * @author li.bowei
  */
-public class Solution10 {
+public class PopulatingNextRightPointersInEachNode {
 
     static class Node {
         public int val;

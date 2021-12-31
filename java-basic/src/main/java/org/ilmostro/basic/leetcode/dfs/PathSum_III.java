@@ -35,7 +35,7 @@ import org.ilmostro.basic.algorithm.TreeNode;
  *
  * @author li.bowei
  */
-public class Solution18 {
+public class PathSum_III {
 
     public static void main(String[] args) {
         TreeNode root = new TreeNode(10);

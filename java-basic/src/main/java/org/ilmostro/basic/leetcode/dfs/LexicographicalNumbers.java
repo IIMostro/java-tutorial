@@ -31,10 +31,10 @@ import java.util.List;
  *
  * @author li.bowei
  */
-public class Solution16 {
+public class LexicographicalNumbers {
 
     public static void main(String[] args) {
-        List<Integer> integers = new Solution16().lexicalOrder(13);
+        List<Integer> integers = new LexicographicalNumbers().lexicalOrder(13);
         for (Integer integer : integers) {
             System.out.println(integer);
         }

@@ -38,10 +38,10 @@ import org.ilmostro.basic.algorithm.TreeNode;
  *
  * @author li.bowei
  */
-public class Solution5 {
+public class BalancedBinaryTree {
 
     public static void main(String[] args) {
-        boolean balanced = new Solution5().isBalanced(new TreeNode(1));
+        boolean balanced = new BalancedBinaryTree().isBalanced(new TreeNode(1));
         System.out.println(balanced);
     }
 

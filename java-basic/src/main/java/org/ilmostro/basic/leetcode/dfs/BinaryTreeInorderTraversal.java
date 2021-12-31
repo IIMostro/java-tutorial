@@ -50,7 +50,7 @@ import java.util.Stack;
  *
  * @author li.bowei
  */
-public class Solution1 {
+public class BinaryTreeInorderTraversal {
 
     public List<Integer> inorderTraversal(TreeNode root) {
         return recursion(root);
