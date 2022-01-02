@@ -18,22 +18,21 @@ import java.util.PriorityQueue;
 public class SlidingWindowMaximum {
 
     public static void main(String[] args) {
-        int[] ints = new int[]{9, 11};
-        int[] ints1 = new SlidingWindowMaximum().maxSlidingWindow(ints, 2);
+        int[] ints = {1,3,-1,-3,5,3,6,7};
+        int[] ints1 = new SlidingWindowMaximum().maxSlidingWindow(ints, 3);
         for (int i : ints1) {
             System.out.println(i);
         }
     }
 
     public int[] maxSlidingWindow(int[] nums, int k) {
-
         PriorityQueue<int[]> queue = new PriorityQueue<>((v1, v2) -> v1[0] != v2[0] ? v2[0] - v1[0] : v2[1] - v1[1]);
         for (int i = 0; i < k; i++) {
             queue.offer(new int[]{nums[i], i});
         }
         int[] result = new int[nums.length - k + 1];
         result[0] = queue.peek()[0];
-        for (int i = k; i <= nums.length; ++i) {
+        for (int i = k; i < nums.length; ++i) {
             queue.offer(new int[]{nums[i], i});
             while (queue.peek()[1] <= i - k) {
                 queue.poll();
