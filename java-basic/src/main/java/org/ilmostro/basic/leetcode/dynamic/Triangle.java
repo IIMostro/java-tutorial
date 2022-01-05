@@ -49,23 +49,50 @@ public class Triangle {
 
     public static void main(String[] args) {
         List<List<Integer>> lists = Arrays.asList(Collections.singletonList(2), Arrays.asList(3, 4), Arrays.asList(6, 5, 7), Arrays.asList(4, 1, 8, 3));
-        int i = new Triangle().minimumTotal(lists);
 
+        /*
+            triangle            dp
+               2                 2
+              3 4              5   6
+             6 5 7           11  10  13
+            4 1 8 3        15  11  18  16
+         */
+        int i = new Triangle().minimumTotal(lists);
     }
 
     public int minimumTotal(List<List<Integer>> triangle) {
         int[][] dp = new int[triangle.size()][triangle.size()];
         dp[0][0] = triangle.get(0).get(0);
         for (int i = 1; i < triangle.size(); ++i) {
+            //第一个只有上一个加当前
             dp[i][0] = dp[i - 1][0] + triangle.get(i).get(0);
-            for (int j = 1; j < i; ++j) {
+            //中间的元素则可以判断出上一个左边还是上一个相同位置的元素最小值
+            for (int j = 1; j < i; j++) {
                 dp[i][j] = Math.min(dp[i - 1][j - 1], dp[i - 1][j]) + triangle.get(i).get(j);
             }
+            //最后一个也是只有上一个加当前
             dp[i][i] = dp[i - 1][i - 1] + triangle.get(i).get(i);
         }
         int min = dp[dp.length - 1][0];
         for (int i = 1; i < dp.length; ++i) {
             min = Math.min(min, dp[dp.length - 1][i]);
+        }
+        return min;
+    }
+
+    public int optimize(List<List<Integer>> triangle){
+        int[] dp = new int[triangle.size()];
+        dp[0] = triangle.get(0).get(0);
+        for (int i = 1; i < triangle.size(); i++) {
+            dp[i] = dp[i - 1] + triangle.get(i).get(i);
+            for (int j = i - 1; j > 0; j--) {
+                dp[j] = Math.min(dp[j - 1], dp[j]) + triangle.get(i).get(j);
+            }
+            dp[0] += triangle.get(i).get(0);
+        }
+        int min = dp[0];
+        for (int i = 1; i < triangle.size(); ++i) {
+            min = Math.min(min, dp[i]);
         }
         return min;
     }
