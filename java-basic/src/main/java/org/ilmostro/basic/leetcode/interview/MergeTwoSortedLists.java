@@ -53,8 +53,6 @@ public class MergeTwoSortedLists {
 
     public ListNode recursion(ListNode l1, ListNode l2) {
         if (l1 == null || l2 == null) return l1 == null ? l2 : l1;
-        System.out.println("l1:" + l1);
-        System.out.println("l2:" + l2);
         if (l1.val > l2.val) {
             l2.next = recursion(l1, l2.next);
             return l2;
