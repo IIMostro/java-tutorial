@@ -1,7 +1,5 @@
 package org.ilmostro.basic.leetcode.interview;
 
-import org.ilmostro.basic.annotation.SolveError;
-
 /**
  * 给你一幅由 N × N 矩阵表示的图像，其中每个像素的大小为 4 字节。请你设计一种算法，将图像旋转 90 度。
  * <p>
@@ -52,15 +50,13 @@ import org.ilmostro.basic.annotation.SolveError;
 public class RotateMatrix {
 
     public void rotate(int[][] matrix) {
-
+        forcible(matrix);
     }
 
-    @SolveError
     public void forcible(int[][] matrix){
         int length = matrix.length;
-        for (int i = 0; i < length; i++) {
-            int[] x = matrix[i];
-            for (int j = 0; j < x.length; j++) {
+        for (int i = 0; i < length / 2; i++) {
+            for (int j = 0; j < (length + 1) / 2; j++) {
                 int temp = matrix[i][j];
                 matrix[i][j] = matrix[length - j - 1][i];
                 matrix[length - j - 1][i] = matrix[length - i - 1][length - j - 1];
