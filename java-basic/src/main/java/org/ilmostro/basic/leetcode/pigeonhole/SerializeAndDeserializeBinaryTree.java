@@ -2,9 +2,9 @@ package org.ilmostro.basic.leetcode.pigeonhole;
 
 import org.ilmostro.basic.algorithm.TreeNode;
 
+import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.Objects;
-import java.util.Queue;
+import java.util.List;
 
 /**
  * 序列化是将一个数据结构或者对象转换为连续的比特位的操作，进而可以将转换后的数据存储在一个文件或者内存中，同时也可以通过网络传输到另一个计算机环境，采取相反方式重构得到原数据。
@@ -31,51 +31,37 @@ public class SerializeAndDeserializeBinaryTree {
         }
     }
 
-    // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
-        if (root == null) return "";
-        StringBuilder res = new StringBuilder();
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-        while (!queue.isEmpty()) {
-            TreeNode node = queue.poll();
-            if (node != null) {
-                res.append(node.val).append(",");
-                queue.add(node.left);
-                queue.add(node.right);
-            } else res.append("null,");
-        }
-        if (res.charAt(res.length() - 1) == ',') {
-            res.deleteCharAt(res.length() - 1);
-        }
-        return res.toString();
+        return rserialize(root, "");
     }
 
-    // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
-        if(Objects.isNull(data) || data.equals("")){
-            return null;
-        }
-        String[] split = data.substring(1, data.length() - 2).split(",");
-        if (split.length <= 0) {
-            return null;
-        }
+        String[] dataArray = data.split(",");
+        List<String> dataList = new LinkedList<>(Arrays.asList(dataArray));
+        return rdeserialize(dataList);
+    }
 
-        TreeNode root = new TreeNode(Integer.parseInt(split[0]));
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-        int size = 0;
-        while(!queue.isEmpty()){
-            TreeNode node = queue.poll();
-            if(!split[++size].equals("null")){
-                node.left = new TreeNode(Integer.parseInt(split[size]));
-                queue.offer(node.left);
-            }
-            if(!split[++size].equals("null")){
-                node.right = new TreeNode(Integer.parseInt(split[size]));
-                queue.offer(node.right);
-            }
+    public String rserialize(TreeNode root, String str) {
+        if (root == null) {
+            str += "None,";
+        } else {
+            str += root.val + ",";
+            str = rserialize(root.left, str);
+            str = rserialize(root.right, str);
         }
+        return str;
+    }
+
+    public TreeNode rdeserialize(List<String> dataList) {
+        if (dataList.get(0).equals("None")) {
+            dataList.remove(0);
+            return null;
+        }
+        TreeNode root = new TreeNode(Integer.parseInt(dataList.get(0)));
+        dataList.remove(0);
+        root.left = rdeserialize(dataList);
+        root.right = rdeserialize(dataList);
+
         return root;
     }
 }
