@@ -10,6 +10,6 @@ public @interface Attention {
     Solution solution();
 
     enum Solution{
-        DYNAMIC, BACKTRACK
+        DYNAMIC, BACKTRACK, STRING
     }
 }
