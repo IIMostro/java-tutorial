@@ -22,21 +22,20 @@
         <guava.version>23.0</guava.version>
         <common-lang.version>2.6</common-lang.version>
         <hutool.version>4.5.7</hutool.version>
+        <vertx.version>4.1.2</vertx.version>
     </properties>
 
     <modules>
         <module>disruptor-start</module>
         <module>flink-tutorial</module>
-        <module>java-agent</module>
         <module>java-basic</module>
         <module>shiro-tutorial</module>
         <module>spring-boot-webflux</module>
         <module>spring-security-tutorial</module>
-        <module>springboot-netty-websocket</module>
         <module>springboot-start</module>
-        <module>spring-boot-vertx-cluster</module>
         <module>spring-boot-mysql</module>
         <module>spring-boot-redis</module>
+        <module>spring-boot-pure</module>
     </modules>
 
     <dependencyManagement>
