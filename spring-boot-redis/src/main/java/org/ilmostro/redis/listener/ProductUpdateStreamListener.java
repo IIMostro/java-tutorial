@@ -1,6 +1,7 @@
 package org.ilmostro.redis.listener;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ilmostro.redis.configuration.RedissionConfiguration;
 import org.springframework.data.redis.connection.stream.MapRecord;
 import org.springframework.data.redis.connection.stream.RecordId;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -26,6 +27,6 @@ public class ProductUpdateStreamListener implements StreamListener<String, MapRe
         String stream = message.getStream();
         Map<String, String> record = message.getValue();
         log.info("recordId:[{}], stream:[{}], record:[{}]",recordId, stream, record);
-        template.opsForStream().acknowledge(RedisConfiguration.REDIS_STREAM_GROUP, message);
+        template.opsForStream().acknowledge(RedissionConfiguration.REDIS_STREAM_GROUP, message);
     }
 }

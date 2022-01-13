@@ -1,9 +1,9 @@
-package org.ilmostro.security.filter;
+package org.ilmostro.redis.security.filter;
 
 import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
-import org.ilmostro.security.configuration.SecurityProperties;
-import org.ilmostro.security.utils.JwtTokenUtils;
+import org.ilmostro.redis.configuration.SecurityProperties;
+import org.ilmostro.redis.utils.JwtTokenUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,4 +1,4 @@
-package org.ilmostro.security.configuration;
+package org.ilmostro.redis.configuration;
 
 import lombok.Getter;
 import lombok.Setter;

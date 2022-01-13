@@ -1,4 +1,4 @@
-package org.ilmostro.security.dto;
+package org.ilmostro.redis.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

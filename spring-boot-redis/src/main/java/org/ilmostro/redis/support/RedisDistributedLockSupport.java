@@ -34,7 +34,7 @@ public class RedisDistributedLockSupport extends AbstractExceptionHandlerSupport
         this.redissonClient = redissonClient;
     }
 
-    @Pointcut("@annotation(org.ilmostro.start.annotation.DistributedLock)")
+    @Pointcut("@annotation(org.ilmostro.redis.annotation.DistributedLock)")
     public void pointcut() {
 
     }

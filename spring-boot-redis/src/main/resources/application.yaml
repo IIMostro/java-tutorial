@@ -6,3 +6,5 @@ spring:
         max-active: 8
         min-idle: 0
         max-idle: 8
+security:
+  model: 'interceptor'

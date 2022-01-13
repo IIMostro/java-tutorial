@@ -1,10 +1,10 @@
-package org.ilmostro.security.utils;
+package org.ilmostro.redis.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.ilmostro.security.configuration.SecurityProperties;
+import org.ilmostro.redis.configuration.SecurityProperties;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;

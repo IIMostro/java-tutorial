@@ -37,7 +37,7 @@ public class RedisDistributedRateLimiterSupport extends AbstractExceptionHandler
         this.redisTemplate = redisTemplate;
     }
 
-    @Pointcut("@annotation(org.ilmostro.start.annotation.DistributedRateLimiter)")
+    @Pointcut("@annotation(org.ilmostro.redis.annotation.DistributedRateLimiter)")
     public void pointcut() {
 
     }
