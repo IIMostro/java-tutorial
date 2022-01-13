@@ -3,6 +3,8 @@ package org.ilmostro.basic.leetcode.pigeonhole;
 import org.ilmostro.basic.algorithm.ListNode;
 
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -29,6 +31,22 @@ public class PalindromeLinkedList {
             if(!compare.get(i).equals(compare.get(j))){
                 return false;
             }
+        }
+        return true;
+    }
+
+    public boolean dequeue(ListNode head){
+        if(head == null || head.next == null) return true;
+        Deque<Integer> deque = new LinkedList<>();
+        while(head!=null){
+            deque.offerLast(head.val);
+            head = head.next;
+        }
+        while(!deque.isEmpty()){
+            Integer left = deque.pollFirst();
+            if(deque.isEmpty()) return true;
+            Integer right = deque.pollLast();
+            if(!left.equals(right)) return false;
         }
         return true;
     }
