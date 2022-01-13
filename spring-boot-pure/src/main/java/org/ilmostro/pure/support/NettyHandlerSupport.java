@@ -2,7 +2,7 @@ package org.ilmostro.pure.support;
 
 import io.netty.channel.ChannelHandler;
 import org.ilmostro.pure.annotation.NettyHandler;
-import org.ilmostro.websocket.handler.PathNotFoundHandler;
+import org.ilmostro.pure.socket.PathNotFoundHandler;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.annotation.AnnotationUtils;

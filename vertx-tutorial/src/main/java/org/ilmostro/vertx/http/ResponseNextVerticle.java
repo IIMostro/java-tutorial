@@ -36,7 +36,7 @@ public class ResponseNextVerticle extends AbstractVerticle {
     vertx.createHttpServer().requestHandler(router)
       .listen(8080, handler ->{
         if(handler.succeeded()){
-          log.info("http server start in 8080...");
+//          log.info("http server start in 8080...");
           promise.complete();
         }else{
           promise.fail(handler.cause());

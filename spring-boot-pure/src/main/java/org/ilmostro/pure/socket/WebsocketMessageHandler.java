@@ -8,7 +8,7 @@ import io.netty.channel.group.ChannelMatchers;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.util.concurrent.GlobalEventExecutor;
-import org.ilmostro.websocket.annotation.NettyHandler;
+import org.ilmostro.pure.annotation.NettyHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

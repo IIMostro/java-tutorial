@@ -31,8 +31,6 @@
         <module>java-basic</module>
         <module>shiro-tutorial</module>
         <module>spring-boot-webflux</module>
-        <module>spring-security-tutorial</module>
-        <module>springboot-start</module>
         <module>spring-boot-mysql</module>
         <module>spring-boot-redis</module>
         <module>spring-boot-pure</module>
