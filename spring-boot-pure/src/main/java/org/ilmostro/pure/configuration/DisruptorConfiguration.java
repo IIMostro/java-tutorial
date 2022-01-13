@@ -1,16 +1,16 @@
-package org.ilmostro.disruptor.configuration;
+package org.ilmostro.pure.configuration;
 
 import com.lmax.disruptor.*;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.EventHandlerGroup;
 import com.lmax.disruptor.dsl.ProducerType;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
-import org.ilmostro.disruptor.entity.ElementEventFactory;
-import org.ilmostro.disruptor.entity.GoodsElement;
-import org.ilmostro.disruptor.mulit.ConsumerEventFactory;
-import org.ilmostro.disruptor.mulit.ConsumerEventHandler;
-import org.ilmostro.disruptor.mulit.SecondConsumerEventHandler;
-import org.ilmostro.disruptor.service.ProcessService;
+import org.ilmostro.pure.disruptor.ConsumerEventFactory;
+import org.ilmostro.pure.disruptor.ConsumerEventHandler;
+import org.ilmostro.pure.disruptor.ProcessService;
+import org.ilmostro.pure.disruptor.SecondConsumerEventHandler;
+import org.ilmostro.pure.domain.ElementEventFactory;
+import org.ilmostro.pure.domain.GoodsElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;

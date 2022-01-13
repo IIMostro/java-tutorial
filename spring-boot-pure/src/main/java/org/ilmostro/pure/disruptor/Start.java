@@ -1,8 +1,8 @@
-package org.ilmostro.disruptor.mulit;
+package org.ilmostro.pure.disruptor;
 
 import com.lmax.disruptor.*;
 import com.lmax.disruptor.dsl.ProducerType;
-import org.ilmostro.disruptor.entity.GoodsElement;
+import org.ilmostro.pure.domain.GoodsElement;
 
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Executors;

@@ -1,7 +1,7 @@
-package org.ilmostro.disruptor.mulit;
+package org.ilmostro.pure.disruptor;
 
 import com.lmax.disruptor.RingBuffer;
-import org.ilmostro.disruptor.entity.GoodsElement;
+import org.ilmostro.pure.domain.GoodsElement;
 
 /**
  * @author IlMostro

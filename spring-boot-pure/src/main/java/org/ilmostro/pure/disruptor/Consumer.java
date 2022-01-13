@@ -1,7 +1,7 @@
-package org.ilmostro.disruptor.mulit;
+package org.ilmostro.pure.disruptor;
 
 import com.lmax.disruptor.WorkHandler;
-import org.ilmostro.disruptor.entity.GoodsElement;
+import org.ilmostro.pure.domain.GoodsElement;
 
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;

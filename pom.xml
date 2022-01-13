@@ -26,7 +26,6 @@
     </properties>
 
     <modules>
-        <module>disruptor-start</module>
         <module>flink-tutorial</module>
         <module>java-basic</module>
         <module>shiro-tutorial</module>

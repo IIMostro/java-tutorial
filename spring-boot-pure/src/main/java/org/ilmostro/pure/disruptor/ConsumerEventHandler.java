@@ -1,9 +1,9 @@
-package org.ilmostro.disruptor.mulit;
+package org.ilmostro.pure.disruptor;
 
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.WorkHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.ilmostro.disruptor.entity.GoodsElement;
+import org.ilmostro.pure.domain.GoodsElement;
 
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -12,13 +12,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author li.bowei
  */
 @Slf4j
-public class SecondConsumerEventHandler implements EventHandler<GoodsElement>, WorkHandler<GoodsElement> {
+public class ConsumerEventHandler implements EventHandler<GoodsElement>, WorkHandler<GoodsElement> {
 
     private final String consumerId;
 
     private static final AtomicInteger count = new AtomicInteger(0);
 
-    public SecondConsumerEventHandler(String consumerId) {
+    public ConsumerEventHandler(String consumerId) {
         this.consumerId = consumerId;
     }
 

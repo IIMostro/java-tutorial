@@ -1,8 +1,8 @@
-package org.ilmostro.disruptor.service;
+package org.ilmostro.pure.disruptor;
 
 import com.lmax.disruptor.EventHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.ilmostro.disruptor.entity.GoodsElement;
+import org.ilmostro.pure.domain.GoodsElement;
 
 /**
  * @author li.bowei

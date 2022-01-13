@@ -11,6 +11,10 @@
 
     <artifactId>spring-boot-pure</artifactId>
 
+    <properties>
+        <disruptor.version>3.4.2</disruptor.version>
+    </properties>
+
 
     <dependencies>
         <dependency>
@@ -85,6 +89,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+            <version>${disruptor.version}</version>
         </dependency>
     </dependencies>
 

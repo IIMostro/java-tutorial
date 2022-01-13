@@ -1,4 +1,4 @@
-package org.ilmostro.disruptor.entity;
+package org.ilmostro.pure.domain;
 
 import lombok.Data;
 
