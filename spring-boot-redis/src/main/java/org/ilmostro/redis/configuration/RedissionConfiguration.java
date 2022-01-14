@@ -59,7 +59,21 @@ public class RedissionConfiguration {
     @Bean
     public RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory,
                                                    MessageListenerAdapter listenerAdapter,
+                                                   //这个wrappers可以在bean里面初始化也可以使用下面的方法动态的去注册bean
                                                    List<MessageListenerAdapterWrapper> wrappers) {
+        /*
+         动态添加wrappers
+         private void registerMessageListenerAdapter () {
+         BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(MessageListenerAdapterWrapper.class, () -> {
+         MessageListenerAdapterWrapper wrapper = new MessageListenerAdapterWrapper(this);
+         wrapper.setTopic(topic.getTopicStringName());
+         return wrapper;
+         });
+         BeanDefinition beanDefinition = builder.getRawBeanDefinition();
+         ((DefaultListableBeanFactory) context.getAutowireCapableBeanFactory())                 .
+            registerBeanDefinition("messageListenerAdapterWrapper" + topic.name().toLowerCase(), beanDefinition);
+         }
+         */
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.addMessageListener(listenerAdapter, new PatternTopic("task-topic"));
@@ -83,6 +97,8 @@ public class RedissionConfiguration {
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
         redisTemplate.afterPropertiesSet();
+        //设置开启事务支持
+        redisTemplate.setEnableTransactionSupport(true);
         return redisTemplate;
     }
 
