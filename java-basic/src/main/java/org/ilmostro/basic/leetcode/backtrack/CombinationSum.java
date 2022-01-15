@@ -62,7 +62,7 @@ public class CombinationSum {
     }
 
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        backtrack(candidates, target, 0, new ArrayList<>());
+        backtrackV2(candidates, target, 0, new ArrayList<>());
         return result;
     }
 
@@ -82,6 +82,21 @@ public class CombinationSum {
             log.info("backtrack before current i:{}, path add i: {}", i, path);
             backtrack(candidates, target - candidates[i], i, path);
             log.info("backtrack after current i:{}, remove before path:{}", i, path);
+            path.remove(path.size() - 1);
+        }
+    }
+
+    public void backtrackV2(int[] candidates, int target, int i, List<Integer> path){
+        if (i >= candidates.length || target < 0) {
+            return;
+        }
+        if (target == 0) {
+            result.add(new ArrayList<>(path));
+            return;
+        }
+        for (int j = i; j < candidates.length; j++) {
+            path.add(candidates[j]);
+            backtrackV2(candidates, target - candidates[j], j, path);
             path.remove(path.size() - 1);
         }
     }
