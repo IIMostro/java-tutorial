@@ -43,6 +43,18 @@ public class IntegerBreak {
         return (int) Math.pow(3, a) * 2;
     }
 
+    public int memory(int n, int[] memory){
+        if (n == 1) return 1;
+        if (memory[n] != -1) return memory[n];
+        int max = -1;
+        for (int i = 1; i < n - 1; i++) {
+            // i + (n - i)
+            max = Math.max(Math.max(i * memory(n - i, memory), max), i * (n - i));
+        }
+        memory[n] = max;
+        return max;
+    }
+
     public int dynamic(int n) {
         if (n <= 3) return n - 1;
         int[] dp = new int[n + 1];
@@ -52,6 +64,25 @@ public class IntegerBreak {
         for (int len = 4; len <= n; len++) {
             for (int k = 2; k < len - 1; k++) {
                 dp[len] = Math.max(dp[len], dp[k] * dp[len - k]);
+            }
+        }
+        return dp[n];
+    }
+
+    /**
+     *
+     * 优化之后的动态规划
+     *
+     * @param n 数字
+     * @return 拆分之后的最大乘积
+     */
+    public int optimize(int n){
+        if(n <= 2) return 1;
+        int[] dp = new int[n + 1];
+        dp[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            for (int j = 1; j <= i - 1; j++) {
+                dp[i] = Math.max(dp[i], Math.max(j * dp[i - j], j *( i - j)));
             }
         }
         return dp[n];

@@ -1,5 +1,7 @@
 package org.ilmostro.basic.leetcode.pigeonhole;
 
+import java.util.Arrays;
+
 /**
  * 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
  * <p>
@@ -30,17 +32,21 @@ public class ClimbingStairs {
         return climbStairs(n - 1) + climbStairs(n - 2);
     }
 
+    public int memory(int n){
+        if(n <= 2) return n;
+        int[] memory = new int[n + 1];
+        Arrays.fill(memory, -1);
+        memory[1] = 1;
+        memory[2] = 2;
+        return climbStairs(n, memory);
+    }
+
+
     public int climbStairs(int n, int[] memo) {
         if (memo[n] > 0) {
             return memo[n];
         }
-        if (n == 1) {
-            memo[1] = 1;
-        } else if (n == 2) {
-            memo[2] = 2;
-        } else {
-            memo[n] = climbStairs(n - 1, memo) + climbStairs(n - 2, memo);
-        }
+        memo[n] = climbStairs(n - 1, memo) + climbStairs(n - 2, memo);
         return memo[n];
     }
 

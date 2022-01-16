@@ -1,5 +1,7 @@
 package org.ilmostro.basic.leetcode.dynamic;
 
+import java.util.Arrays;
+
 /**
  * 给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。
  * <p>
@@ -55,5 +57,21 @@ public class LongestIncreasingSubsequence {
             max = Math.max(max, dp[i]);
         }
         return max;
+    }
+
+    public int dynamic(int[] nums){
+        if (nums == null || nums.length <= 0) return 0;
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, 1);
+        for (int i = 1; i < nums.length; i++) {
+            for (int j = 0; j < i; j++) {
+                if(nums[i] > nums[j])dp[i] = Math.max(dp[i], 1 + dp[j]);
+            }
+        }
+        int ans = Integer.MIN_VALUE;
+        for (int value : dp) {
+            ans = Math.max(value, ans);
+        }
+        return ans;
     }
 }

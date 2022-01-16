@@ -1,5 +1,7 @@
 package org.ilmostro.basic.leetcode.dynamic;
 
+import java.util.Arrays;
+
 /**
  * 给定正整数 n，找到若干个完全平方数（比如 1, 4, 9, 16, ...）使得它们的和等于 n。你需要让组成和的完全平方数的个数最少。
  * <p>
@@ -38,6 +40,13 @@ public class PerfectSquares {
     }
 
     public int numSquares(int n) {
+        int[] memory = new int[n+1];
+        Arrays.fill(memory, -1);
+//        memory[1] = 1;
+        return memory(n, memory);
+    }
+
+    public int dynamic(int n){
         int[] dp = new int[n + 1];
         for (int i = 1; i <= n; i++) {
             int curr = Integer.MAX_VALUE;
@@ -49,10 +58,19 @@ public class PerfectSquares {
         return dp[n];
     }
 
-    public static boolean isPerfectSquare(long n) {
-        if (n < 0)
-            return false;
-        long tst = (long) (Math.sqrt(n) + 0.5);
-        return tst * tst == n;
+
+    public int memory(int n, int[] memory){
+        if(memory[n] != -1) return memory[n];
+        double val = Math.sqrt(n);
+        if(Math.pow(val, 2) == n){
+            memory[n] = 1;
+            return 1;
+        }
+        int ans = Integer.MAX_VALUE;
+        for (int i = 1; i*i < n; i++) {
+            ans = Math.min(memory(n - i * i, memory) + 1, ans);
+        }
+        memory[n] = ans;
+        return ans;
     }
 }

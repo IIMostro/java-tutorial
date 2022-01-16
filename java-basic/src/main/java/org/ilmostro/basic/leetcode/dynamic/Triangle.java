@@ -80,6 +80,37 @@ public class Triangle {
         return min;
     }
 
+    /**
+     * 这是这道题目的递归解法，利用的就是 f(i, j) = min(f(i + 1, j), f(i + 1, j + 1)) + triangle[i][j]
+     *
+     * @param triangle 需要搜索的列表
+     * @param i 行号
+     * @param j 列号
+     * @return 路径之和
+     */
+    public int dfs(List<List<Integer>> triangle, int i, int j){
+        if (triangle.size() == i) return 0;
+        // f(i, j) = min(f(i + 1, j), f(i + 1, j + 1)) + triangle[i][j]
+        return Math.min(dfs(triangle, i + 1,j), dfs(triangle, i + 1, j+ 1)) + triangle.get(i).get(j);
+    }
+
+    /**
+     * 利用记忆搜索的方式优化递归求解,
+     *
+     * @param triangle 需要搜索的列表
+     * @param i 行号
+     * @param j 列号
+     * @param memory 记忆列表
+     * @return 路径之和
+     */
+    public int memory(List<List<Integer>> triangle, int i, int j, int[][] memory){
+        if(triangle.size() == i) return 0;
+        if (memory[i][j] != -1) return memory[i][j];
+        memory[i][j] = Math.min(memory(triangle, i + 1,j, memory), memory(triangle, i + 1, j+ 1, memory)) + triangle.get(i).get(j);
+        return memory[i][j];
+    }
+
+
     public int optimize(List<List<Integer>> triangle){
         int[] dp = new int[triangle.size()];
         dp[0] = triangle.get(0).get(0);
