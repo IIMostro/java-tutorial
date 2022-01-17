@@ -38,11 +38,22 @@ import java.util.Arrays;
 public class PartitionEqualSubsetSum {
 
     public static void main(String[] args) {
-        int[] nums = {2,2,1,1};
+        int[] nums = {2, 2, 1, 1};
         boolean b = new PartitionEqualSubsetSum().canPartition(nums);
     }
 
     public boolean canPartition(int[] nums) {
+        int n = nums.length;
+        int sum = Arrays.stream(nums).sum();
+        if ((sum & 1) == 1) return false;
+        int[][] memory = new int[n][sum / 2 + 1];
+        for (int[] ints : memory) {
+            Arrays.fill(ints, -1);
+        }
+        return partition(nums, memory, n - 1, sum / 2);
+    }
+
+    public boolean dynamic(int[] nums) {
         int n = nums.length;
         int sum = Arrays.stream(nums).sum();
         if ((sum & 1) == 1) return false;
@@ -51,15 +62,42 @@ public class PartitionEqualSubsetSum {
         for (int i = 1; i < n; i++) {
             for (int j = 0; j <= mid; j++) {
                 dp[i][j] = dp[i - 1][j];
-                if(nums[i] == j){
+                if (nums[i] == j) {
                     dp[i][j] = true;
                     continue;
                 }
-                if(nums[i] < j){
+                if (nums[i] < j) {
                     dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i]];
                 }
             }
         }
         return dp[n - 1][mid];
+    }
+
+    public boolean optimize(int[] nums){
+        int n = nums.length;
+        int sum = Arrays.stream(nums).sum();
+        if ((sum & 1) == 1) return false;
+        int mid = sum / 2;
+        boolean[] dp = new boolean[mid + 1];
+        Arrays.fill(dp, false);
+        for (int i = 0; i <= mid; i++) {
+            dp[i] = nums[i] == i;
+        }
+        for (int i = 1; i < n; i++) {
+            for (int j = mid; j >= nums[i]; j--) {
+                dp[j] = dp[j] || dp[j - nums[i]];
+            }
+        }
+        return dp[mid];
+    }
+
+    public boolean partition(int[] nums, int[][] memory, int index, int sum) {
+        if (sum == 0) return true;
+        if (sum < 0 || index < 0) return false;
+        if (memory[index][sum] != -1) return memory[index][sum] == 1;
+        memory[index][sum] =  (partition(nums, memory, index - 1, sum) ||
+                partition(nums, memory, index - 1, sum - nums[index])) ? 1 : 0;
+        return memory[index][sum] == 1;
     }
 }

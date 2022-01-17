@@ -1,5 +1,7 @@
 package org.ilmostro.basic.leetcode.dynamic;
 
+import org.ilmostro.basic.annotation.Attention;
+
 /**
  * 0,1背包问题
  *
@@ -11,6 +13,7 @@ package org.ilmostro.basic.leetcode.dynamic;
  *
  * @author li.bowei
  */
+@Attention(solution = Attention.Solution.DYNAMIC, value = "01背包问题，经典")
 public class Knapsack {
 
     public int knapsack(int[][] goods, int capacity) {
