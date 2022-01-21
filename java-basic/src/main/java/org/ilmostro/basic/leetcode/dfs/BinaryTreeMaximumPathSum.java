@@ -1,5 +1,6 @@
 package org.ilmostro.basic.leetcode.dfs;
 
+import lombok.extern.slf4j.Slf4j;
 import org.ilmostro.basic.algorithm.TreeNode;
 
 /**
@@ -37,7 +38,19 @@ import org.ilmostro.basic.algorithm.TreeNode;
  *
  * @author li.bowei
  */
+@Slf4j
 public class BinaryTreeMaximumPathSum {
+
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(-10);
+        root.left = new TreeNode(9);
+        root.right = new TreeNode(20);
+        root.right.left = new TreeNode(15);
+        root.right.right = new TreeNode(7);
+        TreeNode.show(root);
+        int i = new BinaryTreeMaximumPathSum().maxPathSum(root);
+        log.info("ans:{}", i);
+    }
 
     public int maxPathSum(TreeNode root) {
         dfs(root);

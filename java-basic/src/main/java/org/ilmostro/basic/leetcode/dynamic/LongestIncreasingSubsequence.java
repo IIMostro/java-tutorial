@@ -42,6 +42,11 @@ import java.util.Arrays;
  */
 public class LongestIncreasingSubsequence {
 
+    public static void main(String[] args) {
+        int[] nums = {10,9,2,5,3,7,101,18};
+        int i = new LongestIncreasingSubsequence().lengthOfLIS(nums);
+    }
+
     public int lengthOfLIS(int[] nums) {
         if (nums == null || nums.length <= 0) return 0;
         int[] dp = new int[nums.length];
