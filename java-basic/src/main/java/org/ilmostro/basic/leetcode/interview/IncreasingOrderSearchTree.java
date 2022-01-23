@@ -38,6 +38,17 @@ import java.util.List;
  */
 public class IncreasingOrderSearchTree {
 
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(2);
+        root.left = new TreeNode(1);
+        root.right = new TreeNode(3);
+
+        List<Integer> reverse = new IncreasingOrderSearchTree().reverse(root);;
+        for (Integer integer : reverse) {
+            System.out.println(integer);
+        }
+    }
+
     public TreeNode increasingBST(TreeNode root) {
         List<Integer> list = new ArrayList<>();
         recursion(root, list);
@@ -71,5 +82,20 @@ public class IncreasingOrderSearchTree {
             root = root.right;
         }
         return result;
+    }
+
+
+    public List<Integer> reverse(TreeNode root){
+        if(root == null) return null;
+        dfs(root);
+        return ans;
+    }
+
+    List<Integer> ans = new ArrayList<>();
+    public void  dfs(TreeNode root){
+        if(root == null) return;
+        dfs(root.right);
+        ans.add(root.val);
+        dfs(root.left);
     }
 }

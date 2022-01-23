@@ -40,6 +40,10 @@ package org.ilmostro.basic.leetcode.dynamic;
  */
 public class LongestCommonSubsequence {
 
+    public static void main(String[] args) {
+        int i = new LongestCommonSubsequence().longestCommonSubsequence("abcde", "ace");
+    }
+
     public int longestCommonSubsequence(String text1, String text2) {
         int m = text1.length(), n = text2.length();
         int[][] dp = new int[m + 1][n + 1];
