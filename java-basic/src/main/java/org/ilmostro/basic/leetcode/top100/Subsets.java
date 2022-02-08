@@ -1,9 +1,7 @@
 package org.ilmostro.basic.leetcode.top100;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -44,7 +42,6 @@ public class Subsets {
 
     public List<List<Integer>> subsets(int[] nums) {
         dfs(nums, new ArrayList<>(), 0);
-        result.add(Arrays.stream(nums).boxed().collect(Collectors.toList()));
         return result;
     }
 

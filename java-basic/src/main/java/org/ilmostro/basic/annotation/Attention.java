@@ -7,9 +7,9 @@ public @interface Attention {
 
     String value() default "重点关注";
 
-    Solution solution();
+    Solution[] solution();
 
     enum Solution{
-        DYNAMIC, BACKTRACK, STRING, PRE_SUM
+        DYNAMIC, BACKTRACK, STRING, PRE_SUM, MEMORY_SEARCH
     }
 }
