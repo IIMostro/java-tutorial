@@ -15,7 +15,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
@@ -31,8 +30,13 @@ public class VertxConfiguration {
     private static final AtomicBoolean circle = new AtomicBoolean(false);
 
     @Bean
-    @ConditionalOnProperty(prefix = "vertx", name = "type", havingValue = "hazelcast", matchIfMissing = true)
-    @Primary
+    @ConditionalOnProperty(prefix = "vertx", name = "type", havingValue = "local", matchIfMissing = true)
+    public Vertx local(){
+        return Vertx.vertx();
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "vertx", name = "type", havingValue = "hazelcast")
     public Vertx hazelcast(VertxSpringFactory factory, VertxProperties properties) throws FileNotFoundException {
         File file = ResourceUtils.getFile(properties.getHazelcast().getConfigFilePath());
         Config config = new XmlConfigBuilder(new FileInputStream(file)).build();

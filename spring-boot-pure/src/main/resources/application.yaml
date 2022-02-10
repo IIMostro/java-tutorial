@@ -21,7 +21,7 @@ netty:
     max-frame-size: 10240
 
 vertx:
-  type: hazelcast
+  type: local
   zookeeper:
     host: '192.168.205.20'
     session-timeout: 300000

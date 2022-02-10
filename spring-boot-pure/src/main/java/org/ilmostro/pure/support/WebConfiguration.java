@@ -1,7 +1,6 @@
 package org.ilmostro.pure.support;
 
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
@@ -9,10 +8,9 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  * @author li.bowei
  */
 @Configuration
-public class WebConfiguration extends WebMvcAutoConfiguration {
+public class WebConfiguration implements WebMvcRegistrations {
 
-    @Bean
-    public RequestMappingHandlerMapping requestMappingHandlerMapping(){
+    public RequestMappingHandlerMapping getRequestMappingHandlerMapping() {
         CustomRequestHandlerMapping mapping = new CustomRequestHandlerMapping();
         mapping.setOrder(0);
         return mapping;

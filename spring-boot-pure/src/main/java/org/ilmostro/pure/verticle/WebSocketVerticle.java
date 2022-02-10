@@ -10,13 +10,12 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.ilmostro.pure.configuration.VertxProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Component
+//@Component
 public class WebSocketVerticle extends AbstractVerticle {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketVerticle.class);

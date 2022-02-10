@@ -16,6 +16,7 @@ public class VertxProperties {
 
 
     public enum  VertxClusterType{
+        local,
         hazelcast,
         zookeeper
     }

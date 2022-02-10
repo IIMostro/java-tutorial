@@ -11,7 +11,6 @@ import org.ilmostro.pure.configuration.NettyConfigurationProperties;
 import org.ilmostro.pure.support.NettyHandlerSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -22,7 +21,7 @@ import java.util.Optional;
  * @author li.bowei
  */
 @ChannelHandler.Sharable
-@Component
+//@Component
 public class CustomChannelInboundHandlerAdapter extends ChannelInboundHandlerAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(CustomChannelInboundHandlerAdapter.class);

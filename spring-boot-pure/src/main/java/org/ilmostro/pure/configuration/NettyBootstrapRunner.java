@@ -27,7 +27,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.lang.NonNull;
 
@@ -40,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author li.bowei
  */
-@Configuration
+//@Configuration
 @EnableConfigurationProperties(NettyConfigurationProperties.class)
 public class NettyBootstrapRunner implements ApplicationRunner, ApplicationListener<ContextClosedEvent>, ApplicationContextAware, InitializingBean {
 

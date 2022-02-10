@@ -14,7 +14,6 @@ import org.ilmostro.pure.domain.GoodsElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -23,7 +22,7 @@ import java.util.concurrent.ThreadFactory;
 /**
  * @author li.bowei
  */
-@Configuration
+//@Configuration
 public class DisruptorConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(DisruptorConfiguration.class);
