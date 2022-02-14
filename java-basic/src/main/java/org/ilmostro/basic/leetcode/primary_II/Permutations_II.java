@@ -39,7 +39,7 @@ import java.util.List;
  */
 
 @Middle
-@Attention(solution = Attention.Solution.BACKTRACK, value = "这是一个比较经典的全排列问题需要重点关注")
+@Attention(algorithm = Attention.Algorithm.BACKTRACK, value = "这是一个比较经典的全排列问题需要重点关注")
 public class Permutations_II {
 
     public static void main(String[] args) {

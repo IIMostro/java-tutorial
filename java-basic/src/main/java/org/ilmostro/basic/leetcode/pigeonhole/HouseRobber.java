@@ -64,7 +64,7 @@ public class HouseRobber {
      * @param index 当前搜索的index
      * @return 最大值
      */
-    @Attention(solution = Attention.Solution.DYNAMIC, value = "这里是自顶向下")
+    @Attention(algorithm = Attention.Algorithm.DYNAMIC, value = "这里是自顶向下")
     public int recursion(int[] nums, int[] memory, int index){
         if (index >= nums.length) return 0;
         if(memory[index] != -1) return memory[index];

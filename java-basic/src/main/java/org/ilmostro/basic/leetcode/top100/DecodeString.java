@@ -40,7 +40,7 @@ import java.util.Stack;
  * @author li.bowei
  */
 @Middle
-@Attention(solution = Attention.Solution.STRING, value = "字符串的解码")
+@Attention(algorithm = Attention.Algorithm.STRING, value = "字符串的解码")
 public class DecodeString {
 
     public static void main(String[] args) {

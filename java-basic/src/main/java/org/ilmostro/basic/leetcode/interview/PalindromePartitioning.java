@@ -33,7 +33,7 @@ import java.util.List;
  *
  * @author li.bowei
  */
-@Attention(solution = {Attention.Solution.MEMORY_SEARCH, Attention.Solution.BACKTRACK},
+@Attention(algorithm = {Attention.Algorithm.MEMORY_SEARCH, Attention.Algorithm.BACKTRACK},
         value = "这个题目包含了回溯算法和记忆搜索")
 public class PalindromePartitioning {
 

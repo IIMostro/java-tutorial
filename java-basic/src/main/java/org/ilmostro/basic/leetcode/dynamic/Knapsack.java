@@ -13,7 +13,7 @@ import org.ilmostro.basic.annotation.Attention;
  *
  * @author li.bowei
  */
-@Attention(solution = Attention.Solution.DYNAMIC, value = "01背包问题，经典")
+@Attention(algorithm = Attention.Algorithm.DYNAMIC, value = "01背包问题，经典")
 public class Knapsack {
 
     public int knapsack(int[][] goods, int capacity) {

@@ -4,7 +4,7 @@ import org.ilmostro.basic.annotation.Attention;
 
 import java.util.Arrays;
 
-import static org.ilmostro.basic.annotation.Attention.Solution.DYNAMIC;
+import static org.ilmostro.basic.annotation.Attention.Algorithm.DYNAMIC;
 
 /**
  * 给你一个整数数组 coins ，表示不同面额的硬币；以及一个整数 amount ，表示总金额。
@@ -50,7 +50,7 @@ public class CoinChange {
         System.out.println(i);
     }
 
-    @Attention(value = "最优硬币问题", solution = DYNAMIC)
+    @Attention(value = "最优硬币问题", algorithm = DYNAMIC)
     public int coinChange(int[] coins, int amount) {
         if (amount == 0) return 0;
         int[] dp = new int[amount + 1];

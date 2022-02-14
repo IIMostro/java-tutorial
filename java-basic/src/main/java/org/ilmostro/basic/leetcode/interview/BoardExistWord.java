@@ -2,7 +2,7 @@ package org.ilmostro.basic.leetcode.interview;
 
 import org.ilmostro.basic.annotation.Attention;
 
-import static org.ilmostro.basic.annotation.Attention.Solution.BACKTRACK;
+import static org.ilmostro.basic.annotation.Attention.Algorithm.BACKTRACK;
 
 /**
  * 给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。如果 word 存在于网格中，返回 true ；否则，返回 false 。
@@ -39,7 +39,7 @@ import static org.ilmostro.basic.annotation.Attention.Solution.BACKTRACK;
  *
  * @author li.bowei
  */
-@Attention(value = "这是个关于回溯和剪枝的重点算法！", solution = BACKTRACK)
+@Attention(value = "这是个关于回溯和剪枝的重点算法！", algorithm = BACKTRACK)
 public class BoardExistWord {
 
     public static void main(String[] args) {

@@ -7,9 +7,15 @@ public @interface Attention {
 
     String value() default "重点关注";
 
-    Solution[] solution();
+    Algorithm[] algorithm() default Algorithm.NONE;
 
-    enum Solution{
-        DYNAMIC, BACKTRACK, STRING, PRE_SUM, MEMORY_SEARCH
+    Structure[] structure() default Structure.NONE;
+
+    enum Algorithm {
+        NONE, DYNAMIC, BACKTRACK, STRING, PRE_SUM, MEMORY_SEARCH
+    }
+
+    enum Structure{
+        NONE, TREE
     }
 }

@@ -2,7 +2,7 @@ package org.ilmostro.basic.leetcode.dynamic;
 
 import org.ilmostro.basic.annotation.Attention;
 
-import static org.ilmostro.basic.annotation.Attention.Solution.DYNAMIC;
+import static org.ilmostro.basic.annotation.Attention.Algorithm.DYNAMIC;
 
 /**
  * 给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
@@ -34,7 +34,7 @@ import static org.ilmostro.basic.annotation.Attention.Solution.DYNAMIC;
  *
  * @author li.bowei
  */
-@Attention(value = "这题目其实非常有意思，左边和右边取最小后减去本有的高度。这样就是实际的高度", solution = DYNAMIC)
+@Attention(value = "这题目其实非常有意思，左边和右边取最小后减去本有的高度。这样就是实际的高度", algorithm = DYNAMIC)
 public class TrappingRainWater {
 
     public static void main(String[] args) {

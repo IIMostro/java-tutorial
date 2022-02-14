@@ -34,7 +34,7 @@ import java.util.Arrays;
  * @author li.bowei
  */
 @Middle
-@Attention(solution = Attention.Solution.DYNAMIC, value = "转化为背包问题，但是我还是想不明白")
+@Attention(algorithm = Attention.Algorithm.DYNAMIC, value = "转化为背包问题，但是我还是想不明白")
 public class PartitionEqualSubsetSum {
 
     public static void main(String[] args) {

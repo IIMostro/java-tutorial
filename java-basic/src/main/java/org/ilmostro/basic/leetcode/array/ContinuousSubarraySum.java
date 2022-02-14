@@ -47,7 +47,7 @@ import java.util.Map;
  *
  * @author li.bowei
  */
-@Attention(solution = Attention.Solution.PRE_SUM, value = "前缀和相关的内容")
+@Attention(algorithm = Attention.Algorithm.PRE_SUM, value = "前缀和相关的内容")
 public class ContinuousSubarraySum {
 
     public static void main(String[] args) {
