@@ -42,4 +42,12 @@ public class ArrayUtils {
         }
     }
 
+    public static void print(int[] nums){
+        if (Objects.isNull(nums)) {
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            log.info("index:{}, value:{}", i, nums[i]);
+        }
+    }
 }
