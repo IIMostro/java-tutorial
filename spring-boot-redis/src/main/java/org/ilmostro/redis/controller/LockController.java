@@ -81,6 +81,7 @@ public class LockController {
     @GetMapping("/statistic")
     public void statistic(){
         log.info("write:{}, hit:{}, miss{}", write, hit, miss);
+        log.info("success:{}, error:{}, failure: {}", LockV1Controller.success, LockV1Controller.error, LockV1Controller.failure);
         competition.forEach((k, v) -> log.info("competition value:{}, count:{}", k, v));
     }
 
@@ -90,6 +91,8 @@ public class LockController {
         hit.reset();
         miss.reset();
         competition.clear();
+        LockV1Controller.error.reset();
+        LockV1Controller.failure.reset();
     }
 
     @GetMapping("/global")
