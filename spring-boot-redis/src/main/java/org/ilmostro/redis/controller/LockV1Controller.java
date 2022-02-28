@@ -28,12 +28,12 @@ public class LockV1Controller {
     }
 
     @GetMapping("/timeout")
-    public String tryLock(){
+    public String tryLock() {
         try {
             if (global.tryLock(100, TimeUnit.MILLISECONDS)) {
                 success.increment();
                 TimeUnit.SECONDS.sleep(1);
-            }else{
+            } else {
                 failure.increment();
             }
         } catch (InterruptedException e) {
