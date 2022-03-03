@@ -1,5 +1,6 @@
 package org.ilmostro.basic.util;
 
+import com.google.common.base.Charsets;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RandomUtils;
@@ -33,6 +34,12 @@ public class StringUtilsTest {
         log.info("{}: [{}]", email, email.matches(regex));
         email = "encounterallen@qq";
         log.info("{}:[{}]", email, email.matches(regex));
+    }
+
+    @Test
+    public void decode(){
+        String message = "\u4e1c\u65b0\u5355\u5143\u62db\u6807\u516c\u544a.pdf";
+        log.info("message:{}", new String(message.getBytes(), Charsets.UTF_8));
     }
 
     @Test
