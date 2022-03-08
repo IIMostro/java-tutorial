@@ -84,4 +84,18 @@ public class StringUtilsTest {
         log.info("");
     }
 
+
+    @Test
+    public void equal(){
+        String v1 = "abc";
+        String v2 = new String("abc");
+        String v3 = v2.intern();
+        // v1 == v2: false
+        log.info("v1 == v2: {}", v1 == v2);
+        // v2 == v3: false
+        log.info("v2 == v3: {}", v2 == v3);
+        // v1 == v3: true
+        log.info("v1 == v3: {}", v1 == v3);
+    }
+
 }

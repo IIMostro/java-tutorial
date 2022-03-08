@@ -44,6 +44,14 @@ import java.util.*;
  */
 public class LuckyNumbersInMatrix {
 
+    public static void main(String[] args) {
+        //   3   7   8
+        //   9   11  13
+        //   15  16  17
+        int[][] matrix = {{3,7,8},{9,11,13},{15,16,17}};
+        List<Integer> integers = new LuckyNumbersInMatrix().luckyNumbers(matrix);
+    }
+
     public List<Integer> luckyNumbers (int[][] matrix) {
         int m = matrix.length, n = matrix[0].length;
         int[] minRow = new int[m];
