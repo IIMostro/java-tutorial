@@ -90,6 +90,8 @@ public class StringUtilsTest {
         String v1 = "abc";
         String v2 = new String("abc");
         String v3 = v2.intern();
+
+        log.info("v1:{}, v2:{}, v3:{}", System.identityHashCode(v1), System.identityHashCode(v2), System.identityHashCode(v3));
         // v1 == v2: false
         log.info("v1 == v2: {}", v1 == v2);
         // v2 == v3: false
