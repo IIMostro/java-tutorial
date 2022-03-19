@@ -1,0 +1,20 @@
+spring:
+  rabbitmq:
+    host: '192.168.205.20'
+    virtual-host: '/'
+    port: 5672
+    # \u4FDD\u969C\u63A8\u9001\u5230exchange\u4E2D\u6210\u529F\u5931\u8D25\u90FD\u4F1A\u56DE\u8C03
+    publisher-confirm-type: correlated
+    # \u4FDD\u969Cexchange\u9001\u5230queue\u4E2D
+    publisher-returns: true
+    # \u624B\u52A8\u63D0\u4EA4
+    listener:
+      simple:
+        acknowledge-mode: manual
+        retry:
+          # \u5145\u5B9E\u95F4\u9694
+          max-interval: 10000
+          # \u91CD\u8BD5\u6B21\u6570
+          max-attempts: 3
+          # \u91CD\u8BD5\u4E58\u6CD5\u7B56\u7565
+          multiplier: 1

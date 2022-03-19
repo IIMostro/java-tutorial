@@ -7,5 +7,6 @@
 * shiro-tutorial shiro使用
 * spring-boot-mysql 依赖MySQL的项目
 * spring-boot-pure 纯净的spring-boot项目，不包含中间件。包括Vertx, 一些Spring工具类，和Netty使用
+* spring-boot-rabbit 依赖RabbitMQ的项目
 * spring-boot-redis 依赖Redis的项目，包括Spring Security使用，Redis Stream使用，基于Redisson的一些插件
 * spring-boot-webflux WebFlux使用

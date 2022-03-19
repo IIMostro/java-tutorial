@@ -33,6 +33,7 @@
         <module>spring-boot-mysql</module>
         <module>spring-boot-redis</module>
         <module>spring-boot-pure</module>
+        <module>spring-boot-rabbit</module>
     </modules>
 
     <dependencyManagement>
