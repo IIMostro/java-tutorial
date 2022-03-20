@@ -5,10 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.neptunus.rabbit.domain.User;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.UUID;
 
 /**
  * @author li.bowei
@@ -25,6 +28,6 @@ public class MessageProducerTest {
     @Test
     public void send() throws JsonProcessingException {
         User user = new User(1, "ilmostro");
-        template.convertAndSend("simple", "#", user);
+        template.convertAndSend("simple", "#", user, new CorrelationData(UUID.randomUUID().toString()));
     }
 }

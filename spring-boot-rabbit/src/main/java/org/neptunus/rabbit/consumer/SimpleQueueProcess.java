@@ -33,6 +33,7 @@ public class SimpleQueueProcess {
     ))
     public void process(Message message, Channel channel) throws IOException {
         log.info("receive:{}", objectMapper.readValue(message.getBody(), User.class));
+        log.info("receive message properties:{}", message.getMessageProperties());
         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
     }
 }

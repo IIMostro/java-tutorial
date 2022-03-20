@@ -47,6 +47,16 @@ public class RabbitCommonConfiguration {
     public CachingConnectionFactory rabbitConnectionFactory(ConnectionFactory connectionFactory){
         CachingConnectionFactory factory = new CachingConnectionFactory(connectionFactory);
         factory.setChannelCacheSize(25);
+        // 开启Returns模式
+        factory.setPublisherReturns(true);
+        /*
+            * NONE值是禁用发布确认模式，是默认值
+            * CORRELATED值是发布消息成功到交换器后会触发回调方法，就是触发template.setConfirmCallback()方法
+            * SIMPLE值经测试有两种效果，其一效果和CORRELATED值一样会触发回调方法，
+                其二在发布消息成功后使用rabbitTemplate调用waitForConfirms或waitForConfirmsOrDie方法等待broker节点返回发送结果，
+                根据返回结果来判定下一步的逻辑，要注意的点是waitForConfirmsOrDie方法如果返回false则会关闭channel，则接下来无法发送消息到broker;
+         */
+        factory.setPublisherConfirmType(CachingConnectionFactory.ConfirmType.CORRELATED);
 //        factory.setExecutor();
         return factory;
     }
@@ -80,8 +90,21 @@ public class RabbitCommonConfiguration {
         // 需要开启这个模式才能触发回调函数，无论推送结果怎么样
         template.setMandatory(true);
         template.setRetryTemplate(retryTemplate);
-        template.setConfirmCallback((correlation, ack, cause) -> log.info("confirm data:{}, ack:{}, cause:{}", correlation, ack, cause));
-        template.setReturnsCallback(returned -> log.info("exchange:{}, routing key:{}, message:{}, retry:{}", returned.getExchange(), returned.getRoutingKey(), returned.getMessage(), returned.getReplyCode()));
+        /*
+            RabbitMQ投递消息的方式为: Producer -> RabbitMQ Broker Cluster -> Exchange -> Queue -> Consumer
+            confirmCallback的回调为 Producer -> RabbitMQ Broker Cluster过程的回调
+            returnsCallback的回调为 RabbitMQ Broker Cluster -> Exchange过程的回调
+         */
+        template.setConfirmCallback((correlation, ack, cause) -> {
+            if (ack) log.info("message:{} already ack!", correlation);
+            else log.info("exchange not receive:{}, cause:{}", correlation, cause);
+        });
+        /*
+            交换机接收到消息后可以判断当前的路径发送没有问题，但是不能保证消息能够发送到路由队列的。
+            而发送者是不知道这个消息有没有送达队列的，因此，我们需要在队列中进行消息确认。这就是回退消息。
+         */
+        template.setReturnsCallback(returned -> log.info("exchange:{}, routing key:{}, message:{}, retry:{}",
+                returned.getExchange(), returned.getRoutingKey(), returned.getMessage(), returned.getReplyCode()));
         return template;
     }
 
