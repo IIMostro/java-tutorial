@@ -1,9 +1,17 @@
 package org.ilmostro.basic.classloader;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author li.bowei
  **/
+@Slf4j
 public class MyClass {
+
+    static {
+        log.info("this is static block!");
+
+    }
 
     private static final MyClass myclass = new MyClass();
 
@@ -11,11 +19,12 @@ public class MyClass {
     private static int b;
 
     public MyClass() {
+        log.info("this is constructor");
         a++;
         b++;
     }
 
-    public static MyClass getInstance(){
+    public static MyClass getInstance() {
         return myclass;
     }
 
@@ -25,5 +34,10 @@ public class MyClass {
 
     public int getB() {
         return b;
+    }
+
+    @Override
+    public String toString() {
+        return "MyClass{a =" + a + ", b=" + b + "}";
     }
 }
