@@ -16,4 +16,10 @@ public class GoodsElement {
     private Integer id;
     private String name;
     private String description;
+
+    public void copy(GoodsElement other){
+        this.id = other.id;
+        this.name = other.name;
+        this.description = other.description;
+    }
 }
