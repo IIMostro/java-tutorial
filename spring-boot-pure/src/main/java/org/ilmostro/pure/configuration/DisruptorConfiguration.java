@@ -14,6 +14,7 @@ import org.ilmostro.pure.domain.GoodsElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -22,7 +23,7 @@ import java.util.concurrent.ThreadFactory;
 /**
  * @author li.bowei
  */
-//@Configuration
+@Configuration
 public class DisruptorConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(DisruptorConfiguration.class);
@@ -44,7 +45,7 @@ public class DisruptorConfiguration {
         return disruptor;
     }
 
-    private static Disruptor<GoodsElement> getInstance(){
+    public static Disruptor<GoodsElement> getInstance(){
         WaitStrategy strategy = new YieldingWaitStrategy();
         int bufferSize = 16;
         ElementEventFactory factory = new ElementEventFactory();
@@ -79,7 +80,8 @@ public class DisruptorConfiguration {
         for (int i = 0; i < seconds.length; i++) {
             seconds[i] = new SecondConsumerEventHandler("S" + i);
         }
-        //设置了两个工作组，每一个工作组中对于一个event各消费一次
+        // 设置了两个工作组，每一个工作组中对于一个event各消费一次
+        // 只消费一次，可以理解为Kafka的分组
         EventHandlerGroup<GoodsElement> group = disruptor.handleEventsWithWorkerPool(handlers);
         group.handleEventsWithWorkerPool(seconds);
         disruptor.handleEventsWith(new ProcessService());

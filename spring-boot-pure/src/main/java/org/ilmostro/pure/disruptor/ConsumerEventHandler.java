@@ -26,14 +26,12 @@ public class ConsumerEventHandler implements EventHandler<GoodsElement>, WorkHan
 
     @Override
     public void onEvent(GoodsElement event, long sequence, boolean endOfBatch) throws Exception {
-        Thread.sleep(random.nextInt(5));
         log.info("当前线程: "+ Thread.currentThread().getName() +" 当前消费者: " + this.consumerId + ", 消费信息ID: " + event.getId());
         count.incrementAndGet();
     }
 
     @Override
     public void onEvent(GoodsElement event) throws Exception {
-        Thread.sleep(random.nextInt(5));
         log.info("当前线程: "+ Thread.currentThread().getName() +" 当前消费者: " + this.consumerId + ", 消费信息ID: " + event.getId());
         count.incrementAndGet();
     }
