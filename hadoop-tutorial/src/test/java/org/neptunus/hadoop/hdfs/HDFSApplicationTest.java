@@ -42,7 +42,7 @@ public class HDFSApplicationTest {
 
 	@Test
 	public void mkdir() throws Exception{
-		boolean mkdirs = fs.mkdirs(new Path("/api"));
+		boolean mkdirs = fs.mkdirs(new Path("/wordcount/output"));
 		log.info("/api create: {}", mkdirs);
 	}
 
@@ -74,7 +74,7 @@ public class HDFSApplicationTest {
 	@Test
 	public void put() throws Exception{
 		fs.copyFromLocalFile(new Path("/Users/li.bowei/workspaces/java/ilmostro/java-tutorial/hadoop-tutorial/src/main/resources/1628065496.txt"),
-				new Path("/api/1628065496.txt"));
+				new Path("/wordcount/input/GONE-WITH-THE-WIND.txt"));
 	}
 
 
