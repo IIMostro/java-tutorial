@@ -1,5 +1,10 @@
 package org.ilmostro.basic.util;
 
+import java.text.MessageFormat;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.google.common.base.Charsets;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
@@ -8,11 +13,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.ilmostro.basic.User;
 import org.junit.Test;
 import org.slf4j.helpers.MessageFormatter;
-
-import java.text.MessageFormat;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author li.bowei
@@ -99,5 +99,14 @@ public class StringUtilsTest {
         // v1 == v3: true
         log.info("v1 == v3: {}", v1 == v3);
     }
+
+    @Test
+    public void equalV1(){
+        String v1 = "ab" + "c";
+        log.info("v1:{}", System.identityHashCode(v1));
+        v1.intern();
+        log.info("append:{}", System.identityHashCode("ab" + "c"));
+    }
+
 
 }

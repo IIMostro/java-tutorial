@@ -1,12 +1,12 @@
 package org.ilmostro.basic.executor;
 
-import cn.hutool.core.thread.ExecutorBuilder;
-import cn.hutool.core.thread.ThreadFactoryBuilder;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import cn.hutool.core.thread.ExecutorBuilder;
+import cn.hutool.core.thread.ThreadFactoryBuilder;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author li.bowei
@@ -17,8 +17,12 @@ public class ThreadPoolExecutorFactory {
 
 
     public static ThreadPoolExecutor get(boolean daemon) {
+        return get(5, daemon);
+    }
+
+    public static ThreadPoolExecutor get(int core, boolean daemon) {
         return ExecutorBuilder.create()
-                .setCorePoolSize(5)
+                .setCorePoolSize(core)
                 .setMaxPoolSize(10)
                 .setKeepAliveTime(30, TimeUnit.SECONDS)
                 .setWorkQueue(new LinkedBlockingQueue<>(1000))

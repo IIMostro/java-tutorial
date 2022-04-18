@@ -5,6 +5,7 @@ import java.util.Random;
 
 import io.vavr.Tuple;
 import lombok.extern.slf4j.Slf4j;
+import org.ilmostro.basic.User;
 import org.junit.Test;
 
 /**
@@ -30,4 +31,14 @@ public class OptionalTest {
                 .orElse("");
         log.info("s:{}", s);
     }
+
+    @Test
+    public void lazy(){
+        User user = new User();
+        Optional<User> optional = Optional.of(user)
+                .map(User::say);
+        log.info("after");
+        optional.get();
+    }
+
 }

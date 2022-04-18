@@ -1,14 +1,20 @@
 package org.ilmostro.basic;
 
-import lombok.*;
-import org.apache.commons.lang3.RandomStringUtils;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 
 /**
  * @author li.bowei
@@ -19,6 +25,7 @@ import java.util.stream.Stream;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Slf4j
 public class User implements Comparable<User>{
 
     private Integer id;
@@ -31,6 +38,11 @@ public class User implements Comparable<User>{
     public void setNameAndAge(String name, Integer age){
         this.name = name;
         this.age = age;
+    }
+
+    public User say(){
+        log.info("i am {}", hashCode());
+        return this;
     }
 
     public static User supplier() {
