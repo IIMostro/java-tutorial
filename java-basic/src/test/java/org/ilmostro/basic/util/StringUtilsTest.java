@@ -102,11 +102,11 @@ public class StringUtilsTest {
 
     @Test
     public void equalV1(){
-        String v1 = "ab" + "c";
-        log.info("v1:{}", System.identityHashCode(v1));
-        v1.intern();
-        log.info("append:{}", System.identityHashCode("ab" + "c"));
+//        String v1 = "ab" + "c";
+//        log.info("v1:{}", System.identityHashCode(v1));
+//        v1.intern();
+//        log.info("append:{}", System.identityHashCode("ab" + "c"));
+        log.info("first:{}, second:{}", System.identityHashCode(("a" + "b").intern()), System.identityHashCode("a" + "b"));
     }
-
 
 }

@@ -7,6 +7,8 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ilmostro.basic.concurrent.semaphore.OnceRunnable;
+import org.ilmostro.basic.concurrent.semaphore.WaitOneReturnRunnable;
 import org.ilmostro.basic.executor.ThreadPoolExecutorFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,6 +50,24 @@ public class SemaphoreTest {
 		}
 		CompletableFuture.allOf(waits.toArray(new CompletableFuture[0])).join();
 		log.info("counter: {}", list.size());
+	}
+
+	@Test
+	public void once() {
+		List<CompletableFuture<Void>> waits = new ArrayList<>();
+		for (int i = 0; i < 10; i++) {
+			waits.add(CompletableFuture.runAsync(new OnceRunnable(semaphore), executor));
+		}
+		CompletableFuture.allOf(waits.toArray(new CompletableFuture[0])).join();
+	}
+
+	@Test
+	public void waitSomeReturn(){
+		List<CompletableFuture<Void>> waits = new ArrayList<>();
+		for (int i = 0; i < 10; i++) {
+			waits.add(CompletableFuture.runAsync(new WaitOneReturnRunnable(semaphore), executor));
+		}
+		CompletableFuture.allOf(waits.toArray(new CompletableFuture[0])).join();
 	}
 
 }
