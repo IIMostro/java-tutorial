@@ -24,7 +24,7 @@ public class UserRouter {
     }
 
     @Bean
-    public RouterFunction<ServerResponse> routerFunction() {
+    public RouterFunction<ServerResponse> user() {
         return RouterFunctions.route(GET("/user").and(accept(MediaType.APPLICATION_JSON)), service::list)
                 .andRoute(POST("/user").and(accept(MediaType.APPLICATION_JSON)), service::save);
     }

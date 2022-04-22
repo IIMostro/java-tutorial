@@ -1,4 +1,4 @@
-package org.ilmostro.webflux.service;
+package org.ilmostro.webflux.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ilmostro.webflux.domain.User;
@@ -7,6 +7,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+
+import org.ilmostro.webflux.service.UserService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
