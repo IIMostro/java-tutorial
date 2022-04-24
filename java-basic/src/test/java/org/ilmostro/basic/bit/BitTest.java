@@ -125,4 +125,10 @@ public class BitTest {
         logger.info("a:{}, b:{}", a, b);
     }
 
+
+    @Test
+    public void test10(){
+        logger.info("1 << 10 :{}", 1024 >> 9);
+    }
+
 }
