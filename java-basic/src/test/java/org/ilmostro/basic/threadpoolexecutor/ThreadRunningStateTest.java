@@ -16,6 +16,8 @@ public class ThreadRunningStateTest {
 	private static final int COUNT_MASK = (1 << COUNT_BITS) - 1;
 
 	// runState is stored in the high-order bits
+
+	// -1 = 11111111111111111111111111111111 << 29 = 11100000000000000000000000000
 	private static final int RUNNING    = -1 << COUNT_BITS;
 	private static final int SHUTDOWN   =  0 << COUNT_BITS;
 	private static final int STOP       =  1 << COUNT_BITS;

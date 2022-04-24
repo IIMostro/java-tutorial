@@ -13,7 +13,7 @@ public class BitTest {
 
     private static final Logger logger = LoggerFactory.getLogger(BitTest.class);
 
-    @org.junit.Test
+    @Test
     public void test() {
         int symbol = 0;
         logger.info("0|2:{}", symbol | 2);
