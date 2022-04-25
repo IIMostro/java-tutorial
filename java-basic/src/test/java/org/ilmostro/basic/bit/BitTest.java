@@ -97,9 +97,9 @@ public class BitTest {
     public void swap() {
         int x = 1, y = 2;
         logger.info("x:[{}], y:[{}]", x, y);
-        int temp = x ^ y;
-        x = y;
-        y = x ^ temp;
+        x = x ^ y;
+        y = x ^ y;
+        x = x ^ y;
         logger.info("x:[{}], y:[{}]", x, y);
     }
 
