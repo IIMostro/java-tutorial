@@ -13,7 +13,7 @@ public class ComboAtomic {
 	private final AtomicInteger storage;
 
 	public static ComboAtomic getInstance() {
-		return new ComboAtomic(0);
+		return new ComboAtomic();
 	}
 
 	// 分段为5
@@ -32,6 +32,10 @@ public class ComboAtomic {
 	private static final int CLASSIFY_MASK = (((1 << (1 + SEGMENT_COUNT)) - 1) << TYPE_BITS) | ((1 << CLASSIFY_BITS) -1);
 	// 位移异或
 	private static final int CLASSIFY_MASK_V1 = ((1 << STATUS_BITS) - 1) ^ (((1 << SEGMENT_COUNT) - 1) << CLASSIFY_BITS);
+
+	private ComboAtomic(){
+		this(0);
+	}
 
 	private ComboAtomic(int storage){
 		this.storage = new AtomicInteger(storage);
