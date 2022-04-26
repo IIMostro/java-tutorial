@@ -4,13 +4,13 @@ logging:
   level:
     root: INFO
 management:
+  server:
+    port: 8088
   endpoints:
+    enabled-by-default: true
     web:
       exposure:
-        include: "*"
-  endpoint:
-    shutdown:
-      enabled: true
+        include: '*'
 netty:
   websocket:
     # Websocket服务端口
@@ -39,4 +39,7 @@ vertx:
 #spring:
 #  redis:
 #    host: 192.168.205.20
+spring:
+  application:
+    name: Pure
 #    port: 6379

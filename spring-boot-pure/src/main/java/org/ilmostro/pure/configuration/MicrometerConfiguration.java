@@ -1,0 +1,28 @@
+package org.ilmostro.pure.configuration;
+
+import io.micrometer.core.instrument.MeterRegistry;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.ConfigurableEnvironment;
+
+/**
+ * @author li.bowei
+ */
+@Configuration
+public class MicrometerConfiguration {
+
+	final ConfigurableEnvironment environment;
+
+	public MicrometerConfiguration(ConfigurableEnvironment environment) {
+		this.environment = environment;
+	}
+
+	@Bean
+	public MeterRegistryCustomizer<MeterRegistry> configurer() {
+		return (registry) -> registry.config().commonTags("application", environment.getProperty("spring.application.name"));
+	}
+}

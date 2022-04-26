@@ -32,7 +32,7 @@ public class WebSocketSelector implements ImportSelector, BeanPostProcessor, App
 		if (CollectionUtils.isEmpty(attributes) || Objects.isNull(attributes.get("value"))) return new String[]{};
 		Object value = attributes.get("value");
 		if (EnableWebSocket.WebSocketType.vertx.equals(value)) {
-			return new String[]{VertxConfiguration.class.getName(), VertxSpringFactory.class.getName(), VerticleBeanPostProcessor.class.getName()};
+			return new String[]{VertxSpringFactory.class.getName(), VerticleBeanPostProcessor.class.getName()};
 		}else{
 			return new String[]{CustomChannelInboundHandlerAdapter.class.getName(), NettyBootstrapRunner.class.getName()};
 		}

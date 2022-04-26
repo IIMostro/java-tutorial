@@ -1,5 +1,7 @@
 package org.ilmostro.pure.controller;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import io.vertx.core.Vertx;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,9 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class SimpleController {
 
     private final Vertx vertx;
+    private final Counter counter;
 
-    public SimpleController(Vertx vertx) {
+    public SimpleController(Vertx vertx,
+            MeterRegistry registry) {
         this.vertx = vertx;
+        counter = registry.counter("simple");
     }
 
     @GetMapping()
@@ -25,8 +30,9 @@ public class SimpleController {
     }
 
     @GetMapping("/now")
-    public String now(String name){
+    public String now(){
+        counter.increment();
         log.info("current time: {}", System.nanoTime());
-        return name;
+        return String.valueOf(System.nanoTime());
     }
 }

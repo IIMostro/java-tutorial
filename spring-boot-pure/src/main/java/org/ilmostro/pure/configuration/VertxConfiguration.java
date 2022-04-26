@@ -15,6 +15,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
@@ -23,6 +24,7 @@ import java.io.FileNotFoundException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @EnableConfigurationProperties(VertxProperties.class)
+@Component
 public class VertxConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(VertxConfiguration.class);
