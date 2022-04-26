@@ -39,6 +39,7 @@ public class Combo {
 	}
 
 	public Combo setType(int type){
+		if (type > (1 << SEGMENT_COUNT) - 1) throw new RuntimeException();
 		// 初始化type
 		storage &= TYPE_MASK;
 		storage |= type << TYPE_BITS;
@@ -46,6 +47,7 @@ public class Combo {
 	}
 
 	public Combo setClassify(int classify){
+		if (classify > (1 << SEGMENT_COUNT) - 1) throw new RuntimeException();
 		// 初始化classify
 		storage &= CLASSIFY_MASK;
 		storage |= classify << CLASSIFY_BITS;
