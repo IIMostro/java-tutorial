@@ -1,0 +1,21 @@
+version: '3.2'
+services:
+  prometheus:
+    image: 'prom/prometheus'
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
+    networks:
+      - nebula
+  grafana:
+    image: 'grafana/grafana:8.5.0'
+    volumes:
+      - ./data:/var/lib/grafana
+    ports:
+      - 3000:3000
+    networks:
+      - nebula
+networks:
+  nebula:
+    external: true

@@ -20,7 +20,7 @@ public class SimpleController {
     public SimpleController(Vertx vertx,
             MeterRegistry registry) {
         this.vertx = vertx;
-        counter = registry.counter("simple");
+        counter = registry.counter("simple_controller_http_request_counter");
     }
 
     @GetMapping()
