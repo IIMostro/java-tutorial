@@ -1,5 +1,11 @@
 package org.ilmostro.pure.configuration;
 
+import java.net.InetSocketAddress;
+import java.util.concurrent.Executor;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -18,6 +24,7 @@ import org.ilmostro.pure.socket.CustomChannelInboundHandlerAdapter;
 import org.ilmostro.pure.socket.UrlResolverChannelChandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.ApplicationArguments;
@@ -30,16 +37,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.lang.NonNull;
 
-import java.net.InetSocketAddress;
-import java.util.concurrent.Executor;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 /**
  * @author li.bowei
  */
-//@Configuration
 @EnableConfigurationProperties(NettyConfigurationProperties.class)
 public class NettyBootstrapRunner implements ApplicationRunner, ApplicationListener<ContextClosedEvent>, ApplicationContextAware, InitializingBean {
 

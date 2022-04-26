@@ -1,5 +1,9 @@
 package org.ilmostro.pure.verticle;
 
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
@@ -11,11 +15,9 @@ import org.ilmostro.pure.configuration.VertxProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.stereotype.Component;
 
-//@Component
+@Component
 public class WebSocketVerticle extends AbstractVerticle {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketVerticle.class);
@@ -40,6 +42,7 @@ public class WebSocketVerticle extends AbstractVerticle {
                         logger.info("socket server listing in {}", port);
                         promise.complete();
                     } else {
+
                         promise.fail(handler.cause());
                     }
                 });

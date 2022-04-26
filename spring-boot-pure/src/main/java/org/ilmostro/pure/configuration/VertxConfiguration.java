@@ -22,7 +22,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@Configuration
 @EnableConfigurationProperties(VertxProperties.class)
 public class VertxConfiguration {
 
