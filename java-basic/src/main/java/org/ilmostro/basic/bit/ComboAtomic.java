@@ -56,9 +56,11 @@ public class ComboAtomic {
 
 	private ComboAtomic getComboAtomic(int expectedValue, int mask, int bits) {
 		if (expectedValue > (1 << SEGMENT_COUNT) - 1) throw new RuntimeException();
-		int value = storage.get();
-		int newValue = (value & mask) | (expectedValue << bits);
-		storage.compareAndSet(value, newValue);
+		synchronized (storage){
+			int value = storage.get();
+			int newValue = (value & mask) | (expectedValue << bits);
+			storage.compareAndSet(value, newValue);
+		}
 		return this;
 	}
 
