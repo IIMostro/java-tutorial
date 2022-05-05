@@ -1,10 +1,16 @@
 package org.ilmostro.basic.bit;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
 import com.esotericsoftware.kryo.kryo5.Kryo;
+import com.esotericsoftware.kryo.kryo5.io.ByteBufferInput;
+import com.esotericsoftware.kryo.kryo5.io.Input;
 import com.esotericsoftware.kryo.kryo5.io.Output;
 import com.google.common.base.Charsets;
 import lombok.extern.slf4j.Slf4j;
 import org.ilmostro.basic.bitmap.KyroPool;
+import org.ilmostro.basic.bitmap.KyroSerializer;
 import org.ilmostro.basic.bitmap.RoaringSerializer;
 import org.junit.Test;
 import org.roaringbitmap.RoaringBitmap;
@@ -28,10 +34,11 @@ public class RoaringBitMapTest {
 	public void serializer(){
 		RoaringBitmap bitmap = RoaringBitmap.bitmapOf(1, 1000);
 		KyroPool pool = KyroPool.getInstance();
-		Output output = new Output(1024, -1);
 		Kryo kryo = pool.obtain();
-		kryo.writeObject(output, bitmap, new RoaringSerializer());
-		log.info("serializer value:{}", new String(output.getBuffer(), Charsets.UTF_8));
+		byte[] serialize = KyroSerializer.serialize(bitmap);
+		log.info("serialize value:{}", serialize);
+		RoaringBitmap deserialize = KyroSerializer.deserialize(serialize, RoaringBitmap.class);
+		log.info("deserialize value:{}", deserialize);
 		pool.free(kryo);
 	}
 

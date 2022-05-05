@@ -14,6 +14,7 @@ import org.roaringbitmap.RoaringBitmap;
  * @author li.bowei
  */
 public class RoaringSerializer extends Serializer<RoaringBitmap> {
+
 	@Override
 	public void write(Kryo kryo, Output output, RoaringBitmap bitmap) {
 		try {
