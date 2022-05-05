@@ -1,6 +1,16 @@
 package org.ilmostro.pure.configuration;
 
-import com.lmax.disruptor.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+
+import com.lmax.disruptor.BatchEventProcessor;
+import com.lmax.disruptor.ExceptionHandler;
+import com.lmax.disruptor.RingBuffer;
+import com.lmax.disruptor.SequenceBarrier;
+import com.lmax.disruptor.WaitStrategy;
+import com.lmax.disruptor.WorkHandler;
+import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.EventHandlerGroup;
 import com.lmax.disruptor.dsl.ProducerType;
@@ -13,17 +23,12 @@ import org.ilmostro.pure.domain.ElementEventFactory;
 import org.ilmostro.pure.domain.GoodsElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
+import org.springframework.context.annotation.Bean;
 
 /**
  * @author li.bowei
  */
-@Configuration
 public class DisruptorConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(DisruptorConfiguration.class);
