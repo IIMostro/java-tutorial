@@ -15,12 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class SimpleController {
 
     private final Vertx vertx;
-    private final Counter counter;
 
-    public SimpleController(Vertx vertx,
-            MeterRegistry registry) {
+    public SimpleController(Vertx vertx) {
         this.vertx = vertx;
-        counter = registry.counter("simple_controller_http_request_counter");
     }
 
     @GetMapping()
@@ -31,7 +28,6 @@ public class SimpleController {
 
     @GetMapping("/now")
     public String now(){
-        counter.increment();
         log.info("current time: {}", System.nanoTime());
         return String.valueOf(System.nanoTime());
     }

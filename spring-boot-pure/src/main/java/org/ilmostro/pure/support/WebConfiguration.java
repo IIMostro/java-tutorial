@@ -7,7 +7,6 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 /**
  * @author li.bowei
  */
-@Configuration
 public class WebConfiguration implements WebMvcRegistrations {
 
     public RequestMappingHandlerMapping getRequestMappingHandlerMapping() {
