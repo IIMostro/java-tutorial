@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.SleepingWaitStrategy;
 import com.lmax.disruptor.WorkHandler;
+import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.EventHandlerGroup;
 import com.lmax.disruptor.dsl.ProducerType;
@@ -221,12 +222,12 @@ public class DisruptorRunnerTest {
     }
 
     @Test
-    public void netty() throws Exception{
+    public void netty() {
         Disruptor<NettyPromiseEvent> disruptor = new  Disruptor<>(new NettyPromiseEvent(),
                 1024,
                 ThreadPoolExecutorFactory.get().getThreadFactory(),
                 ProducerType.SINGLE,
-                new SleepingWaitStrategy());
+                new YieldingWaitStrategy());
         List<NettyEventHandler> handlers = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             handlers.add(new NettyEventHandler(10, i));
@@ -241,16 +242,14 @@ public class DisruptorRunnerTest {
                 event.setPromise(promise);
                 event.setId(finalI);
             }));
-            CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
-                try {
-                    return promise.get();
-                }
-                catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            });
         }
         disruptor.shutdown();
+    }
+
+    @Test
+    public void order(){
+        for (int i = 0; i < 1000000; i++) {
+            log.info("Thread:{}", Thread.currentThread().getName());
+        }
     }
 }

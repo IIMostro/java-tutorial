@@ -22,6 +22,7 @@ import org.ilmostro.pure.socket.AuthenticateChannelHandler;
 import org.ilmostro.pure.socket.ChannelHandlerHeaderCache;
 import org.ilmostro.pure.socket.CustomChannelInboundHandlerAdapter;
 import org.ilmostro.pure.socket.UrlResolverChannelChandler;
+import org.ilmostro.pure.utils.ThreadPoolExecutorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,18 +74,11 @@ public class NettyBootstrapRunner implements ApplicationRunner, ApplicationListe
         }
     }
 
-    @Bean
-    public Executor nettyExecutor() {
-        return new ThreadPoolExecutor(10, 20,
-                60, TimeUnit.SECONDS, new LinkedBlockingQueue<>(1000)
-        );
-    }
-
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        EventLoopGroup bossGroup = new NioEventLoopGroup(1, nettyExecutor());
-        EventLoopGroup workerGroup = new NioEventLoopGroup(8, nettyExecutor());
+        EventLoopGroup bossGroup = new NioEventLoopGroup(1, ThreadPoolExecutorFactory.get());
+        EventLoopGroup workerGroup = new NioEventLoopGroup(8, ThreadPoolExecutorFactory.get());
         try {
             ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(bossGroup, workerGroup);
