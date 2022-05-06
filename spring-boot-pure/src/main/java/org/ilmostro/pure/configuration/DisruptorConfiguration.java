@@ -33,7 +33,7 @@ public class DisruptorConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(DisruptorConfiguration.class);
 
-    private static final ThreadFactory DISRUPTOR_THREAD_FACTORY = new BasicThreadFactory.Builder().namingPattern("disruptor-task-%d").daemon(false).build();
+    public static final ThreadFactory DISRUPTOR_THREAD_FACTORY = new BasicThreadFactory.Builder().namingPattern("disruptor-task-%d").daemon(false).build();
     private static final Executor TASK_EXECUTOR = Executors.newFixedThreadPool(10);
 
     @Bean

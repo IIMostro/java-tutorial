@@ -2,21 +2,36 @@ package org.ilmostro.pure.disruptor;
 
 import com.alibaba.fastjson.JSON;
 import com.lmax.disruptor.EventHandler;
+import com.lmax.disruptor.SleepingWaitStrategy;
 import com.lmax.disruptor.WorkHandler;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.EventHandlerGroup;
+import com.lmax.disruptor.dsl.ProducerType;
+import io.vavr.concurrent.Promise;
+import lombok.extern.slf4j.Slf4j;
 import org.ilmostro.pure.configuration.DisruptorConfiguration;
+import org.ilmostro.pure.disruptor.http.NettyEventHandler;
+import org.ilmostro.pure.disruptor.http.NettyPromiseEvent;
+import org.ilmostro.pure.disruptor.http.VavrPromiseEvent;
+import org.ilmostro.pure.disruptor.http.VavrEventHandler;
 import org.ilmostro.pure.disruptor.order.*;
 import org.ilmostro.pure.domain.GoodsElement;
+import org.ilmostro.pure.utils.NettyPromiseFactory;
+import org.ilmostro.pure.utils.ThreadPoolExecutorFactory;
 import org.junit.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author li.bowei
  */
+@Slf4j
 public class DisruptorRunnerTest {
 
     @Test
@@ -177,7 +192,65 @@ public class DisruptorRunnerTest {
             good.setDescription("这是商品" + i);
             disruptor.publishEvent(new GoodElementTranslator(), JSON.toJSONString(good));
         }
-
         TimeUnit.SECONDS.sleep(5);
+    }
+
+    @Test
+    public void vavr() throws Exception{
+        Disruptor<VavrPromiseEvent> disruptor = new  Disruptor<>(new VavrPromiseEvent(),
+                1024,
+                ThreadPoolExecutorFactory.get().getThreadFactory(),
+                ProducerType.SINGLE,
+                new SleepingWaitStrategy());
+        List<VavrEventHandler> handlers = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            handlers.add(new VavrEventHandler(10, i));
+        }
+        disruptor.handleEventsWith(handlers.toArray(new VavrEventHandler[0]));
+        disruptor.start();
+        for (int i = 0; i < 1000000; i++) {
+            Promise<Void> promise = Promise.make(ThreadPoolExecutorFactory.get());
+            promise.future().onSuccess(v1 -> log.info("current thread:{}", Thread.currentThread().getName()));
+            long finalI = i;
+            disruptor.publishEvent(((event, sequence) -> {
+                event.setPromise(promise);
+                event.setId(finalI);
+            }));
+        }
+        disruptor.shutdown();
+    }
+
+    @Test
+    public void netty() throws Exception{
+        Disruptor<NettyPromiseEvent> disruptor = new  Disruptor<>(new NettyPromiseEvent(),
+                1024,
+                ThreadPoolExecutorFactory.get().getThreadFactory(),
+                ProducerType.SINGLE,
+                new SleepingWaitStrategy());
+        List<NettyEventHandler> handlers = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            handlers.add(new NettyEventHandler(10, i));
+        }
+        disruptor.handleEventsWith(handlers.toArray(new NettyEventHandler[0]));
+        disruptor.start();
+        for (int i = 0; i < 1000000; i++) {
+            io.netty.util.concurrent.Promise<Void> promise = NettyPromiseFactory.make();
+            promise.addListener(v1 -> log.info("current thread:{}", Thread.currentThread().getName()));
+            long finalI = i;
+            disruptor.publishEvent(((event, sequence) -> {
+                event.setPromise(promise);
+                event.setId(finalI);
+            }));
+            CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+                try {
+                    return promise.get();
+                }
+                catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            });
+        }
+        disruptor.shutdown();
     }
 }
