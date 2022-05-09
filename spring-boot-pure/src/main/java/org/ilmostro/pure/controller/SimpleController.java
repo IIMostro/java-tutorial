@@ -1,9 +1,8 @@
 package org.ilmostro.pure.controller;
 
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import io.vertx.core.Vertx;
 import lombok.extern.slf4j.Slf4j;
+import org.ilmostro.pure.service.SimpleService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,9 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class SimpleController {
 
     private final Vertx vertx;
+    private final SimpleService service;
 
-    public SimpleController(Vertx vertx) {
+    public SimpleController(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") Vertx vertx,
+            SimpleService service) {
         this.vertx = vertx;
+        this.service = service;
     }
 
     @GetMapping()
@@ -27,8 +29,21 @@ public class SimpleController {
     }
 
     @GetMapping("/now")
+//    @Counted(value = "custom_now_counted")
     public String now(){
         log.info("current time: {}", System.nanoTime());
+        return service.get("hello!");
+    }
+
+    @GetMapping("/throw")
+//    @Counted(value = "custom_throw_counted", recordFailuresOnly = true)
+    public String exception(){
+        log.info("current time: {}", System.nanoTime());
+        exc();
         return String.valueOf(System.nanoTime());
+    }
+
+    private void exc(){
+        throw new RuntimeException("throw");
     }
 }

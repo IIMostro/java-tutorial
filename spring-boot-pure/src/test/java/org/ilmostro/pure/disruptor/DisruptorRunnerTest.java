@@ -158,9 +158,11 @@ public class DisruptorRunnerTest {
     }
 
     public static WorkHandler<GoodsElement>[] getWorkHandlerPool(int size, Class<? extends WorkHandler<GoodsElement>> clazz) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+        //noinspection unchecked
         WorkHandler<GoodsElement>[] ans = new WorkHandler[size];
         Constructor<?>[] constructors = clazz.getConstructors();
         for (int i = 0; i < size; i++) {
+            //noinspection unchecked
             ans[i] = (WorkHandler<GoodsElement>) constructors[0].newInstance();
         }
         return ans;
@@ -197,7 +199,7 @@ public class DisruptorRunnerTest {
     }
 
     @Test
-    public void vavr() throws Exception{
+    public void vavr() {
         Disruptor<VavrPromiseEvent> disruptor = new  Disruptor<>(new VavrPromiseEvent(),
                 1024,
                 ThreadPoolExecutorFactory.get().getThreadFactory(),

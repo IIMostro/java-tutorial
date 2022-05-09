@@ -1,5 +1,7 @@
 package org.ilmostro.pure.service.impl;
 
+import io.micrometer.core.annotation.Counted;
+import io.micrometer.core.annotation.Timed;
 import org.ilmostro.pure.service.HelloService;
 import org.ilmostro.pure.service.SimpleService;
 import org.slf4j.Logger;
@@ -24,6 +26,8 @@ public class SimpleServiceImpl implements SimpleService {
     }
 
     @Override
+    @Counted
+    @Timed
     public String get(String message) {
         return message + service.hello();
     }

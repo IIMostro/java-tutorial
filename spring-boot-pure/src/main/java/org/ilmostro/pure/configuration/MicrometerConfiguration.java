@@ -1,5 +1,7 @@
 package org.ilmostro.pure.configuration;
 
+import io.micrometer.core.aop.CountedAspect;
+import io.micrometer.core.aop.TimedAspect;
 import io.micrometer.core.instrument.MeterRegistry;
 
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
@@ -23,4 +25,15 @@ public class MicrometerConfiguration {
 	public MeterRegistryCustomizer<MeterRegistry> configurer() {
 		return (registry) -> registry.config().commonTags("application", environment.getProperty("spring.application.name"));
 	}
+
+	@Bean
+	public TimedAspect timedAspect(MeterRegistry registry){
+		return new TimedAspect(registry);
+	}
+
+	@Bean
+	public CountedAspect countedAspect(MeterRegistry registry){
+		return new CountedAspect(registry);
+	}
+
 }
