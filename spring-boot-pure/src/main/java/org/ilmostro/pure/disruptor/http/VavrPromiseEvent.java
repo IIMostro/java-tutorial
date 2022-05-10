@@ -14,7 +14,7 @@ import lombok.ToString;
 @ToString
 public class VavrPromiseEvent implements EventFactory<VavrPromiseEvent> {
 
-	private Promise<Void> promise;
+	private Promise<Long> promise;
 	private Long id;
 
 	@Override

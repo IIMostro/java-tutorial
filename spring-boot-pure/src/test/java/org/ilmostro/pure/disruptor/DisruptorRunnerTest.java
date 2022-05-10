@@ -1,5 +1,12 @@
 package org.ilmostro.pure.disruptor;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
+
 import com.alibaba.fastjson.JSON;
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.SleepingWaitStrategy;
@@ -13,21 +20,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.ilmostro.pure.configuration.DisruptorConfiguration;
 import org.ilmostro.pure.disruptor.http.NettyEventHandler;
 import org.ilmostro.pure.disruptor.http.NettyPromiseEvent;
-import org.ilmostro.pure.disruptor.http.VavrPromiseEvent;
+import org.ilmostro.pure.disruptor.http.SimpleListenerEvent;
+import org.ilmostro.pure.disruptor.http.SimpleListenerEventHandler;
 import org.ilmostro.pure.disruptor.http.VavrEventHandler;
-import org.ilmostro.pure.disruptor.order.*;
+import org.ilmostro.pure.disruptor.http.VavrPromiseEvent;
+import org.ilmostro.pure.disruptor.order.EmailWorkHandler;
+import org.ilmostro.pure.disruptor.order.GoodElementTranslator;
+import org.ilmostro.pure.disruptor.order.IntegralWorkHandler;
+import org.ilmostro.pure.disruptor.order.OrderRecordWorkHandler;
+import org.ilmostro.pure.disruptor.order.RedPackWorkHandler;
+import org.ilmostro.pure.disruptor.order.VipOrderWorkHandler;
+import org.ilmostro.pure.domain.ElementEventFactory;
 import org.ilmostro.pure.domain.GoodsElement;
 import org.ilmostro.pure.utils.NettyPromiseFactory;
 import org.ilmostro.pure.utils.ThreadPoolExecutorFactory;
 import org.junit.Test;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author li.bowei
@@ -37,7 +44,7 @@ public class DisruptorRunnerTest {
 
     @Test
     public void rhombus() throws InterruptedException {
-        Disruptor<GoodsElement> disruptor = DisruptorConfiguration.getInstance();
+        Disruptor<GoodsElement> disruptor = DisruptorConfiguration.getInstance(ElementEventFactory::new);
 
         disruptor.handleEventsWith(new ConsumerEventHandler("consumer-handler-1"));
 
@@ -70,7 +77,7 @@ public class DisruptorRunnerTest {
      */
     @Test
     public void disruptor1() throws Exception{
-        Disruptor<GoodsElement> disruptor = DisruptorConfiguration.getInstance();
+        Disruptor<GoodsElement> disruptor = DisruptorConfiguration.getInstance(ElementEventFactory::new);
         EventHandler<GoodsElement>[] handlers = new ConsumerEventHandler[3];
         for (int i = 0; i < 3; i++) {
             handlers[i] = new ConsumerEventHandler("C-" + i);
@@ -97,7 +104,7 @@ public class DisruptorRunnerTest {
     @Test
     @Deprecated
     public void disruptor2() throws Exception{
-        Disruptor<GoodsElement> disruptor = DisruptorConfiguration.getInstance();
+        Disruptor<GoodsElement> disruptor = DisruptorConfiguration.getInstance(ElementEventFactory::new);
 
         WorkHandler<GoodsElement>[] handlers = new ConsumerWorkHandler[3];
         for (int i = 0; i < handlers.length; i++) {
@@ -127,7 +134,7 @@ public class DisruptorRunnerTest {
     @Test
     @Deprecated
     public void disruptor3() throws Exception{
-        Disruptor<GoodsElement> disruptor = DisruptorConfiguration.getInstance();
+        Disruptor<GoodsElement> disruptor = DisruptorConfiguration.getInstance(ElementEventFactory::new);
 
         WorkHandler<GoodsElement>[] handlers = new ConsumerWorkHandler[3];
         for (int i = 0; i < handlers.length; i++) {
@@ -178,7 +185,7 @@ public class DisruptorRunnerTest {
     @Test
     @Deprecated
     public void full() throws Exception{
-        Disruptor<GoodsElement> disruptor = DisruptorConfiguration.getInstance();
+        Disruptor<GoodsElement> disruptor = DisruptorConfiguration.getInstance(ElementEventFactory::new);
 
         EventHandlerGroup<GoodsElement> orderGroup = disruptor.handleEventsWithWorkerPool(getWorkHandlerPool(10, OrderRecordWorkHandler.class));
         EventHandlerGroup<GoodsElement> vipGroup = orderGroup.handleEventsWithWorkerPool(getWorkHandlerPool(2, VipOrderWorkHandler.class));
@@ -212,7 +219,7 @@ public class DisruptorRunnerTest {
         disruptor.handleEventsWith(handlers.toArray(new VavrEventHandler[0]));
         disruptor.start();
         for (int i = 0; i < 1000000; i++) {
-            Promise<Void> promise = Promise.make(ThreadPoolExecutorFactory.get());
+            Promise<Long> promise = Promise.make(ThreadPoolExecutorFactory.get());
             promise.future().onSuccess(v1 -> log.info("current thread:{}", Thread.currentThread().getName()));
             long finalI = i;
             disruptor.publishEvent(((event, sequence) -> {
@@ -237,7 +244,7 @@ public class DisruptorRunnerTest {
         disruptor.handleEventsWith(handlers.toArray(new NettyEventHandler[0]));
         disruptor.start();
         for (int i = 0; i < 1000000; i++) {
-            io.netty.util.concurrent.Promise<Void> promise = NettyPromiseFactory.make();
+            io.netty.util.concurrent.Promise<Long> promise = NettyPromiseFactory.make();
             promise.addListener(v1 -> log.info("current thread:{}", Thread.currentThread().getName()));
             long finalI = i;
             disruptor.publishEvent(((event, sequence) -> {
@@ -247,6 +254,30 @@ public class DisruptorRunnerTest {
         }
         disruptor.shutdown();
     }
+
+    @Test
+    public void simple(){
+        Disruptor<SimpleListenerEvent> disruptor = new  Disruptor<>(new SimpleListenerEvent(),
+                1024,
+                ThreadPoolExecutorFactory.get().getThreadFactory(),
+                ProducerType.SINGLE,
+                new YieldingWaitStrategy());
+        List<SimpleListenerEventHandler> handlers = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            handlers.add(new SimpleListenerEventHandler(10, i));
+        }
+        disruptor.handleEventsWith(handlers.toArray(new SimpleListenerEventHandler[0]));
+        disruptor.start();
+        for (int i = 0; i < 100; i++) {
+            int finalI = i;
+            AtomicLong curr = new AtomicLong();
+            disruptor.publishEvent(((event, sequence) -> {
+                event.setRequest(String.valueOf(finalI));
+                curr.set(sequence);
+            }));
+        }
+    }
+
 
     @Test
     public void order(){

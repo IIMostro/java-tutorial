@@ -6,7 +6,6 @@ import java.util.concurrent.Executor;
 import io.netty.channel.EventLoop;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.util.concurrent.DefaultPromise;
-import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.Promise;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,7 +21,7 @@ public class NettyPromiseFactory {
 		if (Objects.isNull(group)){
 			synchronized (NettyPromiseFactory.class){
 				if (Objects.isNull(group)){
-					group = new NioEventLoopGroup(1, executor);
+					group = new NioEventLoopGroup(10, executor);
 				}
 			}
 		}

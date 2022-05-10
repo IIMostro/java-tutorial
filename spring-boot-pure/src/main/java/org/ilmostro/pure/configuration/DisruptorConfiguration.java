@@ -3,11 +3,14 @@ package org.ilmostro.pure.configuration;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.function.Supplier;
 
 import com.lmax.disruptor.BatchEventProcessor;
+import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.ExceptionHandler;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.SequenceBarrier;
+import com.lmax.disruptor.SleepingWaitStrategy;
 import com.lmax.disruptor.WaitStrategy;
 import com.lmax.disruptor.WorkHandler;
 import com.lmax.disruptor.YieldingWaitStrategy;
@@ -19,6 +22,13 @@ import org.ilmostro.pure.disruptor.ConsumerEventFactory;
 import org.ilmostro.pure.disruptor.ConsumerEventHandler;
 import org.ilmostro.pure.disruptor.ProcessService;
 import org.ilmostro.pure.disruptor.SecondConsumerEventHandler;
+import org.ilmostro.pure.disruptor.http.NettyEventHandler;
+import org.ilmostro.pure.disruptor.http.NettyPromiseEvent;
+import org.ilmostro.pure.disruptor.http.SimpleResponseEvent;
+import org.ilmostro.pure.disruptor.http.SimpleResponseEventFactory;
+import org.ilmostro.pure.disruptor.http.SimpleResponseEventHandler;
+import org.ilmostro.pure.disruptor.http.VavrEventHandler;
+import org.ilmostro.pure.disruptor.http.VavrPromiseEvent;
 import org.ilmostro.pure.domain.ElementEventFactory;
 import org.ilmostro.pure.domain.GoodsElement;
 import org.slf4j.Logger;
@@ -36,9 +46,9 @@ public class DisruptorConfiguration {
     public static final ThreadFactory DISRUPTOR_THREAD_FACTORY = new BasicThreadFactory.Builder().namingPattern("disruptor-task-%d").daemon(false).build();
     private static final Executor TASK_EXECUTOR = Executors.newFixedThreadPool(10);
 
-    @Bean
+//    @Bean
     public Disruptor<GoodsElement> disruptor(){
-        Disruptor<GoodsElement> disruptor = getInstance();
+        Disruptor<GoodsElement> disruptor = getInstance(ElementEventFactory::new);
         WorkHandler<GoodsElement>[] handlers = new ConsumerEventHandler[10];
         for (int i = 0; i < handlers.length; i++) {
             handlers[i] = new ConsumerEventHandler("C" + i);
@@ -50,14 +60,13 @@ public class DisruptorConfiguration {
         return disruptor;
     }
 
-    public static Disruptor<GoodsElement> getInstance(){
-        WaitStrategy strategy = new YieldingWaitStrategy();
-        int bufferSize = 16;
-        ElementEventFactory factory = new ElementEventFactory();
-        Disruptor<GoodsElement> disruptor = new  Disruptor<>(factory, bufferSize, DISRUPTOR_THREAD_FACTORY, ProducerType.SINGLE, strategy);
-        disruptor.setDefaultExceptionHandler(new ExceptionHandler<GoodsElement>() {
+    public static <T> Disruptor<T> getInstance(Supplier<EventFactory<T>> supplier){
+        WaitStrategy strategy = new SleepingWaitStrategy();
+        int bufferSize = 1024;
+        Disruptor<T> disruptor = new  Disruptor<>(supplier.get(), bufferSize, DISRUPTOR_THREAD_FACTORY, ProducerType.SINGLE, strategy);
+        disruptor.setDefaultExceptionHandler(new ExceptionHandler<T>() {
             @Override
-            public void handleEventException(Throwable ex, long sequence, GoodsElement event) {
+            public void handleEventException(Throwable ex, long sequence, T event) {
                 logger.error("sequence:[{}], event data:[{}], error message:[{}]", sequence, event, ex.getMessage());
             }
 
@@ -74,9 +83,9 @@ public class DisruptorConfiguration {
         return disruptor;
     }
 
-    @Bean
+//    @Bean
     public Disruptor<GoodsElement> serialWorkPool(){
-        Disruptor<GoodsElement> disruptor = getInstance();
+        Disruptor<GoodsElement> disruptor = getInstance(ElementEventFactory::new);
         WorkHandler<GoodsElement>[] handlers = new ConsumerEventHandler[10];
         for (int i = 0; i < handlers.length; i++) {
             handlers[i] = new ConsumerEventHandler("C" + i);
@@ -94,9 +103,9 @@ public class DisruptorConfiguration {
         return disruptor;
     }
 
-    @Bean
+//    @Bean
     public Disruptor<GoodsElement> serial(){
-        Disruptor<GoodsElement> disruptor = getInstance();
+        Disruptor<GoodsElement> disruptor = getInstance(ElementEventFactory::new);
         //设置10个串行消费的
         for (int i = 0; i < 10; i++) {
             ConsumerEventHandler handler = new ConsumerEventHandler("C" + i);
@@ -106,9 +115,9 @@ public class DisruptorConfiguration {
         return disruptor;
     }
 
-    @Bean
+//    @Bean
     public Disruptor<GoodsElement> batch(){
-        Disruptor<GoodsElement> disruptor = getInstance();
+        Disruptor<GoodsElement> disruptor = getInstance(ElementEventFactory::new);
         RingBuffer<GoodsElement> ringBuffer = disruptor.getRingBuffer();
         SequenceBarrier barrier = ringBuffer.newBarrier();
         BatchEventProcessor<GoodsElement> processor = new BatchEventProcessor<>(ringBuffer, barrier, new ConsumerEventHandler("C1"));
@@ -118,10 +127,40 @@ public class DisruptorConfiguration {
         return disruptor;
     }
 
-    @Bean
+//    @Bean
     public Disruptor<GoodsElement> factory(){
-        Disruptor<GoodsElement> disruptor = getInstance();
+        Disruptor<GoodsElement> disruptor = getInstance(ElementEventFactory::new);
         disruptor.handleEventsWith(new ConsumerEventFactory());
+        disruptor.start();
+        return disruptor;
+    }
+
+    @Bean
+    public Disruptor<SimpleResponseEvent> response(){
+        final Disruptor<SimpleResponseEvent> disruptor = getInstance(SimpleResponseEventFactory::new);
+        for (int i = 0; i < 10; i++) {
+            disruptor.handleEventsWith(new SimpleResponseEventHandler(10, i));
+        }
+        disruptor.start();
+        return disruptor;
+    }
+
+    @Bean
+    public Disruptor<NettyPromiseEvent> promise(){
+        final Disruptor<NettyPromiseEvent> disruptor = getInstance(NettyPromiseEvent::new);
+        for (int i = 0; i < 10; i++) {
+            disruptor.handleEventsWith(new NettyEventHandler(10, i));
+        }
+        disruptor.start();
+        return disruptor;
+    }
+
+    @Bean
+    public Disruptor<VavrPromiseEvent> vavr(){
+        final Disruptor<VavrPromiseEvent> disruptor = getInstance(VavrPromiseEvent::new);
+        for (int i = 0; i < 10; i++) {
+            disruptor.handleEventsWith(new VavrEventHandler(10, i));
+        }
         disruptor.start();
         return disruptor;
     }

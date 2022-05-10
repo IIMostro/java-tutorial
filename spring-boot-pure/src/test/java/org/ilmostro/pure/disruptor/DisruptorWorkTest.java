@@ -10,6 +10,7 @@ import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.WorkerPool;
 import com.lmax.disruptor.dsl.Disruptor;
 import org.ilmostro.pure.configuration.DisruptorConfiguration;
+import org.ilmostro.pure.domain.ElementEventFactory;
 import org.ilmostro.pure.domain.GoodsElement;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -24,7 +25,7 @@ import org.slf4j.LoggerFactory;
 @Deprecated
 public class DisruptorWorkTest {
 
-    Disruptor<GoodsElement> disruptor = DisruptorConfiguration.getInstance();
+    Disruptor<GoodsElement> disruptor = DisruptorConfiguration.getInstance(ElementEventFactory::new);
     private static final int count = 10;
 
 

@@ -14,7 +14,7 @@ import lombok.ToString;
 @ToString
 public class NettyPromiseEvent implements EventFactory<NettyPromiseEvent> {
 
-	private Promise<Void> promise;
+	private Promise<Long> promise;
 	private Long id;
 
 	@Override

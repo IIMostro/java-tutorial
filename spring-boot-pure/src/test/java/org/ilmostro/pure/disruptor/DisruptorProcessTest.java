@@ -4,6 +4,7 @@ import com.lmax.disruptor.BatchEventProcessor;
 import com.lmax.disruptor.dsl.Disruptor;
 import org.ilmostro.pure.configuration.DisruptorConfiguration;
 import org.ilmostro.pure.disruptor.order.MessageEventHandler;
+import org.ilmostro.pure.domain.ElementEventFactory;
 import org.ilmostro.pure.domain.GoodsElement;
 import org.junit.Test;
 
@@ -14,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class DisruptorProcessTest {
 
-    Disruptor<GoodsElement> disruptor = DisruptorConfiguration.getInstance();
+    Disruptor<GoodsElement> disruptor = DisruptorConfiguration.getInstance(ElementEventFactory::new);
 
     @Test
     public void process() throws Exception {

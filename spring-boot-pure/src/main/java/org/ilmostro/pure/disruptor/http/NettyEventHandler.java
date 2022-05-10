@@ -1,7 +1,5 @@
 package org.ilmostro.pure.disruptor.http;
 
-import java.util.concurrent.TimeUnit;
-
 import com.lmax.disruptor.EventHandler;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,9 +18,9 @@ public class NettyEventHandler implements EventHandler<NettyPromiseEvent> {
 	}
 
 	@Override
-	public void onEvent(NettyPromiseEvent event, long sequence, boolean endOfBatch) throws Exception {
-		if ((mask & sequence) != ordinal) return;
+	public void onEvent(NettyPromiseEvent event, long sequence, boolean endOfBatch) {
+		if ((sequence % mask) != ordinal) return;
 		log.info("process goods element:{}, sequence:{}", event, sequence);
-		event.getPromise().trySuccess(null);
+		event.getPromise().trySuccess(System.currentTimeMillis());
 	}
 }
