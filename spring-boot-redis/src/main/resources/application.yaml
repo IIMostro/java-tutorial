@@ -1,10 +1,11 @@
 spring:
   redis:
-    host: '192.168.205.20'
+    host: '192.168.56.20'
     lettuce:
       pool:
         max-active: 8
         min-idle: 0
         max-idle: 8
+    port: 30379
 security:
   model: 'interceptor'

@@ -1,5 +1,16 @@
 package org.ilmostro.basic.reactor;
 
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import lombok.extern.slf4j.Slf4j;
 import org.ilmostro.basic.executor.ThreadPoolExecutorFactory;
 import org.junit.Test;
@@ -7,14 +18,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
-
-import java.time.Duration;
-import java.util.Objects;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author li.bowei
@@ -111,4 +114,35 @@ public class MonoTest {
         Schedulers.fromExecutor(scheduledExecutorService).schedulePeriodically(() -> log.info("current:{}", System.currentTimeMillis()), 1,1, TimeUnit.SECONDS);
         TimeUnit.SECONDS.sleep(10);
     }
+
+    @Test
+    public void subscriber() throws Exception{
+        Flux.just(new int[]{1,2,3,4})
+                .metrics()
+                .flatMapIterable((Function<int[], Iterable<?>>) ints -> Arrays.stream(ints).boxed().collect(Collectors.toList()))
+                .publishOn(Schedulers.fromExecutor(ThreadPoolExecutorFactory.get(false)))
+//                .subscribeOn(Schedulers.fromExecutor(ThreadPoolExecutorFactory.get(false)))
+                .subscribeWith(new SampleSubscriber<>());
+
+        Mono.just(Arrays.asList(1, 2, 3))
+                .metrics()
+                .flatMapIterable(Function.identity())
+                .doOnError(v1 -> log.error(v1.getMessage()))
+                .publishOn(Schedulers.fromExecutor(ThreadPoolExecutorFactory.get(false)))
+                .subscribeWith(new SampleSubscriber<>()).request(10);
+
+        TimeUnit.SECONDS.sleep(10);
+    }
+
+    @Test
+    public void zip() throws Exception{
+        Mono.zip(Mono.just(1), Mono.just(2))
+                .subscribeOn(Schedulers.fromExecutor(ThreadPoolExecutorFactory.get(false)))
+
+                .subscribe(v1 -> log.info("v1:{}, v2:{}", v1.getT1(), v1.getT2()));
+//        TimeUnit.SECONDS.sleep(1);
+    }
+
+
+
 }

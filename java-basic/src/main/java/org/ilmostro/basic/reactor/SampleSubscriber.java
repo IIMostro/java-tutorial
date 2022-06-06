@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
+import reactor.util.annotation.NonNull;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,7 +16,7 @@ public class SampleSubscriber<T> extends BaseSubscriber<T> {
 
     @SneakyThrows
     @Override
-    protected void hookOnSubscribe(Subscription subscription) {
+    protected void hookOnSubscribe(@NonNull Subscription subscription) {
         log.info("hook on subscribe");
         TimeUnit.SECONDS.sleep(1);
         request(1);
@@ -23,7 +24,7 @@ public class SampleSubscriber<T> extends BaseSubscriber<T> {
 
     @SneakyThrows
     @Override
-    protected void hookOnNext(T value) {
+    protected void hookOnNext(@NonNull T value) {
         log.info("hook on next");
         TimeUnit.SECONDS.sleep(1);
         request(1);

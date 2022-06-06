@@ -18,6 +18,7 @@ import java.util.UUID;
  * @author li.bowei
  */
 public class DynamicObjectUtils {
+
     public static <T> Class<T> prepareClass(String className, List<String> fields) throws CannotCompileException {
         ClassPool pool = ClassPool.getDefault();
         CtClass evalClass = pool.makeClass(className + UUID.randomUUID().toString());
@@ -41,7 +42,6 @@ public class DynamicObjectUtils {
             return new BeanCreationException(String.format("class name: %s", clazz));
         }
     }
-
 
 
     public static Object getTarget(Object dest, Map<String, Object> addProperties) {

@@ -1,14 +1,14 @@
 package org.ilmostro.basic.completable;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
+
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.ilmostro.basic.User;
 import org.ilmostro.basic.executor.ThreadPoolExecutorFactory;
 import org.junit.Test;
-
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author li.bowei
@@ -48,6 +48,16 @@ public class CompletableTest {
         CompletableFuture<Void> future = user1.thenCombine(user2, (user, user21) -> user.getAge() + user21.getAge())
                 .thenAccept(v1 -> log.info(v1.toString()));
         CompletableFuture.allOf(future).join();
+
+
+        CompletableFuture.runAsync(new LogRunnable("setup 1"), executor)
+                .thenApply(v1 -> {
+                    log.info("setup 2 current thread:{}", Thread.currentThread().getName());
+                    return "setup 3";
+                }).thenCombineAsync(CompletableFuture.runAsync(new LogRunnable("setup 4"), executor), (v1, v2) ->{
+                    log.info("setup5 current thread:{}", Thread.currentThread().getName());
+                    return null;
+        }, executor).join();
     }
 
     @Test
@@ -86,6 +96,21 @@ public class CompletableTest {
                 TimeUnit.SECONDS.sleep(1);
                 log.info("{} :{}", name, i);
             }
+        }
+    }
+
+    @Slf4j
+    private static class LogRunnable implements Runnable{
+
+        private final String command;
+
+        private LogRunnable(String command) {
+            this.command = command;
+        }
+
+        @Override
+        public void run() {
+            log.info("command:{}, current thread is:{} ", command, Thread.currentThread().getName());
         }
     }
 }

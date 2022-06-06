@@ -46,6 +46,7 @@ public class User implements Serializable {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Score implements Serializable{
 
         public static String[] subjects = new String[]{"语文","数学","英语"};
