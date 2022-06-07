@@ -25,7 +25,7 @@ public class SemaphoreTest {
 	@Before
 	public void before() {
 		semaphore = new Semaphore(1);
-		executor = ThreadPoolExecutorFactory.get(5, false);
+		executor = ThreadPoolExecutorFactory.get(false);
 	}
 
 

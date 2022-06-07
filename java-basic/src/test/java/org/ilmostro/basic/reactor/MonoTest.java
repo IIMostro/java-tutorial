@@ -18,12 +18,16 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.Logger;
+import reactor.util.Loggers;
 
 /**
  * @author li.bowei
  */
 @Slf4j
 public class MonoTest {
+
+    private static final Logger logger = Loggers.getLogger(MonoTest.class);
 
     @Test
     public void mono(){
@@ -143,6 +147,13 @@ public class MonoTest {
 //        TimeUnit.SECONDS.sleep(1);
     }
 
-
+    @Test
+    public void checkpoint(){
+        Mono.just(2)
+                .map(v1 -> v1 + 1)
+                .checkpoint("description", true)
+                .log(logger)
+                .subscribe();
+    }
 
 }

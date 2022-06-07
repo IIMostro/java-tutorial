@@ -1,5 +1,6 @@
 package org.ilmostro.basic.executor;
 
+import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -15,22 +16,40 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ThreadPoolExecutorFactory {
 
+	private static ThreadPoolExecutor executor;
 
-    public static ThreadPoolExecutor get(boolean daemon) {
-        return get(5, daemon);
-    }
+	public static ThreadPoolExecutor get(String prefix) {
+		return get(5, false, prefix);
+	}
 
-    public static ThreadPoolExecutor get(int core, boolean daemon) {
-        return ExecutorBuilder.create()
-                .setCorePoolSize(core)
-                .setMaxPoolSize(10)
-                .setKeepAliveTime(30, TimeUnit.SECONDS)
-                .setWorkQueue(new LinkedBlockingQueue<>(1000))
-                .setThreadFactory(ThreadFactoryBuilder.create().setDaemon(daemon)
-                        .setNamePrefix("customize-").build())
-                .setHandler((r, executor) -> {
 
-                })
-                .build();
-    }
+	public static ThreadPoolExecutor get(boolean daemon) {
+		return get(5, daemon, "customize-");
+	}
+
+	public static ThreadPoolExecutor get(int core, boolean daemon, String prefix) {
+		if (Objects.isNull(executor)) {
+			synchronized (ThreadPoolExecutorFactory.class){
+				executor = ExecutorBuilder.create()
+						.setCorePoolSize(core)
+						.setMaxPoolSize(10)
+						.setKeepAliveTime(30, TimeUnit.SECONDS)
+						.setWorkQueue(new LinkedBlockingQueue<>(1000))
+						.setThreadFactory(ThreadFactoryBuilder.create().setDaemon(daemon)
+								.setNamePrefix(prefix).build())
+						.setHandler((r, handler) -> {
+
+						})
+						.build();
+			}
+		}else{
+			if (executor.getCorePoolSize() == core){
+				return executor;
+			}
+			synchronized (ThreadPoolExecutorFactory.class){
+				executor.setCorePoolSize(core);
+			}
+		}
+		return executor;
+	}
 }
