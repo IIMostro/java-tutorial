@@ -31,8 +31,7 @@ public class RoaringSerializer extends Serializer<RoaringBitmap> {
 		try {
 			bitmap.deserialize(new KryoDataInput(input));
 		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException();
+			throw new RuntimeException(e);
 		}
 		return bitmap;
 	}
