@@ -26,7 +26,7 @@ public class RedissonRoaringBitMapTests {
 	private RedissonClient redisson;
 
 	@Test
-	public void bucket(){
+	public void bucket() {
 		final RBucket<RoaringBitmap> bucket = redisson.getBucket("roaring-bitmap",
 				new RoaringBitMapCodec());
 		RoaringBitmap bitmap = bucket.get();
@@ -38,12 +38,23 @@ public class RedissonRoaringBitMapTests {
 	}
 
 	@Test
-	public void getBucket(){
+	public void getBucket() {
 		final RBucket<RoaringBitmap> bucket = redisson.getBucket("roaring-bitmap",
 				new RoaringBitMapCodec());
 		final RoaringBitmap bitmap = bucket.get();
 		for (int i = 0; i < 1000; i++) {
 			log.info("contains:{}", bitmap.contains(i));
 		}
+	}
+
+	@Test
+	public void update(){
+		final RBucket<RoaringBitmap> bucket = redisson.getBucket("roaring-bitmap",
+				new RoaringBitMapCodec());
+		final RoaringBitmap bitmap = bucket.get();
+		for (int i = 0; i < 1000; i++) {
+			if (i % 2 == 0) bitmap.remove(i);
+		}
+		bucket.set(bitmap);
 	}
 }

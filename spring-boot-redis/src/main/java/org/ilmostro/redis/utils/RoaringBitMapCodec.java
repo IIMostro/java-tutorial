@@ -1,58 +1,34 @@
 package org.ilmostro.redis.utils;
 
-import java.io.ByteArrayInputStream;
+import java.nio.ByteBuffer;
 
-import com.esotericsoftware.kryo.kryo5.Kryo;
-import com.esotericsoftware.kryo.kryo5.io.Input;
-import com.esotericsoftware.kryo.kryo5.io.Output;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
-import io.netty.buffer.ByteBufOutputStream;
+import io.netty.buffer.PooledByteBufAllocator;
 import org.redisson.client.codec.BaseCodec;
 import org.redisson.client.protocol.Decoder;
 import org.redisson.client.protocol.Encoder;
 import org.roaringbitmap.RoaringBitmap;
+import org.roaringbitmap.buffer.ImmutableRoaringBitmap;
 
 /**
  * @author li.bowei
  */
 public class RoaringBitMapCodec extends BaseCodec {
 
-	private static final KyroPool pool = KyroPool.getInstance();
-	private static final OutputPool outputPool = OutputPool.getInstance();
-
 	private final Decoder<Object> decoder = (buf, state) -> {
-		byte[] result = new byte[buf.readableBytes()];
-		buf.readBytes(result);
-		Kryo kryo = pool.obtain();
-		try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(result);
-			 Input input = new Input(byteArrayInputStream)) {
-			// byte->Object:从byte数组中反序列化出对对象
-			return kryo.readObject(input, RoaringBitmap.class);
-		} catch (Exception e) {
-			throw new RuntimeException("Deserialization failed");
-		} finally {
-			pool.free(kryo);
-		}
+		final ByteBuf byteBuf = PooledByteBufAllocator.DEFAULT.directBuffer();
+		byteBuf.writeBytes(buf);
+		byteBuf.slice();
+		ImmutableRoaringBitmap bitmap = new ImmutableRoaringBitmap(byteBuf.nioBuffer());
+		return new RoaringBitmap(bitmap);
 	};
 
 	private final Encoder encoder = in -> {
-		Kryo kryo = pool.obtain();
-		Output output = outputPool.obtain();
-		ByteBuf out = ByteBufAllocator.DEFAULT.buffer();
-		try {
-			ByteBufOutputStream baos = new ByteBufOutputStream(out);
-			output.setOutputStream(baos);
-			kryo.writeClassAndObject(output, in);
-			output.flush();
-			return baos.buffer();
-		} catch (RuntimeException e) {
-			out.release();
-			throw e;
-		} finally {
-			pool.free(kryo);
-			outputPool.free(output);
-		}
+		RoaringBitmap bitmap = (RoaringBitmap) in;
+		final ByteBuffer byteBuffer = ByteBuffer.allocateDirect(bitmap.serializedSizeInBytes());
+		bitmap.serialize(byteBuffer);
+		byteBuffer.flip();
+		return PooledByteBufAllocator.DEFAULT.directBuffer().writeBytes(byteBuffer);
 	};
 
 	@Override
