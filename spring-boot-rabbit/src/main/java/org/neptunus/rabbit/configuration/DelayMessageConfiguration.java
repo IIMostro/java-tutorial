@@ -1,12 +1,11 @@
 package org.neptunus.rabbit.configuration;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.ExchangeBuilder;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,17 +44,18 @@ public class DelayMessageConfiguration {
 
 	@Bean
 	public Queue commandQueue(){
-		Map<String, Object> args = new HashMap<>();
-		//设置死信交换机
-		args.put("x-dead-letter-exchange", DLX_EXCHANGE_NAME);
-		//设置死信 routing_key
-		args.put("x-dead-letter-routing-key", DLX_ROUTING_KEY);
-		return new Queue(COMMAND_QUEUE_NAME, true, false, false, args);
+		// 绑定死信队列
+		return QueueBuilder.durable(COMMAND_QUEUE_NAME)
+				.deadLetterExchange(DLX_EXCHANGE_NAME)
+				.deadLetterRoutingKey(DLX_ROUTING_KEY)
+				.build();
 	}
 
 	@Bean
 	public TopicExchange commandExchange(){
-		return new TopicExchange(COMMAND_EXCHANGE_NAME, true, false);
+		return ExchangeBuilder.topicExchange(COMMAND_EXCHANGE_NAME)
+				.durable(true)
+				.build();
 	}
 	
 	@Bean

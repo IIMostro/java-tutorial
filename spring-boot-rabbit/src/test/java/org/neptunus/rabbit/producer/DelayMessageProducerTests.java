@@ -13,6 +13,7 @@ import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 
 /**
  * @author li.bowei
@@ -31,7 +32,7 @@ public class DelayMessageProducerTests {
 			final User user = new User(i, formatter.format(LocalDateTime.now()));
 			final Message message = MessageBuilder.withBody(JSON.toJSONString(user).getBytes())
 					.setExpiration(String.valueOf(i * 1000))
-					.setContentType("application/json")
+					.setContentType(MediaType.APPLICATION_JSON_VALUE)
 					.build();
 			template.convertAndSend(DelayMessageConfiguration.COMMAND_EXCHANGE_NAME,
 					DelayMessageConfiguration.COMMAND_ROUTING_KEY,
