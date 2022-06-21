@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 172.29.22.36:8848
+        register-enabled: true
+        namespace: aaaa9be6-300e-4c96-8958-2f1fdcfc55b6
+      config:
+        server-addr: 172.29.22.36:8848
+        file-extension: yaml
+        group: DEFAULT_GROUP
+        namespace: aaaa9be6-300e-4c96-8958-2f1fdcfc55b6
+      username: nacos
+      password: nacos
+  application:
+    name: 'spring-cloud-sample'
