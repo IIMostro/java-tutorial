@@ -13,4 +13,6 @@ spring:
       username: nacos
       password: nacos
   application:
-    name: 'spring-cloud-sample'
+    name: spring-cloud-sample
+  profiles:
+    active: dev
