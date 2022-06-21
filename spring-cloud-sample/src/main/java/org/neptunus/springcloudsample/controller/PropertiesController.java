@@ -2,7 +2,6 @@ package org.neptunus.springcloudsample.controller;
 
 import org.neptunus.springcloudsample.configuration.RefreshProperties;
 
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
