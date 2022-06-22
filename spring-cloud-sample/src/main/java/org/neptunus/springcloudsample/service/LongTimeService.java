@@ -1,12 +1,9 @@
 package org.neptunus.springcloudsample.service;
 
-import java.util.concurrent.TimeUnit;
-
 import lombok.extern.slf4j.Slf4j;
 import org.neptunus.springcloudsample.configuration.RefreshProperties;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,7 +19,7 @@ public class LongTimeService implements InitializingBean {
 		this.properties = properties;
 	}
 
-	public String time() throws InterruptedException {
+	public String time() {
 		log.info("time start:[{}]", System.currentTimeMillis());
 //		TimeUnit.SECONDS.sleep(10);
 		log.info("time end:[{}]", System.currentTimeMillis());
@@ -31,7 +28,7 @@ public class LongTimeService implements InitializingBean {
 
 
 	@Override
-	public void afterPropertiesSet() throws Exception {
+	public void afterPropertiesSet() {
 		log.info("long time service:[{}] loading success", hashCode());
 	}
 }
