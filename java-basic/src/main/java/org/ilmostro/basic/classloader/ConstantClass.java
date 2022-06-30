@@ -5,9 +5,13 @@ package org.ilmostro.basic.classloader;
  **/
 public class ConstantClass {
 
-    public static final String KEY = "key";
+    public final String key = "key";
 
     static{
         System.out.println("this is constant class static function!");
+    }
+
+    public String getKEY() {
+        return key;
     }
 }
