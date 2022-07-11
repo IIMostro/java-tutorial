@@ -145,6 +145,12 @@
             <artifactId>commons-io</artifactId>
             <version>${apache-common-io.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.jctools</groupId>
+            <artifactId>jctools-core</artifactId>
+            <version>${jctools.version}</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
