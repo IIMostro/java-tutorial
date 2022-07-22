@@ -30,6 +30,7 @@
         <jwt.version>0.10.7</jwt.version>
         <jctools.version>3.3.0</jctools.version>
         <jmh.version>1.35</jmh.version>
+        <contiperf.version>2.3.4</contiperf.version>
     </properties>
 
     <modules>
