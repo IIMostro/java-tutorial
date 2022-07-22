@@ -1,10 +1,11 @@
 package org.ilmostro.basic.buddy;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
+import lombok.ToString;
 
 /**
  * @author li.bowei
  */
+@ToString
 public abstract class AbstractConstructorClass {
 
 	private static final String name;
@@ -16,13 +17,5 @@ public abstract class AbstractConstructorClass {
 
 	public AbstractConstructorClass(String clazz) {
 		this.clazz = clazz;
-	}
-
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this)
-				.append("clazz", clazz)
-				.append("name", name)
-				.toString();
 	}
 }
