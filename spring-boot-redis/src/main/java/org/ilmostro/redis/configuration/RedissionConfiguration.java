@@ -1,17 +1,26 @@
 package org.ilmostro.redis.configuration;
 
+import java.time.Duration;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.ilmostro.redis.listener.MessageListenerAdapterWrapper;
 import org.ilmostro.redis.listener.ProductUpdateStreamListener;
 import org.redisson.Redisson;
-import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
+
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.stream.*;
+import org.springframework.data.redis.connection.stream.Consumer;
+import org.springframework.data.redis.connection.stream.MapRecord;
+import org.springframework.data.redis.connection.stream.ReadOffset;
+import org.springframework.data.redis.connection.stream.StreamInfo;
+import org.springframework.data.redis.connection.stream.StreamOffset;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
@@ -21,11 +30,6 @@ import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.data.redis.stream.StreamMessageListenerContainer;
 
-import java.time.Duration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
-
 /**
  * @author li.bowei
  */
@@ -34,12 +38,12 @@ import java.util.UUID;
 public class RedissionConfiguration {
 
     @Bean
-    public RedissonClient redissonClient(RedisProperties properties) {
+    public Redisson redissonClient(RedisProperties properties) {
         Config config = new Config();
         config.useSingleServer()
                 .setAddress("redis://" + properties.getHost() + ":" + properties.getPort())
                 .setPassword(properties.getPassword());
-        return Redisson.create(config);
+        return (Redisson) Redisson.create(config);
     }
 
     public static final String REDIS_STREAM_GROUP = "redis_stream_group";
