@@ -3,6 +3,8 @@ server:
 logging:
   level:
     root: INFO
+  file:
+    path: classpath:logback.xml
 management:
   server:
     port: 8088

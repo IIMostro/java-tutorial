@@ -1,6 +1,7 @@
 package org.ilmostro.pure.domain;
 
 import lombok.Data;
+import lombok.ToString;
 
 //import javax.persistence.Entity;
 //import javax.persistence.Id;
@@ -9,6 +10,7 @@ import lombok.Data;
  * @author li.bowei
  */
 @Data
+@ToString
 //@Entity
 public class GoodsElement {
 
