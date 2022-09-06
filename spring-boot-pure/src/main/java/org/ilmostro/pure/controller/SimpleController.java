@@ -3,6 +3,8 @@ package org.ilmostro.pure.controller;
 import io.vertx.core.Vertx;
 import lombok.extern.slf4j.Slf4j;
 import org.ilmostro.pure.service.SimpleService;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +33,8 @@ public class SimpleController {
     @GetMapping("/now")
 //    @Counted(value = "custom_now_counted")
     public String now(){
-        log.info("current time: {}", System.nanoTime());
+        final Marker mark = MarkerFactory.getMarker("now-");
+        log.info(mark, "current time: {}", System.nanoTime());
         return service.get("hello!");
     }
 
