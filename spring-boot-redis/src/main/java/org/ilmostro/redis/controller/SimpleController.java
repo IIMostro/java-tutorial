@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/redis")
 public class SimpleController {
 
-    @GetMapping("/hello")
-    public String hello(){
-        return "hello";
-    }
+	@GetMapping("/hello")
+	public String hello() {
+		return "hello";
+	}
 }
