@@ -5,7 +5,7 @@ import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
-import org.ilmostro.pure.annotation.LoggerWrapper;
+import org.ilmostro.pure.annotation.Logger;
 import org.ilmostro.pure.service.impl.HelloServiceImpl;
 import org.junit.Test;
 
@@ -19,7 +19,7 @@ public class ByteMethodConditionTest {
 	public void condition(){
 		final DynamicType.Builder<HelloServiceImpl> subclass = new ByteBuddy().subclass(HelloServiceImpl.class);
 
-		final ElementMatcher.Junction<MethodDescription> and = ElementMatchers.is(ElementMatchers.hasAnnotation(ElementMatchers.annotationType(LoggerWrapper.class)))
+		final ElementMatcher.Junction<MethodDescription> and = ElementMatchers.is(ElementMatchers.hasAnnotation(ElementMatchers.annotationType(Logger.class)))
 				.and(MethodDescription::isPublic);
 		final DynamicType.Builder.MethodDefinition.ImplementationDefinition<HelloServiceImpl> method = subclass.method(and);
 	}

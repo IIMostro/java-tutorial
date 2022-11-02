@@ -2,19 +2,20 @@ package org.ilmostro.pure.service.impl;
 
 import io.micrometer.core.annotation.Counted;
 import io.micrometer.core.annotation.Timed;
-import org.ilmostro.pure.annotation.LoggerWrapper;
+import org.ilmostro.pure.annotation.Logger;
+import org.ilmostro.pure.annotation.LoggerSupport;
 import org.ilmostro.pure.service.HelloService;
 import org.ilmostro.pure.service.SimpleService;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 
 @Service
-@LoggerWrapper
+@LoggerSupport
+@Logger
 public class SimpleServiceImpl implements SimpleService {
 
-    private static final Logger logger = LoggerFactory.getLogger(SimpleServiceImpl.class);
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(SimpleServiceImpl.class);
 
     private final HelloService service;
 

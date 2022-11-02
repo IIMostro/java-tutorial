@@ -1,20 +1,21 @@
 package org.ilmostro.pure.support;
 
-import io.netty.channel.ChannelHandler;
-import org.ilmostro.pure.annotation.NettyHandler;
-import org.ilmostro.pure.socket.PathNotFoundHandler;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.lang.NonNull;
-import org.springframework.stereotype.Component;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+
+import io.netty.channel.ChannelHandler;
+import org.ilmostro.pure.annotation.NettyHandler;
+import org.ilmostro.pure.socket.PathNotFoundHandler;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
 
 /**
  * @author li.bowei

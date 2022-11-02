@@ -1,26 +1,19 @@
 package org.ilmostro.pure.support;
 
-import java.lang.reflect.Method;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.ByteBuddy;
-import net.bytebuddy.description.NamedElement;
-import net.bytebuddy.description.method.MethodDescription;
-import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
-import net.bytebuddy.implementation.MethodDelegation;
-import net.bytebuddy.matcher.ElementMatcher;
-import net.bytebuddy.matcher.ElementMatchers;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.reflect.MethodUtils;
-import org.ilmostro.pure.annotation.LoggerWrapper;
+import org.ilmostro.pure.annotation.Logger;
+import org.ilmostro.pure.annotation.LoggerSupport;
 import org.ilmostro.pure.service.SimpleService;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
@@ -44,13 +37,20 @@ public class SimpleServiceLogBeanPostProcessor implements BeanPostProcessor, Bea
 
 	private ClassLoader classLoader;
 
+	private static final Collection<EnhanceSupport> ENHANCE_CLASS_SUPPORT = new ArrayList<>();
+
+	static {
+		ENHANCE_CLASS_SUPPORT.add(new MethodEnhanceClassSupport());
+		ENHANCE_CLASS_SUPPORT.add(new TypeEnhanceClassSupport());
+	}
+
 	@Override
 	public Object postProcessAfterInitialization(@NonNull Object bean, @NonNull String beanName) throws BeansException {
 		if (!(bean instanceof SimpleService)) return bean;
 		Enhancer enhancer = new Enhancer();
 		enhancer.setSuperclass(SimpleService.class);
 		final Object target = bean;
-		enhancer.setCallback((MethodInterceptor) (o, method, objects, methodProxy) -> {
+		enhancer.setCallback((MethodInterceptor) (o, method, objects, proxy) -> {
 			final long start = System.currentTimeMillis();
 			final Object invoke = method.invoke(target, objects);
 			log.info("方法执行消耗了:[{}]", System.currentTimeMillis() - start);
@@ -69,29 +69,6 @@ public class SimpleServiceLogBeanPostProcessor implements BeanPostProcessor, Bea
 
 	}
 
-	private Class<?> type(Class<?> target) {
-		return new ByteBuddy()
-				.subclass(target)
-//				.method(ElementMatchers.isAnnotatedWith(LoggerWrapper.class))
-				.method(ElementMatchers.not(ElementMatchers.isDeclaredBy(Object.class)))
-				.intercept(MethodDelegation.to(LoggerServiceWrapper.class))
-				.make()
-				.load(classLoader, ClassLoadingStrategy.Default.INJECTION)
-				.getLoaded();
-	}
-
-	private Class<?> method(Class<?> target) {
-		return new ByteBuddy()
-				.subclass(target)
-				.method(ElementMatchers.isAnnotatedWith(LoggerWrapper.class))
-//				.method(ElementMatchers.not(ElementMatchers.isDeclaredBy(Object.class)))
-				.intercept(MethodDelegation.to(LoggerServiceWrapper.class))
-				.make()
-				.load(classLoader, ClassLoadingStrategy.Default.INJECTION)
-				.getLoaded();
-	}
-
-
 	@Override
 	public void postProcessBeanDefinitionRegistry(@NonNull BeanDefinitionRegistry beanDefinitionRegistry) throws BeansException {
 		for (String beanDefinitionName : beanDefinitionRegistry.getBeanDefinitionNames()) {
@@ -100,23 +77,35 @@ public class SimpleServiceLogBeanPostProcessor implements BeanPostProcessor, Bea
 					.map(BeanDefinition::getBeanClassName)
 					.map(v1 -> ClassUtils.resolveClassName(v1, classLoader))
 					.orElse(null);
+
 			if (Objects.isNull(clazz)) {
 				continue;
 			}
-			final List<Method> methodsListWithAnnotation = MethodUtils.getMethodsListWithAnnotation(clazz, LoggerWrapper.class);
-			if (Objects.nonNull(AnnotationUtils.findAnnotation(clazz, LoggerWrapper.class))) {
-				beanDefinitionRegistry.removeBeanDefinition(beanDefinitionName);
-				final AbstractBeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(type(clazz))
-						.getBeanDefinition();
-				BeanDefinitionReaderUtils.registerWithGeneratedName(beanDefinition, beanDefinitionRegistry);
+
+			final LoggerSupport annotation = AnnotationUtils.findAnnotation(clazz, LoggerSupport.class);
+			if (Objects.isNull(annotation)){
+				continue;
 			}
 
-			if (CollectionUtils.isNotEmpty(methodsListWithAnnotation)) {
-				beanDefinitionRegistry.removeBeanDefinition(beanDefinitionName);
-				final AbstractBeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(method(clazz))
-						.getBeanDefinition();
-				BeanDefinitionReaderUtils.registerWithGeneratedName(beanDefinition, beanDefinitionRegistry);
+			Class<?> enhance = null;
+			for (EnhanceSupport support : ENHANCE_CLASS_SUPPORT) {
+				enhance = support.enhance(clazz, classLoader, Logger.class, LoggerServiceWrapper.class);
+				if (Objects.nonNull(enhance)) {
+					break;
+				}
 			}
+
+			if (Objects.isNull(enhance)) {
+				throw new RuntimeException("can't find any support enhance");
+			}
+
+			final BeanDefinition originalBeanDefinition = beanDefinitionRegistry.getBeanDefinition(beanDefinitionName);
+			final AbstractBeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(enhance)
+					.getBeanDefinition();
+			log.debug("BeanDefinition:[{}] use logger wrapper, unload original definition, register new BeanDefinition:[{}]",
+					originalBeanDefinition, beanDefinition);
+			beanDefinitionRegistry.removeBeanDefinition(beanDefinitionName);
+			BeanDefinitionReaderUtils.registerBeanDefinition(new BeanDefinitionHolder(beanDefinition, beanDefinitionName), beanDefinitionRegistry);
 		}
 	}
 }
