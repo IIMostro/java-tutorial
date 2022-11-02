@@ -1,15 +1,26 @@
 package org.ilmostro.pure.support;
 
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.description.NamedElement;
+import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import net.bytebuddy.implementation.MethodDelegation;
+import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.reflect.MethodUtils;
+import org.ilmostro.pure.annotation.LoggerWrapper;
 import org.ilmostro.pure.service.SimpleService;
-import org.ilmostro.pure.service.impl.SimpleServiceImpl;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
@@ -19,8 +30,10 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ClassUtils;
 
 /**
  * @author li.bowei
@@ -52,13 +65,14 @@ public class SimpleServiceLogBeanPostProcessor implements BeanPostProcessor, Bea
 	}
 
 	@Override
-	public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
+	public void postProcessBeanFactory(@NonNull ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
 
 	}
 
-	private Class<?> logger(Class<?> target){
+	private Class<?> type(Class<?> target) {
 		return new ByteBuddy()
 				.subclass(target)
+//				.method(ElementMatchers.isAnnotatedWith(LoggerWrapper.class))
 				.method(ElementMatchers.not(ElementMatchers.isDeclaredBy(Object.class)))
 				.intercept(MethodDelegation.to(LoggerServiceWrapper.class))
 				.make()
@@ -66,13 +80,43 @@ public class SimpleServiceLogBeanPostProcessor implements BeanPostProcessor, Bea
 				.getLoaded();
 	}
 
+	private Class<?> method(Class<?> target) {
+		return new ByteBuddy()
+				.subclass(target)
+				.method(ElementMatchers.isAnnotatedWith(LoggerWrapper.class))
+//				.method(ElementMatchers.not(ElementMatchers.isDeclaredBy(Object.class)))
+				.intercept(MethodDelegation.to(LoggerServiceWrapper.class))
+				.make()
+				.load(classLoader, ClassLoadingStrategy.Default.INJECTION)
+				.getLoaded();
+	}
+
+
 	@Override
 	public void postProcessBeanDefinitionRegistry(@NonNull BeanDefinitionRegistry beanDefinitionRegistry) throws BeansException {
-		final Class<?> logger = logger(SimpleServiceImpl.class);
-//		final Class<?> aClass = ClassUtils.resolveClassName(logger.getName(), beanClassLoader);
-		final AbstractBeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(logger)
-				.setPrimary(true)
-				.getBeanDefinition();
-		BeanDefinitionReaderUtils.registerWithGeneratedName(beanDefinition, beanDefinitionRegistry);
+		for (String beanDefinitionName : beanDefinitionRegistry.getBeanDefinitionNames()) {
+			final Class<?> clazz = Optional.of(beanDefinitionName)
+					.map(beanDefinitionRegistry::getBeanDefinition)
+					.map(BeanDefinition::getBeanClassName)
+					.map(v1 -> ClassUtils.resolveClassName(v1, classLoader))
+					.orElse(null);
+			if (Objects.isNull(clazz)) {
+				continue;
+			}
+			final List<Method> methodsListWithAnnotation = MethodUtils.getMethodsListWithAnnotation(clazz, LoggerWrapper.class);
+			if (Objects.nonNull(AnnotationUtils.findAnnotation(clazz, LoggerWrapper.class))) {
+				beanDefinitionRegistry.removeBeanDefinition(beanDefinitionName);
+				final AbstractBeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(type(clazz))
+						.getBeanDefinition();
+				BeanDefinitionReaderUtils.registerWithGeneratedName(beanDefinition, beanDefinitionRegistry);
+			}
+
+			if (CollectionUtils.isNotEmpty(methodsListWithAnnotation)) {
+				beanDefinitionRegistry.removeBeanDefinition(beanDefinitionName);
+				final AbstractBeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(method(clazz))
+						.getBeanDefinition();
+				BeanDefinitionReaderUtils.registerWithGeneratedName(beanDefinition, beanDefinitionRegistry);
+			}
+		}
 	}
 }
