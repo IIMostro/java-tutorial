@@ -10,10 +10,14 @@ import net.bytebuddy.dynamic.ClassFileLocator;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import net.bytebuddy.implementation.FixedValue;
+import net.bytebuddy.implementation.MethodDelegation;
 import net.bytebuddy.matcher.ElementMatchers;
 import net.bytebuddy.pool.TypePool;
 import org.ilmostro.basic.buddy.AbstractConstructorClass;
+import org.ilmostro.basic.buddy.BizService;
+import org.ilmostro.basic.buddy.BizServiceImpl;
 import org.ilmostro.basic.buddy.ConstructorClass;
+import org.ilmostro.basic.buddy.RunTypeDemo;
 import org.junit.Test;
 
 /**
@@ -89,6 +93,21 @@ public class ByteBuddyTest {
 				.load(getClass().getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
 				.getLoaded();
 		log.info("reload class:{}", clazz);
+	}
+
+	@Test
+	public void run_type() throws Exception{
+		final BizServiceImpl service = new ByteBuddy()
+				.subclass(BizServiceImpl.class)
+				.method(ElementMatchers.not(ElementMatchers.isDeclaredBy(Object.class)))
+				.intercept(MethodDelegation.to(RunTypeDemo.class))
+				.make()
+				.load(RunTypeDemo.class.getClassLoader())
+				.getLoaded()
+				.newInstance();
+
+		final String hello = service.hello("1", "2");
+		System.out.println(hello);
 	}
 
 }
