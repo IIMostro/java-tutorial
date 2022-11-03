@@ -99,9 +99,13 @@ public class SimpleServiceLogBeanPostProcessor implements BeanPostProcessor, Bea
 				throw new RuntimeException("can't find any support enhance");
 			}
 
+			// 获取原始的beanDefinition
 			final BeanDefinition originalBeanDefinition = beanDefinitionRegistry.getBeanDefinition(beanDefinitionName);
+			// 新建一个
 			final AbstractBeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(enhance)
 					.getBeanDefinition();
+			// 从original覆盖过来
+			beanDefinition.overrideFrom(originalBeanDefinition);
 			log.debug("BeanDefinition:[{}] use logger wrapper, unload original definition, register new BeanDefinition:[{}]",
 					originalBeanDefinition, beanDefinition);
 			beanDefinitionRegistry.removeBeanDefinition(beanDefinitionName);
