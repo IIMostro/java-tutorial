@@ -1,7 +1,10 @@
 package org.ilmostro.basic.bytebuddy;
 
 import java.lang.reflect.Constructor;
+import java.net.URL;
+import java.net.URLClassLoader;
 
+import cn.hutool.core.util.ClassLoaderUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.NamingStrategy;
@@ -109,6 +112,25 @@ public class ByteBuddyTest {
 
 		final String hello = service.hello("1", "2");
 		System.out.println(hello);
+	}
+
+	@Test
+	public void classloader() throws Exception{
+		final ClassLoader currentClassLoader = Thread.currentThread().getContextClassLoader();
+		//noinspection unchecked
+		final Class<? extends BizServiceImpl> aClass = (Class<? extends BizServiceImpl>) Class.forName(BizServiceImpl.class.getName());
+		final BizServiceImpl bizService = aClass.newInstance();
+		bizService.say("hello");
+//		final URLClassLoader classloader = new URLClassLoader(new URL[0]);
+//		Thread.currentThread().setContextClassLoader(classloader);
+		final Class<? extends BizServiceImpl> loaded = new ByteBuddy()
+				.subclass(BizServiceImpl.class)
+				.method(ElementMatchers.not(ElementMatchers.isDeclaredBy(Object.class)))
+				.intercept(MethodDelegation.to(RunTypeDemo.class))
+				.make()
+				.load(currentClassLoader, ClassLoadingStrategy.Default.CHILD_FIRST)
+				.getLoaded();
+		loaded.newInstance().say("hello");
 	}
 
 }

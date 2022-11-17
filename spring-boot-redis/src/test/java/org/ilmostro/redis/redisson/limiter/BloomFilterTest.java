@@ -1,5 +1,7 @@
 package org.ilmostro.redis.redisson.limiter;
 
+import java.util.concurrent.TimeUnit;
+
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,9 +25,14 @@ public class BloomFilterTest {
     private RedissonClient redissonClient;
 
     @Test
-    public void test(){
+    public void test() throws Exception{
         RBloomFilter<Object> filter = redissonClient.getBloomFilter("bloom");
-        RSet<Object> a = redissonClient.getSet("a");
+        filter.tryInit(1000, 0.03);
+        for (int i = 0; i < 10; i++) {
+            filter.add(i % 3);
+            TimeUnit.SECONDS.sleep(10);
+            log.info("filter contains:[{}]", filter.contains(i));
+        }
     }
 
 }
