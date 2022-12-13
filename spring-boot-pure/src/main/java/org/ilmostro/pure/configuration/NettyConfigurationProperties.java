@@ -15,4 +15,3 @@ public class NettyConfigurationProperties {
     private String ip = "0.0.0.0";
     private Integer maxFrameSize = 1024;
 }
-

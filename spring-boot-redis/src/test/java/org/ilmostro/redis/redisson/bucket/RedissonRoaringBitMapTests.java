@@ -2,13 +2,18 @@ package org.ilmostro.redis.redisson.bucket;
 
 import java.util.Objects;
 
+import io.reactivex.rxjava3.core.Completable;
 import lombok.extern.slf4j.Slf4j;
+import org.ilmostro.redis.domain.User;
 import org.ilmostro.redis.utils.RoaringBitMapCodec;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
+import org.redisson.codec.Kryo5Codec;
 import org.roaringbitmap.RoaringBitmap;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -56,5 +61,14 @@ public class RedissonRoaringBitMapTests {
 			if (i % 2 == 0) bitmap.remove(i);
 		}
 		bucket.set(bitmap);
+	}
+
+	@Test
+	public void simple(){
+		final RBucket<User> bucket = redisson.getBucket("simple-user", new Kryo5Codec());
+		final User supplier = User.supplier();
+		bucket.setIfExists(supplier);
+		final User user = bucket.get();
+		log.info("user:{}", user);
 	}
 }

@@ -43,4 +43,3 @@ public class ExceptionController {
         return HttpStatus.valueOf(statusCode);
     }
 }
-

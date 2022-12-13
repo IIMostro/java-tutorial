@@ -57,7 +57,7 @@ public class DelayMessageConfiguration {
 				.durable(true)
 				.build();
 	}
-	
+
 	@Bean
 	public Binding commandBinding(){
 		return BindingBuilder.bind(commandQueue())

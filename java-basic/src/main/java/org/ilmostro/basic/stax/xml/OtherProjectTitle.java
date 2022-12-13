@@ -18,7 +18,7 @@ import java.util.List;
 @Setter
 @ToString
 public class OtherProjectTitle {
-    
+
     @XmlElement(name = "其他项目标题")
     @XmlJavaTypeAdapter(OtherProjectTitleAdapter.class)
     private List<CustomOtherProjectTitle> titles;

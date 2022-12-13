@@ -64,7 +64,7 @@ public class MonoTest {
         ThreadPoolExecutor threadPoolExecutor = ThreadPoolExecutorFactory.get(true);
         Scheduler scheduler = Schedulers.fromExecutor(threadPoolExecutor);
         Flux.range(1,10)
-                .subscribeOn(scheduler)
+                .publishOn(scheduler)
                 .map(Math::abs)
                 .map(Objects::toString)
                 .log()

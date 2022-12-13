@@ -8,7 +8,7 @@ import org.ilmostro.pure.domain.GoodsElement;
  * @author li.bowei
  */
 public class GoodElementTranslator implements EventTranslatorOneArg<GoodsElement, String> {
-    
+
     @Override
     public void translateTo(GoodsElement event, long sequence, String arg0) {
         GoodsElement good = JSON.parseObject(arg0, GoodsElement.class);

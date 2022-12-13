@@ -58,4 +58,3 @@ public class PowxN {
         return res;
     }
 }
-
