@@ -50,7 +50,11 @@ public class SimpleServiceLogBeanPostProcessor implements BeanPostProcessor, Bea
 		Enhancer enhancer = new Enhancer();
 		enhancer.setSuperclass(SimpleService.class);
 		final Object target = bean;
-		enhancer.setCallback((MethodInterceptor) (o, method, objects, proxy) -> {
+		// 1. object cglib生成的对象,也就是enhancer.create()返回的对象, 如果在里面使用的话则会有爆栈的危险
+		// 2. method 方法
+		// 3. objects 方法参数
+		// 4. methodProxy 方法代理
+		enhancer.setCallback((MethodInterceptor) (object, method, objects, proxy) -> {
 			final long start = System.currentTimeMillis();
 			final Object invoke = method.invoke(target, objects);
 			log.info("方法执行消耗了:[{}]", System.currentTimeMillis() - start);

@@ -156,4 +156,52 @@ public class MonoTest {
                 .subscribe();
     }
 
+
+    @Test
+    public void useSubscribeOn() throws InterruptedException {
+        Scheduler s = Schedulers.newParallel("parallel-scheduler", 4);
+        final Flux<String> flux = Flux
+                .range(1, 2)
+                .map(i -> 10 + i + ":" + Thread.currentThread())
+                .subscribeOn(s)
+                .map(i -> "value " + i + ":"+ Thread.currentThread());
+
+        new Thread(() -> flux.subscribe(System.out::println), "ThreadA").start();
+        Thread.sleep(5000);
+    }
+
+    @Test
+    public void usePublishOn() throws InterruptedException {
+        Scheduler s = Schedulers.newParallel("parallel-scheduler", 4);
+        final Flux<String> flux = Flux
+                .range(1, 2)
+                .map(i -> 10 + i + ":"+ Thread.currentThread())
+                // publishOn changes the scheduler for the next operator only
+                // 会把下一个操作符的执行线程切换到指定的线程池
+                .publishOn(s)
+                .map(i -> "value " + i+":"+ Thread.currentThread());
+
+        new Thread(() -> flux.subscribe(System.out::println),"ThreadA").start();
+        System.out.println(Thread.currentThread());
+        Thread.sleep(5000);
+    }
+
+    @Test
+    public void subscription() throws Exception{
+        Flux.just(1,2,3)
+                .doOnSubscribe(v1 -> log.info("doOnSubscribe"))
+                .doOnNext(v1 -> log.info("doOnNext"))
+                .doOnRequest(v1 -> log.info("doOnRequest"))
+                .doOnCancel(() -> log.info("doOnCancel"))
+                .doOnComplete(() -> log.info("doOnComplete"))
+                .doOnTerminate(() -> log.info("doOnTerminate"))
+                .doFinally(v1 -> log.info("doFinally"))
+                .doOnDiscard(Object.class, v1 -> log.info("doOnDiscard"))
+                .doOnEach(v1 -> log.info("doOnEach"))
+                .doOnError(v1 -> log.info("doOnError"))
+                .doOnTerminate(() -> log.info("doOnTerminate"))
+                .subscribeOn(Schedulers.fromExecutor(ThreadPoolExecutorFactory.get(false)))
+                .subscribe();
+        TimeUnit.SECONDS.sleep(2);
+    }
 }
