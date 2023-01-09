@@ -5,6 +5,9 @@ import io.vavr.concurrent.Promise;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 /**
@@ -52,4 +55,19 @@ public class FutureTest {
         objects.await();
         objects.await();
     }
+
+
+    @Test
+    public void fold(){
+        List<Future<Integer>> futures = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            futures.add(Future.successful(i));
+        }
+        final Future<Integer> await = Future.fold(futures, 0, (v1, v2) -> {
+            log.info("v1: {}, v2: {}", v1, v2);
+            return v1 + v2;
+        }).await();
+        log.info("result: {}", await.get());
+    }
+
 }

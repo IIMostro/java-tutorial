@@ -1,5 +1,6 @@
 package org.ilmostro.basic.executor;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -8,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import cn.hutool.core.thread.ExecutorBuilder;
 import cn.hutool.core.thread.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 
 /**
  * @author li.bowei
@@ -51,5 +53,18 @@ public class ThreadPoolExecutorFactory {
 			}
 		}
 		return executor;
+	}
+
+	public static Runnable wrap(Runnable runnable){
+		final Map<String, String> context = MDC.getCopyOfContextMap();
+		return () -> {
+			try {
+				MDC.setContextMap(context);
+				runnable.run();
+				MDC.clear();
+			} catch (Exception e) {
+				log.error("runnable execute error", e);
+			}
+		};
 	}
 }

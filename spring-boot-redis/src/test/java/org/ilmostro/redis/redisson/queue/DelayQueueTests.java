@@ -1,6 +1,7 @@
 package org.ilmostro.redis.redisson.queue;
 
 import java.sql.Time;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -8,6 +9,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RDelayedQueue;
 import org.redisson.api.RQueue;
 import org.redisson.api.RedissonClient;
@@ -49,5 +51,23 @@ public class DelayQueueTests {
 		});
 		TimeUnit.SECONDS.sleep(10);
 		start.compareAndSet(true, false);
+	}
+
+	@Test
+	void test_block_queue_with_delay() throws Exception{
+		final ExecutorService service = Executors.newFixedThreadPool(1);
+		final RBlockingQueue<Integer> queue = redisson.getBlockingQueue(QUEUE_NAME, new Kryo5Codec());
+		final RDelayedQueue<Integer> delayedQueue = redisson.getDelayedQueue(queue);
+		service.submit(() -> {
+			for (int i = 0; i < 10; i++) {
+				delayedQueue.offer(i, i, TimeUnit.SECONDS);
+			}
+		});
+		CountDownLatch latch = new CountDownLatch(10);
+		queue.subscribeOnElements(v1 -> {
+			log.info("poll:[{}]", v1);
+			latch.countDown();
+		});
+		latch.await();
 	}
 }
