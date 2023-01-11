@@ -1,7 +1,9 @@
 package org.ilmostro.basic.reactor;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -203,5 +205,21 @@ public class MonoTest {
                 .subscribeOn(Schedulers.fromExecutor(ThreadPoolExecutorFactory.get(false)))
                 .subscribe();
         TimeUnit.SECONDS.sleep(2);
+    }
+
+    @Test
+    public void fold(){
+        List<Mono<Integer>> monos = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            monos.add(Mono.just(i));
+        }
+        Mono.zip(monos, objects -> {
+            int sum = 0;
+            for (Object object : objects) {
+                log.info("object:{}", object);
+                sum += (int) object;
+            }
+            return sum;
+        }).subscribe(v1 -> log.info("sum:{}", v1));
     }
 }

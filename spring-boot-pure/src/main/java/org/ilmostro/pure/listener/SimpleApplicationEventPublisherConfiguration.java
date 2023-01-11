@@ -22,6 +22,7 @@ public class SimpleApplicationEventPublisherConfiguration implements Application
 	public void afterPropertiesSet() {
 		SimpleApplicationEventMulticaster multicaster = (SimpleApplicationEventMulticaster)
 				context.getBean(AbstractApplicationContext.APPLICATION_EVENT_MULTICASTER_BEAN_NAME);
+		// 设置异步执行
 		multicaster.setTaskExecutor(Executors.newFixedThreadPool(5));
 	}
 
