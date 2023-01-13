@@ -9,3 +9,10 @@ spring:
     port: 6379
 security:
   model: 'interceptor'
+
+
+logging:
+  level:
+    root: INFO
+  file:
+    path: classpath:logback.xml

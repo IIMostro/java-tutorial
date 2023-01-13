@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.ilmostro.redis.listener.MessageListenerAdapterWrapper;
 import org.ilmostro.redis.listener.ProductUpdateStreamListener;
 import org.redisson.Redisson;
+import org.redisson.api.RedissonReactiveClient;
 import org.redisson.config.Config;
 
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
@@ -44,6 +45,15 @@ public class RedissionConfiguration {
                 .setAddress("redis://" + properties.getHost() + ":" + properties.getPort())
                 .setPassword(properties.getPassword());
         return (Redisson) Redisson.create(config);
+    }
+
+    @Bean
+    public RedissonReactiveClient redissonReactiveClient(RedisProperties properties){
+        Config config = new Config();
+        config.useSingleServer()
+                .setAddress("redis://" + properties.getHost() + ":" + properties.getPort())
+                .setPassword(properties.getPassword());
+        return Redisson.create(config).reactive();
     }
 
     public static final String REDIS_STREAM_GROUP = "redis_stream_group";

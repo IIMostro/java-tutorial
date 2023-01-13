@@ -1,5 +1,8 @@
 package org.ilmostro.pure.controller;
 
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
+
 import io.vertx.core.Vertx;
 import lombok.extern.slf4j.Slf4j;
 import org.ilmostro.pure.service.SimpleService;
@@ -7,6 +10,7 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +32,13 @@ public class SimpleController {
     public String publish(String message){
         vertx.eventBus().publish("ilmostro.handler", message);
         return message;
+    }
+
+    @PostMapping("/stream")
+    public String stream(HttpServletRequest request) throws Exception{
+        // tomcat 返回的是CoyoteInputStream
+        final ServletInputStream inputStream = request.getInputStream();
+        return "hello";
     }
 
     @GetMapping("/now")
