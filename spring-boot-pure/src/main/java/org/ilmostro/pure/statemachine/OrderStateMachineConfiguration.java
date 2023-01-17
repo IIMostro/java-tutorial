@@ -37,15 +37,18 @@ public class OrderStateMachineConfiguration extends StateMachineConfigurerAdapte
 		transitions
 				.withExternal().source(OrderStatus.UNPAID).target(OrderStatus.PAID).event(OrderStatusChangeEvent.PAYED)
 				.and()
-				.withExternal().source(OrderStatus.UNPAID).target(OrderStatus.CANCEL).event(OrderStatusChangeEvent.CANCEL)
+				.withExternal().source(OrderStatus.UNPAID).target(OrderStatus.CANCEL)
+				.event(OrderStatusChangeEvent.CANCEL)
 				.and()
-				.withExternal().source(OrderStatus.PAID).target(OrderStatus.APPROVE).event(OrderStatusChangeEvent.MANAGER)
+				.withExternal().source(OrderStatus.PAID).target(OrderStatus.APPROVE)
+				.event(OrderStatusChangeEvent.MANAGER)
 				.and()
-				.withExternal().source(OrderStatus.APPROVE).target(OrderStatus.REFUNDED).event(OrderStatusChangeEvent.FINANCE);
+				.withExternal().source(OrderStatus.APPROVE).target(OrderStatus.REFUNDED)
+				.event(OrderStatusChangeEvent.FINANCE);
 	}
 
 	@Bean
-	public DefaultStateMachinePersister<OrderStatus, OrderStatusChangeEvent, OrderEntity> persister(){
+	public DefaultStateMachinePersister<OrderStatus, OrderStatusChangeEvent, OrderEntity> persister() {
 		return new DefaultStateMachinePersister<>(new StateMachinePersist<OrderStatus, OrderStatusChangeEvent, OrderEntity>() {
 			@Override
 			public void write(StateMachineContext<OrderStatus, OrderStatusChangeEvent> context, OrderEntity order) throws Exception {
