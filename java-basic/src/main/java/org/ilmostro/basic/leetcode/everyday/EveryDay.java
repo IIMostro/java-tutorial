@@ -1,7 +1,13 @@
 package org.ilmostro.basic.leetcode.everyday;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author li.bowei
@@ -49,4 +55,31 @@ public class EveryDay {
 		final String reverse = new StringBuffer(str).reverse().toString();
 		return Integer.parseInt(reverse);
 	}
+
+	/**
+	 * 重复的全排列
+	 *
+	 * @link <a href="https://leetcode.cn/problems/VvJkup/">...</a>
+	 * @param nums
+	 * @return
+	 */
+	public List<List<Integer>> permute(int[] nums) {
+		List<List<Integer>> result = new ArrayList<>();
+		final List<Integer> temp = Arrays.stream(nums).boxed().collect(Collectors.toList());
+		dfs(result, temp, nums.length, 0);
+		return result;
+	}
+
+	public void dfs(List<List<Integer>> result ,List<Integer> temp, Integer n, Integer k){
+		if (Objects.equals(n, k)){
+			result.add(new ArrayList<>(temp));
+			return;
+		}
+		for (int i = k; i < n; i++) {
+			Collections.swap(temp, i, k);
+			dfs(result, temp, n, k+ 1);
+			Collections.swap(temp, i, k);
+		}
+	}
+
 }
