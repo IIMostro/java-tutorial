@@ -31,4 +31,19 @@ public class LocalDateTimeTest {
         final Duration between = Duration.between(LocalDateTime.now(), end);
         log.info("between:[{}]", between.getSeconds());
     }
+
+    @Test
+    public void formatter_should_work(){
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        String format = formatter.format(now);
+        log.info("format:[{}]", format);
+    }
+
+    @Test
+    public void localdatetime_to_date_should_work(){
+        LocalDateTime now = LocalDateTime.now();
+        java.util.Date date = java.util.Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+        log.info("second:[{}]", date.getTime());
+    }
 }

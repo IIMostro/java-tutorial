@@ -19,7 +19,8 @@ public class DisruptorProcessTest {
 
     @Test
     public void process() throws Exception {
-        disruptor.handleEventsWith(new BatchEventProcessor<>(disruptor.getRingBuffer(), disruptor.getRingBuffer().newBarrier(), new MessageEventHandler()));
+        disruptor.handleEventsWith(new BatchEventProcessor<>(disruptor.getRingBuffer(), disruptor.getRingBuffer().newBarrier(), new MessageEventHandler()))
+                        .handleEventsWith(new MessageEventHandler());
         disruptor.start();
         for (int i = 0; i < 10; i++) {
             final int fi = i;
