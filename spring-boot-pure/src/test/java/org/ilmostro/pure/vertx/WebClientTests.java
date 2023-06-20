@@ -21,7 +21,7 @@ public class WebClientTests {
         WebClientOptions options = new WebClientOptions();
         WebClientBase client = (WebClientBase)WebClient.create(vertx, options);
         client.addInterceptor(new WebClientLoggingInterceptor());
-        CountDownLatch countDownLatch = new CountDownLatch(1);
+        CountDownLatch countDownLatch = new CountDownLatch(10);
 
         final var params = MultiMap.caseInsensitiveMultiMap();
         params.add("token", "6a61c1d1225e49f1ad0ee6f2d9d66efb");
@@ -30,12 +30,11 @@ public class WebClientTests {
         array.add("ipkg://15717987535@video.support.phone.cn1660096031984|xxxxS_tlbw00100830|smartFilter_phoneAlarm");
         array.add("ipkg://15717987535@video.support.phone.cn1660096031984|xxxxS_tlbw00100830|smartFilter");
         params.add("schemas", array.toJSONString());
-        client.postAbs("https://link-master.stg.closeli.cn/_magik/v1/schema/get")
-                .sendForm(params)
-                .onSuccess(v1 -> {
-
-                })
-                .onComplete(v1 -> countDownLatch.countDown());
+        for (int i = 0; i < 10; i++) {
+            client.postAbs("https://link-master.stg.closeli.cn/_magik/v1/schema/get")
+                    .sendForm(params)
+                    .onComplete(v1 -> countDownLatch.countDown());
+        }
         countDownLatch.await();
     }
 }

@@ -16,6 +16,17 @@ public class WebClientLoggingInterceptor implements Handler<HttpContext<?>> {
     public void handle(HttpContext<?> event) {
         final var phase = event.phase();
         if (phase.equals(ClientPhase.SEND_REQUEST)) {
+            printRequest(event);
+        }
+        if (phase.equals(ClientPhase.DISPATCH_RESPONSE)) {
+            printResponse(event);
+        }
+        event.next();
+    }
+
+    private static void printRequest(HttpContext<?> event){
+        try{
+            event.set("TIME", System.currentTimeMillis());
             log.info(" --> {} {}", event.requestOptions().getMethod(), event.requestOptions().getHost());
             final var body = event.body();
             if (Objects.nonNull(body)) {
@@ -37,14 +48,20 @@ public class WebClientLoggingInterceptor implements Handler<HttpContext<?>> {
                     log.info(" Body: {}", body);
                 }
             }
+        } catch (Exception ex){
+            // ignore
         }
-        if (phase.equals(ClientPhase.DISPATCH_RESPONSE)) {
-            log.info(" <-- {} {} {}", event.response().statusCode(), event.response().statusMessage(), event.requestOptions().getHost());
+    }
+
+    private static void printResponse(HttpContext<?> event) {
+        try {
+            log.info(" <-- {} {} {} {}ms", event.response().statusCode(), event.response().statusMessage(), event.requestOptions().getHost(), System.currentTimeMillis() - event.<Long>get("TIME"));
             log.info(" Content-Type: {}", event.response().getHeader("Content-Type"));
             log.info(" Set Cookies: {}", event.response().getHeader("Set-Cookie"));
             log.info(" Content-Length: {}", event.response().getHeader("Content-Length"));
             log.info(" Body: {}", event.response().bodyAsString());
+        } catch (Exception ex) {
+            // ignore
         }
-        event.next();
     }
 }
