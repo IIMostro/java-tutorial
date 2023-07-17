@@ -7,7 +7,9 @@ import org.ilmostro.pure.configuration.VertxSpringFactory;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.stereotype.Service;
 
+@Service
 public class VerticleBeanPostProcessor implements BeanPostProcessor {
 
     private final Vertx vertx;

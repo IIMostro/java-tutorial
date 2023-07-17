@@ -181,6 +181,13 @@
             <artifactId>arrow-memory-netty</artifactId>
             <version>${arrow.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>dev.failsafe</groupId>
+            <artifactId>failsafe</artifactId>
+            <version>3.3.2</version>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>

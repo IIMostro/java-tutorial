@@ -18,6 +18,7 @@ public class SimpleConsumerVerticle extends AbstractVerticle {
 
     @Override
     public void start() throws Exception {
+        logger.info("simple consumer verticle start");
         vertx.eventBus().consumer("ilmostro.handler",
                 handler -> {
                     logger.info("receive message address:{}, body:{}", handler.address(), handler.body());
