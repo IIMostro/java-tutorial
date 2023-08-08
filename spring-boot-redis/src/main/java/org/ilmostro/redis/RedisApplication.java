@@ -7,9 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author li.bowei
  */
 @SpringBootApplication
-public class ApplicationBootstrap {
+public class RedisApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ApplicationBootstrap.class, args);
+        SpringApplication.run(RedisApplication.class, args);
     }
 }
