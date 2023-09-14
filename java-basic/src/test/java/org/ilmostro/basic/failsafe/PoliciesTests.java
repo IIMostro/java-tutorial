@@ -1,28 +1,43 @@
 package org.ilmostro.basic.failsafe;
 
-import com.google.common.primitives.Bytes;
-import com.google.common.primitives.Chars;
 import dev.failsafe.Failsafe;
-import dev.failsafe.Fallback;
-import dev.failsafe.FallbackBuilder;
-import io.netty.buffer.*;
+import dev.failsafe.RetryPolicy;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.util.CharsetUtil;
 import org.apache.commons.codec.binary.Hex;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.xml.bind.DatatypeConverter;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
 
 public class PoliciesTests {
 
 
     @Test
-    void test_sample_policy_should_be_success() {
-//        final var fallback = Fallback.builder().build();
-//        Failsafe.with(fallback);
+    void test_sample_policy_should_be_success() throws Exception{
+        final RetryPolicy<Object> policy = RetryPolicy.builder().handle(Exception.class)
+                .withMaxRetries(3)
+                .withMaxDuration(Duration.ofSeconds(5))
+                .withDelay(Duration.ofSeconds(4)).build();
+
+        final var latch = new CountDownLatch(3);
+        Failsafe.with(policy)
+                .onSuccess(v1 -> System.out.println("success"))
+                .onFailure(v1 -> System.out.println("failure"))
+                .onComplete(v1 -> {
+                    System.out.println("complete");
+                    latch.countDown();
+                })
+                .run(() -> {
+                    System.out.println("run");
+                    throw new RuntimeException("test");
+                });
+        latch.await();
     }
 
     final PooledByteBufAllocator allocator = new PooledByteBufAllocator(false);

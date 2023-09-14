@@ -2,6 +2,7 @@ package org.ilmostro.mysql.service.document;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -24,7 +25,7 @@ public class ScrewDocument {
 	public void document(){
 		HikariConfig hikariConfig = new HikariConfig();
 		hikariConfig.setDriverClassName("com.mysql.cj.jdbc.Driver");
-		hikariConfig.setJdbcUrl("jdbc:mysql://172.29.10.180:3306/purchase");
+		hikariConfig.setJdbcUrl("jdbc:mysql://124.236.102.162:3306/core_data");
 		hikariConfig.setUsername("dev");
 		hikariConfig.setPassword("dev");
 		//设置可以获取tables remarks信息
@@ -43,7 +44,7 @@ public class ScrewDocument {
 				//打开目录
 				.openOutputDir(true)
 				//文件类型
-				.fileType(EngineFileType.HTML)
+				.fileType(EngineFileType.WORD)
 				//生成模板实现
 				.produceType(EngineTemplateType.freemarker)
 				//自定义文件名称
@@ -62,7 +63,17 @@ public class ScrewDocument {
 		ProcessConfig processConfig = ProcessConfig.builder()
 				//指定生成逻辑、当存在指定表、指定表前缀、指定表后缀时，将生成指定表，其余表不生成、并跳过忽略表配置
 				//根据名称指定表生成
-				.designatedTableName(Collections.singletonList("overseas_home_currency_conf"))
+				.designatedTableName(List.of("device_package",
+						"device_region_config",
+						"device_region",
+						"isp_region_config",
+						"region_migrate",
+						"product_package_history",
+						"product_package",
+						"product_region",
+						"province_city_region",
+						"region_config",
+						"system_config"))
 				//根据表前缀生成
 				.designatedTablePrefix(new ArrayList<>())
 				//根据表后缀生成

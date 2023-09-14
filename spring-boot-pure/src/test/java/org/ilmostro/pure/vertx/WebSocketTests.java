@@ -5,12 +5,10 @@ import io.vertx.core.http.HttpServer;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * @author li.bowei
  */
-public class WebSocket {
+public class WebSocketTests {
 
     Vertx vertx;
     @Before
@@ -19,7 +17,7 @@ public class WebSocket {
     }
 
     @Test
-    public void start() throws InterruptedException {
+    public void start() {
         HttpServer server = vertx.createHttpServer().webSocketHandler(v1 -> {
             if (v1.path().equals("/socket")) {
                 v1.textMessageHandler(v2 -> {
@@ -29,6 +27,5 @@ public class WebSocket {
             }
         });
         server.listen(8081, v1 -> System.out.println("websocket start in 8081..."));
-        TimeUnit.MINUTES.sleep(3);
     }
 }
