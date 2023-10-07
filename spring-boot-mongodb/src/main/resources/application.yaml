@@ -1,0 +1,8 @@
+spring:
+  data:
+    mongodb:
+      host: 192.168.205.10
+      username: 'root'
+      password: 'Aa123456'
+      database: "nebula"
+      authentication-database: admin

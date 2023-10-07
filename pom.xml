@@ -44,6 +44,7 @@
         <module>spring-boot-rabbit</module>
 		<module>hadoop-tutorial</module>
         <module>spring-cloud-sample</module>
+        <module>spring-boot-mongodb</module>
 	</modules>
 
     <dependencyManagement>

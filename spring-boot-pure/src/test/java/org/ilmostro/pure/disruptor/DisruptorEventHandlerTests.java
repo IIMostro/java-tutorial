@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
@@ -57,12 +58,13 @@ public class DisruptorEventHandlerTests {
 
         @Override
         public void onEvent(SingleString event, long sequence, boolean endOfBatch) throws Exception {
-            try{
-                log.info("second event: [{}]", event.getValue());
-                throw new RuntimeException("error");
-            } catch (Exception ex){
-                log.error("error", ex);
-            }
+//            try{
+//
+//            } catch (Exception ex){
+//                log.error("error", ex);
+//            }
+            log.info("second event: [{}]", event.getValue());
+            throw new RuntimeException("error");
         }
     }
 
