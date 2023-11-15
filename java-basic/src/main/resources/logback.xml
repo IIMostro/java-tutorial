@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
+	<property name="pattern" value="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %c %M %L [%thread] %m%n" />
+
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} [%X{TraceId}, %X{SpanId}] - %msg%n</pattern>
+<!--			<pattern>${pattern}</pattern>-->
 		</encoder>
 	</appender>
 
