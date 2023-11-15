@@ -34,6 +34,20 @@
             <version>${jaxb.version}</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.shredzone.commons/commons-suncalc -->
+        <dependency>
+            <groupId>org.shredzone.commons</groupId>
+            <artifactId>commons-suncalc</artifactId>
+            <version>3.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.closeli.cloud.storage</groupId>
+            <artifactId>storage-service-sdk</artifactId>
+            <version>1.7.4</version>
+        </dependency>
+
+
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
