@@ -1,9 +1,5 @@
 package org.ilmostro.pure.controller;
 
-import java.util.concurrent.CompletableFuture;
-
-import javax.servlet.http.HttpServletResponse;
-
 import com.lmax.disruptor.dsl.Disruptor;
 import io.netty.util.concurrent.Promise;
 import org.ilmostro.pure.disruptor.http.NettyPromiseEvent;
@@ -11,13 +7,13 @@ import org.ilmostro.pure.disruptor.http.SimpleResponseEvent;
 import org.ilmostro.pure.disruptor.http.SimpleResponseEventTranslator;
 import org.ilmostro.pure.disruptor.http.VavrPromiseEvent;
 import org.ilmostro.pure.utils.NettyPromiseFactory;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author li.bowei

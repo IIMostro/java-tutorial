@@ -219,6 +219,14 @@
             <version>3.3.2</version>
         </dependency>
 
+
+        <!--https://github.com/spotify/voyager/tree/main-->
+        <dependency>
+            <groupId>com.spotify</groupId>
+            <artifactId>voyager</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
