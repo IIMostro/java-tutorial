@@ -7,8 +7,8 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import lombok.extern.slf4j.Slf4j;
-import org.ilmostro.basic.concurrent.semaphore.OnceRunnable;
-import org.ilmostro.basic.concurrent.semaphore.WaitOneReturnRunnable;
+import org.ilmostro.basic.datastruct.concurrent.semaphore.OnceRunnable;
+import org.ilmostro.basic.datastruct.concurrent.semaphore.WaitOneReturnRunnable;
 import org.ilmostro.basic.executor.ThreadPoolExecutorFactory;
 import org.junit.Before;
 import org.junit.Test;

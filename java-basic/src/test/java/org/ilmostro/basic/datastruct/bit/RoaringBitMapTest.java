@@ -2,8 +2,8 @@ package org.ilmostro.basic.datastruct.bit;
 
 import com.esotericsoftware.kryo.kryo5.Kryo;
 import lombok.extern.slf4j.Slf4j;
-import org.ilmostro.basic.bitmap.KyroPool;
-import org.ilmostro.basic.bitmap.KyroSerializer;
+import org.ilmostro.basic.datastruct.bitmap.KyroPool;
+import org.ilmostro.basic.datastruct.bitmap.KyroSerializer;
 import org.junit.Test;
 import org.roaringbitmap.RoaringBitmap;
 

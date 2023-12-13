@@ -1,6 +1,7 @@
 package org.ilmostro.basic.leetcode.everyday;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ilmostro.basic.algorithm.leetcode.everyday.EveryDay;
 import org.junit.jupiter.api.Test;
 
 /**

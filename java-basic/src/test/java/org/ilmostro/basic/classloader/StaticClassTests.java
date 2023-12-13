@@ -1,5 +1,6 @@
 package org.ilmostro.basic.classloader;
 
+import org.ilmostro.basic.clazz.classloader.StaticClass;
 import org.junit.Test;
 
 /**

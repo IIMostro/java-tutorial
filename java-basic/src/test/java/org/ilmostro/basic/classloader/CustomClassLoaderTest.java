@@ -1,5 +1,6 @@
 package org.ilmostro.basic.classloader;
 
+import org.ilmostro.basic.clazz.classloader.CustomClassLoader;
 import org.junit.Test;
 
 import java.lang.reflect.InvocationTargetException;

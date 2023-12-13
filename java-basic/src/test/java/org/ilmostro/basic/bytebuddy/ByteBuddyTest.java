@@ -1,27 +1,20 @@
 package org.ilmostro.basic.bytebuddy;
 
 import java.lang.reflect.Constructor;
-import java.net.URL;
-import java.net.URLClassLoader;
 
-import cn.hutool.core.util.ClassLoaderUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.NamingStrategy;
-import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.ClassFileLocator;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import net.bytebuddy.implementation.FixedValue;
 import net.bytebuddy.implementation.MethodDelegation;
 import net.bytebuddy.matcher.ElementMatchers;
-import net.bytebuddy.pool.TypePool;
-import org.ilmostro.basic.buddy.AbstractConstructorClass;
-import org.ilmostro.basic.buddy.BizService;
-import org.ilmostro.basic.buddy.BizServiceImpl;
-import org.ilmostro.basic.buddy.ConstructorClass;
-import org.ilmostro.basic.buddy.RunTypeDemo;
+import org.ilmostro.basic.clazz.buddy.AbstractConstructorClass;
+import org.ilmostro.basic.clazz.buddy.BizServiceImpl;
+import org.ilmostro.basic.clazz.buddy.ConstructorClass;
+import org.ilmostro.basic.clazz.buddy.RunTypeDemo;
 import org.junit.Test;
 
 /**

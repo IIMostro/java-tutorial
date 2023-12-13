@@ -1,12 +1,9 @@
 package org.ilmostro.basic.datastruct.builder;
 
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.ilmostro.basic.User;
-import org.ilmostro.basic.builder.CommonBuilder;
+import org.ilmostro.basic.designpatterns.builder.CommonBuilder;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * @author li.bowei
