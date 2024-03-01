@@ -9,14 +9,10 @@
 <!--			<pattern>${pattern}</pattern>-->
 		</encoder>
 
-
-<!--		<rewrite name="rewrite">-->
-<!--			<DataMaskingRewritePolicy/>-->
-<!--			<AppenderRef ref="Console"/>-->
-<!--			<AppenderRef ref="proxy"/>-->
-<!--			<AppenderRef ref="rollingFileError"/>-->
-<!--			<AppenderRef ref="maxmind"/>-->
-<!--		</rewrite>-->
+		<rewrite name="rewrite">
+			<DataMaskingRewritePolicy/>
+			<AppenderRef ref="Console"/>
+		</rewrite>
 	</appender>
 
 	<root level="INFO">

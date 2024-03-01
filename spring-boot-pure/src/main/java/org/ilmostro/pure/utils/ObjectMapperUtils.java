@@ -82,10 +82,6 @@ public class ObjectMapperUtils implements ApplicationContextAware, InitializingB
 		return toJavaObject(json, javaType);
 	}
 
-	public static ObjectMapper getObjectMapper() {
-		return objectMapper;
-	}
-
 	@Override
 	public void afterPropertiesSet() {
 		objectMapper = applicationContext.getBean(ObjectMapper.class);
