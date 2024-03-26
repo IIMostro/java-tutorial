@@ -45,6 +45,7 @@
 		<module>hadoop-tutorial</module>
         <module>spring-cloud-sample</module>
         <module>spring-boot-mongodb</module>
+        <module>spring-boot-elasticsearch</module>
     </modules>
 
     <dependencyManagement>
