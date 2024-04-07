@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-@Configuration
+//@Configuration
 public class MetricsConfiguration {
     @Bean
     public List<RedisCacheMetrics> redisCacheMetrics(RedisCacheManager cacheManager, CacheProperties properties, ApplicationContext context) {

@@ -7,6 +7,8 @@ spring:
         min-idle: 0
         max-idle: 8
     port: 6379
+  cache:
+    type: redis
 security:
   model: 'interceptor'
 
