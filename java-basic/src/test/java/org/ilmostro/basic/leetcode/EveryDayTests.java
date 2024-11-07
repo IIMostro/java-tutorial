@@ -1,4 +1,4 @@
-package org.ilmostro.basic.leetcode.everyday;
+package org.ilmostro.basic.leetcode;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ilmostro.basic.algorithm.leetcode.everyday.EveryDay;

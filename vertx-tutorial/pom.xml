@@ -13,7 +13,7 @@
 
     <properties>
         <vertx.verticle>org.neptune.vertx.ServerVerticle</vertx.verticle>
-<!--        <vertx.launcher>org.neptune.vertx.HazelcastClusterLauncher</vertx.launcher>-->
+        <!--        <vertx.launcher>org.neptune.vertx.HazelcastClusterLauncher</vertx.launcher>-->
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -28,6 +28,11 @@
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-web-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-redis-client</artifactId>
         </dependency>
 
         <!-- SLF4J API -->
@@ -67,6 +72,12 @@
             <artifactId>vertx-hazelcast</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <!-- Import dependencies from the Vert.x BOM. -->
@@ -97,6 +108,8 @@
 
                         <annotationProcessors>
                             <annotationProcessor>io.vertx.codegen.CodeGenProcessor</annotationProcessor>
+                            <annotationProcessor>lombok.launch.AnnotationProcessorHider$AnnotationProcessor
+                            </annotationProcessor>
                         </annotationProcessors>
                         <generatedSourcesDirectory>${project.basedir}/src/main/generated</generatedSourcesDirectory>
                         <compilerArgs>
